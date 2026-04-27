@@ -1,41 +1,43 @@
-import "./index.css";
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
+import './index.css'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+import Home from './pages/Home'
+import Technology from './pages/Technology'
+import Security from './pages/Security'
+import Solutions from './pages/Solutions'
+import AdminConsole from './pages/AdminConsole'
+import Company from './pages/Company'
 
-function App() {
-  return (
-    <div className="container">
-      {/* Background Video */}
-      <video autoPlay muted loop playsInline className="video-bg">
-        <source src="/background-video.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-
-      {/* Dark Overlay */}
-      <div className="overlay"></div>
-
-      {/* Main Content */}
-      <div className="content">
-        <img
-          src="/logo.png"
-          alt="AIDATARIS Logo"
-          className="logo"
-        />
-
-        <h1>AIDATARIS</h1>
-
-        <p className="subtitle">
-          Engineering the Future with AI & Data
-        </p>
-
-        <div className="construction-box">
-          🚧 Website Under Construction 🚧
-        </div>
-
-        <p className="small-text">
-          We are building something innovative and powerful.
-        </p>
-      </div>
-    </div>
-  );
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+  return null
 }
 
-export default App;
+function AppLayout() {
+  return (
+    <>
+      <ScrollToTop />
+      <Navbar />
+      <Routes>
+        <Route path="/"           element={<Home />} />
+        <Route path="/technology" element={<Technology />} />
+        <Route path="/security"   element={<Security />} />
+        <Route path="/solutions"  element={<Solutions />} />
+        <Route path="/admin"      element={<AdminConsole />} />
+        <Route path="/company"    element={<Company />} />
+      </Routes>
+      <Footer />
+    </>
+  )
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppLayout />
+    </BrowserRouter>
+  )
+}
