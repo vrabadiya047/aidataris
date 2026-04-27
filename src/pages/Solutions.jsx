@@ -62,7 +62,7 @@ export default function Solutions() {
           <h1 style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.5rem)', fontWeight: 900, color: '#E2E8F0', margin: '1.25rem 0', letterSpacing: '-0.03em' }}>
             Built for WA&apos;s Most<br /><span className="gradient-text">Demanding Sectors</span>
           </h1>
-          <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.75 }}>
+          <p style={{ color: '#94A3B8', fontSize: '1.05rem', lineHeight: 1.75 }}>
             AIDATARIS operates where cloud AI cannot — remote mine sites, secure government data centres, and confidential legal chambers.
           </p>
         </div>
@@ -86,7 +86,7 @@ export default function Solutions() {
                   padding: '0.6rem 1.25rem', borderRadius: 10,
                   border: active === s.id ? `1px solid ${s.color}50` : '1px solid transparent',
                   background: active === s.id ? s.color + '15' : 'transparent',
-                  color: active === s.id ? s.color : '#475569',
+                  color: active === s.id ? s.color : '#94A3B8',
                   fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer',
                   transition: 'all 0.2s', fontFamily: 'Inter, sans-serif',
                 }}
@@ -116,14 +116,14 @@ export default function Solutions() {
                     </div>
                   </div>
 
-                  <p style={{ color: '#475569', lineHeight: 1.75, marginBottom: '2rem', fontSize: '0.95rem' }}>{sol.desc}</p>
+                  <p style={{ color: '#94A3B8', lineHeight: 1.75, marginBottom: '2rem', fontSize: '0.95rem' }}>{sol.desc}</p>
 
                   {/* Stats */}
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginBottom: '2rem' }}>
                     {sol.stats.map((st, i) => (
                       <div key={i} className="glass" style={{ padding: '1rem', textAlign: 'center', border: `1px solid ${sol.color}20` }}>
                         <div className="mono" style={{ color: sol.color, fontWeight: 800, fontSize: '1.4rem' }}>{st.v}</div>
-                        <div style={{ color: '#334155', fontSize: '0.7rem', marginTop: 4 }}>{st.l}</div>
+                        <div style={{ color: '#64748B', fontSize: '0.7rem', marginTop: 4 }}>{st.l}</div>
                       </div>
                     ))}
                   </div>
@@ -153,7 +153,7 @@ export default function Solutions() {
                       }}
                     >
                       <div style={{ color: '#E2E8F0', fontWeight: 700, fontSize: '0.9rem', marginBottom: '0.35rem' }}>{f.t}</div>
-                      <div style={{ color: '#475569', fontSize: '0.83rem', lineHeight: 1.6 }}>{f.d}</div>
+                      <div style={{ color: '#94A3B8', fontSize: '0.83rem', lineHeight: 1.6 }}>{f.d}</div>
                     </motion.div>
                   ))}
                 </div>
@@ -171,7 +171,7 @@ export default function Solutions() {
           <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 900, color: '#E2E8F0', margin: '1rem 0', letterSpacing: '-0.02em' }}>
             Your Sector. Your Infrastructure.
           </h2>
-          <p style={{ color: '#475569', marginBottom: '2rem', lineHeight: 1.7 }}>
+          <p style={{ color: '#94A3B8', marginBottom: '2rem', lineHeight: 1.7 }}>
             Let our team walk you through a sector-specific deployment plan tailored to your organisation&apos;s security requirements.
           </p>
           <Link to="/company" className="btn-primary">Request a Sector Demo →</Link>

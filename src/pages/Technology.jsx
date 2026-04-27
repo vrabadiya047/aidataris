@@ -45,7 +45,7 @@ function FlowBar({ steps, hi, color }) {
       fontSize: '0.75rem',
     }}>
       {steps.map((s, i) => (
-        <span key={i} style={{ color: hi[i] ? color : s === '▶' ? '#1E293B' : '#334155', fontWeight: hi[i] ? 700 : 400 }}>{s}</span>
+        <span key={i} style={{ color: hi[i] ? color : s === '▶' ? '#334155' : '#64748B', fontWeight: hi[i] ? 700 : 400 }}>{s}</span>
       ))}
     </div>
   )
@@ -106,7 +106,7 @@ export default function Technology() {
 
                 <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.55rem', marginBottom: '1.5rem' }}>
                   {f.points.map((pt, pi) => (
-                    <li key={pi} style={{ display: 'flex', gap: '0.5rem', color: '#64748B', fontSize: '0.875rem', alignItems: 'flex-start' }}>
+                    <li key={pi} style={{ display: 'flex', gap: '0.5rem', color: '#94A3B8', fontSize: '0.875rem', alignItems: 'flex-start' }}>
                       <span style={{ color: f.color, flexShrink: 0, marginTop: 1 }}>▸</span> {pt}
                     </li>
                   ))}
@@ -127,7 +127,7 @@ export default function Technology() {
                   }}>{f.icon}</div>
 
                   <div style={{ marginBottom: '1.25rem' }}>
-                    <div className="mono" style={{ color: '#1E293B', fontSize: '0.7rem', marginBottom: '0.4rem', letterSpacing: '0.1em' }}>PROCESSING PIPELINE</div>
+                    <div className="mono" style={{ color: '#475569', fontSize: '0.7rem', marginBottom: '0.4rem', letterSpacing: '0.1em' }}>PROCESSING PIPELINE</div>
                     <FlowBar steps={f.flow} hi={f.flowHi} color={f.color} />
                   </div>
 
@@ -137,7 +137,7 @@ export default function Technology() {
                     border: `1px solid ${f.color}1A`,
                     borderRadius: 8,
                   }}>
-                    <div className="mono" style={{ fontSize: '0.7rem', color: f.color, letterSpacing: '0.08em' }}>
+                    <div className="mono" style={{ fontSize: '0.7rem', color: f.color + 'CC', letterSpacing: '0.08em' }}>
                       INFERENCE: LOCAL  ·  API_CALLS: 0  ·  EGRESS: NONE
                     </div>
                   </div>
@@ -148,7 +148,7 @@ export default function Technology() {
                       <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: f.color, animation: 'pulse-ring 2s ease-out infinite' }} />
                       <div style={{ position: 'absolute', inset: 2, borderRadius: '50%', background: f.color }} />
                     </div>
-                    <span className="mono" style={{ fontSize: '0.68rem', color: '#334155' }}>MODULE ACTIVE</span>
+                    <span className="mono" style={{ fontSize: '0.68rem', color: '#64748B' }}>MODULE ACTIVE</span>
                   </div>
                 </div>
               </div>

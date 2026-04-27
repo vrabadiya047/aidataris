@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
 import Logo from './Logo'
 
 const STATUS_ITEMS = [
@@ -27,6 +27,8 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
+  const { scrollYProgress } = useScroll()
+  const scaleX = useSpring(scrollYProgress, { stiffness: 300, damping: 30 })
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 24)
@@ -40,6 +42,14 @@ export default function Navbar() {
 
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200 }}>
+      {/* Scroll progress bar */}
+      <motion.div
+        style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, zIndex: 201,
+          background: 'linear-gradient(90deg, #06B6D4, #8B5CF6, #F59E0B)',
+          transformOrigin: '0%', scaleX,
+        }}
+      />
       {/* Status ticker */}
       <div style={{
         background: 'rgba(2, 6, 14, 0.9)',
@@ -50,10 +60,10 @@ export default function Navbar() {
         alignItems: 'center',
       }}>
         <div style={{ display: 'flex', animation: 'marquee 30s linear infinite', whiteSpace: 'nowrap' }}>
-          <span className="mono" style={{ color: '#06B6D4', fontSize: '0.65rem', letterSpacing: '0.08em', paddingRight: 60 }}>
+          <span className="mono" style={{ color: '#38BDF8', fontSize: '0.65rem', letterSpacing: '0.08em', paddingRight: 60 }}>
             {ticker}
           </span>
-          <span className="mono" style={{ color: '#06B6D4', fontSize: '0.65rem', letterSpacing: '0.08em', paddingRight: 60 }}>
+          <span className="mono" style={{ color: '#38BDF8', fontSize: '0.65rem', letterSpacing: '0.08em', paddingRight: 60 }}>
             {ticker}
           </span>
         </div>

@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import './index.css'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -16,19 +17,36 @@ function ScrollToTop() {
   return null
 }
 
+const pageVariants = {
+  initial: { opacity: 0, y: 16 },
+  enter:   { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } },
+  exit:    { opacity: 0, y: -8, transition: { duration: 0.2 } },
+}
+
+function AnimatedPage({ children }) {
+  return (
+    <motion.div variants={pageVariants} initial="initial" animate="enter" exit="exit">
+      {children}
+    </motion.div>
+  )
+}
+
 function AppLayout() {
+  const location = useLocation()
   return (
     <>
       <ScrollToTop />
       <Navbar />
-      <Routes>
-        <Route path="/"           element={<Home />} />
-        <Route path="/technology" element={<Technology />} />
-        <Route path="/security"   element={<Security />} />
-        <Route path="/solutions"  element={<Solutions />} />
-        <Route path="/admin"      element={<AdminConsole />} />
-        <Route path="/company"    element={<Company />} />
-      </Routes>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/"           element={<AnimatedPage><Home /></AnimatedPage>} />
+          <Route path="/technology" element={<AnimatedPage><Technology /></AnimatedPage>} />
+          <Route path="/security"   element={<AnimatedPage><Security /></AnimatedPage>} />
+          <Route path="/solutions"  element={<AnimatedPage><Solutions /></AnimatedPage>} />
+          <Route path="/admin"      element={<AnimatedPage><AdminConsole /></AnimatedPage>} />
+          <Route path="/company"    element={<AnimatedPage><Company /></AnimatedPage>} />
+        </Routes>
+      </AnimatePresence>
       <Footer />
     </>
   )

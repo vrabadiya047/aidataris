@@ -90,7 +90,7 @@ export default function Company() {
           ].map((item, i) => (
             <div key={i} style={{ textAlign: 'center' }}>
               <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{item.icon}</div>
-              <div className="mono" style={{ color: '#1E293B', fontSize: '0.65rem', letterSpacing: '0.12em', marginBottom: '0.25rem' }}>{item.l.toUpperCase()}</div>
+              <div className="mono" style={{ color: '#64748B', fontSize: '0.65rem', letterSpacing: '0.12em', marginBottom: '0.25rem' }}>{item.l.toUpperCase()}</div>
               <div style={{ color: '#94A3B8', fontSize: '0.9rem' }}>{item.v}</div>
             </div>
           ))}
@@ -136,7 +136,7 @@ export default function Company() {
                   { k: 'org',   l: 'Organisation', p: 'Rio Tinto Ltd',            t: 'text' },
                 ].map(f => (
                   <div key={f.k}>
-                    <label style={{ display: 'block', color: '#334155', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem', fontFamily: 'JetBrains Mono, Courier New, monospace' }}>
+                    <label style={{ display: 'block', color: '#64748B', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem', fontFamily: 'JetBrains Mono, Courier New, monospace' }}>
                       {f.l.toUpperCase()} *
                     </label>
                     <input required type={f.t} value={form[f.k]} onChange={set(f.k)} placeholder={f.p}
@@ -149,7 +149,7 @@ export default function Company() {
               </div>
 
               <div>
-                <label style={{ display: 'block', color: '#334155', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem', fontFamily: 'JetBrains Mono, Courier New, monospace' }}>
+                <label style={{ display: 'block', color: '#64748B', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem', fontFamily: 'JetBrains Mono, Courier New, monospace' }}>
                   SECTOR *
                 </label>
                 <select required value={form.sector} onChange={set('sector')}
@@ -165,7 +165,7 @@ export default function Company() {
               </div>
 
               <div>
-                <label style={{ display: 'block', color: '#334155', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem', fontFamily: 'JetBrains Mono, Courier New, monospace' }}>
+                <label style={{ display: 'block', color: '#64748B', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem', fontFamily: 'JetBrains Mono, Courier New, monospace' }}>
                   WHAT ARE YOU TRYING TO SOLVE?
                 </label>
                 <textarea
@@ -181,7 +181,7 @@ export default function Company() {
                 <button type="submit" className="btn-primary" style={{ fontSize: '1rem', padding: '0.875rem 2.25rem' }}>
                   Request Private Demo →
                 </button>
-                <p className="mono" style={{ color: '#1E293B', fontSize: '0.7rem' }}>
+                <p className="mono" style={{ color: '#64748B', fontSize: '0.7rem' }}>
                   Your data is stored on our systems only. Never shared.
                 </p>
               </div>

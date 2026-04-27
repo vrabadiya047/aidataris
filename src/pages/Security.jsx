@@ -82,7 +82,7 @@ export default function Security() {
                   <span style={{ fontSize: '0.65rem', color: '#10B981', fontWeight: 700 }}>● ACTIVE</span>
                 </div>
                 <div style={{ color: '#94A3B8', fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.3rem' }}>{p.l}</div>
-                <div className="mono" style={{ fontSize: '0.72rem', color: '#1E293B' }}>
+                <div className="mono" style={{ fontSize: '0.72rem', color: '#64748B' }}>
                   e.g. <span style={{ color: p.c }}>{p.e}</span>
                 </div>
               </motion.div>
@@ -133,9 +133,9 @@ export default function Security() {
                     borderBottom: i < LOG.length - 1 ? '1px solid rgba(6,182,212,0.06)' : 'none',
                     alignItems: 'center', gap: '0.75rem',
                   }}>
-                    <span className="mono" style={{ color: '#1E293B', fontSize: '0.68rem' }}>{e.t}</span>
+                    <span className="mono" style={{ color: '#475569', fontSize: '0.68rem' }}>{e.t}</span>
                     <span className="mono" style={{ color: '#06B6D4', fontSize: '0.68rem' }}>{e.u}</span>
-                    <span className="mono" style={{ color: '#334155', fontSize: '0.68rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.q}</span>
+                    <span className="mono" style={{ color: '#64748B', fontSize: '0.68rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.q}</span>
                     <span className="mono" style={{
                       fontSize: '0.62rem', fontWeight: 700, padding: '2px 6px', borderRadius: 4, textAlign: 'center',
                       background: e.s === 'OK' ? '#10B98118' : '#EF444418',

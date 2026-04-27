@@ -72,7 +72,7 @@ export default function AdminConsole() {
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: m.c }} />
                 <div className="mono" style={{ fontSize: '2rem', fontWeight: 800, color: m.c, marginBottom: '0.25rem' }}>{m.v}</div>
                 <div style={{ color: '#94A3B8', fontSize: '0.85rem', marginBottom: '0.25rem' }}>{m.l}</div>
-                <div className="mono" style={{ fontSize: '0.68rem', color: '#334155' }}>{m.t.toUpperCase()}</div>
+                <div className="mono" style={{ fontSize: '0.68rem', color: '#64748B' }}>{m.t.toUpperCase()}</div>
               </motion.div>
             ))}
           </motion.div>
@@ -100,7 +100,7 @@ export default function AdminConsole() {
           <div className="terminal" style={{ borderRadius: 14, overflow: 'hidden' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr', padding: '0.75rem 1.5rem', background: '#070F1D', borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
               {['User', 'Role', 'Department', 'Status', 'Last Active'].map(h => (
-                <div key={h} className="mono" style={{ color: '#1E293B', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em' }}>{h}</div>
+                <div key={h} className="mono" style={{ color: '#64748B', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em' }}>{h}</div>
               ))}
             </div>
             {USERS.map((u, i) => (
@@ -122,7 +122,7 @@ export default function AdminConsole() {
                   <span style={{ width: 6, height: 6, borderRadius: '50%', background: u.s ? '#10B981' : '#EF4444', boxShadow: u.s ? '0 0 6px #10B981' : '0 0 6px #EF4444' }} />
                   <span style={{ color: u.s ? '#10B981' : '#EF4444', fontSize: '0.78rem' }}>{u.s ? 'Active' : 'Suspended'}</span>
                 </div>
-                <div className="mono" style={{ color: '#1E293B', fontSize: '0.75rem' }}>{u.l}</div>
+                <div className="mono" style={{ color: '#64748B', fontSize: '0.75rem' }}>{u.l}</div>
               </div>
             ))}
           </div>
@@ -136,8 +136,8 @@ export default function AdminConsole() {
           <div style={{ marginTop: '1.5rem', overflowX: 'auto' }}>
             <div className="terminal" style={{ borderRadius: 14, display: 'inline-block', minWidth: '100%' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '120px repeat(6, 1fr)', padding: '0.75rem 1.5rem', background: '#070F1D', borderBottom: '1px solid rgba(6,182,212,0.08)', gap: '0.5rem' }}>
-                <div className="mono" style={{ color: '#1E293B', fontSize: '0.68rem', fontWeight: 700 }}>ROLE</div>
-                {PERMS.map(p => <div key={p} className="mono" style={{ color: '#1E293B', fontSize: '0.65rem', fontWeight: 700, textAlign: 'center' }}>{p}</div>)}
+                <div className="mono" style={{ color: '#64748B', fontSize: '0.68rem', fontWeight: 700 }}>ROLE</div>
+                {PERMS.map(p => <div key={p} className="mono" style={{ color: '#64748B', fontSize: '0.65rem', fontWeight: 700, textAlign: 'center' }}>{p}</div>)}
               </div>
               {ROLES.map((row, i) => (
                 <div key={i} style={{
@@ -149,7 +149,7 @@ export default function AdminConsole() {
                   <span className="mono" style={{ fontSize: '0.75rem', fontWeight: 700, padding: '2px 10px', borderRadius: 4, background: row.c + '18', color: row.c, width: 'fit-content', border: `1px solid ${row.c}25` }}>{row.r}</span>
                   {row.p.map((v, pi) => (
                     <div key={pi} style={{ textAlign: 'center' }}>
-                      {v ? <span style={{ color: '#10B981', fontSize: '1.1rem' }}>✓</span> : <span style={{ color: '#1E293B' }}>—</span>}
+                      {v ? <span style={{ color: '#10B981', fontSize: '1.1rem' }}>✓</span> : <span style={{ color: '#64748B' }}>—</span>}
                     </div>
                   ))}
                 </div>
@@ -171,7 +171,7 @@ export default function AdminConsole() {
                 Real-time visibility into what sensitive data your organisation handles — and the assurance that none of it is stored unprotected.
               </p>
               <div className="glass" style={{ padding: '1.25rem' }}>
-                <div className="mono" style={{ color: '#334155', fontSize: '0.7rem', marginBottom: '0.25rem', letterSpacing: '0.08em' }}>TOTAL REDACTED — LAST 30 DAYS</div>
+                <div className="mono" style={{ color: '#64748B', fontSize: '0.7rem', marginBottom: '0.25rem', letterSpacing: '0.08em' }}>TOTAL REDACTED — LAST 30 DAYS</div>
                 <div className="mono" style={{ color: '#06B6D4', fontWeight: 900, fontSize: '2.8rem' }}>3,913</div>
               </div>
             </div>
@@ -189,7 +189,7 @@ export default function AdminConsole() {
                       style={{ height: '100%', background: bar.c, borderRadius: 4 }}
                     />
                   </div>
-                  <span className="mono" style={{ width: 40, textAlign: 'right', color: '#334155', fontSize: '0.72rem' }}>{bar.n.toLocaleString()}</span>
+                  <span className="mono" style={{ width: 40, textAlign: 'right', color: '#64748B', fontSize: '0.72rem' }}>{bar.n.toLocaleString()}</span>
                 </div>
               ))}
             </div>
