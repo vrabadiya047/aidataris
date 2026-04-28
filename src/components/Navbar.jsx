@@ -102,14 +102,14 @@ export default function Navbar() {
               const active = location.pathname === link.to
               return (
                 <Link key={link.to} to={link.to} style={{
-                  color: active ? '#06B6D4' : 'var(--nav-link)',
+                  color: active ? 'var(--nav-active, #06B6D4)' : 'var(--nav-link)',
                   textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500,
                   padding: '0.4rem 0.75rem', borderRadius: 8,
-                  background: active ? 'rgba(6,182,212,0.08)' : 'transparent',
-                  border: active ? '1px solid rgba(6,182,212,0.2)' : '1px solid transparent',
+                  background: active ? 'var(--nav-active-bg, rgba(6,182,212,0.08))' : 'transparent',
+                  border: active ? '1px solid var(--nav-active-bd, rgba(6,182,212,0.2))' : '1px solid transparent',
                   transition: 'all 0.2s',
                 }}
-                  onMouseEnter={e => { if (!active) { e.currentTarget.style.color = 'var(--nav-link-h)'; e.currentTarget.style.background = 'rgba(6,182,212,0.05)' } }}
+                  onMouseEnter={e => { if (!active) { e.currentTarget.style.color = 'var(--nav-link-h)'; e.currentTarget.style.background = 'rgba(255,255,255,0.12)' } }}
                   onMouseLeave={e => { if (!active) { e.currentTarget.style.color = 'var(--nav-link)'; e.currentTarget.style.background = 'transparent' } }}
                 >
                   {link.label}

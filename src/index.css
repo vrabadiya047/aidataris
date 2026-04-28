@@ -32,6 +32,9 @@
   --nav-bd:      rgba(15, 23, 42, 0.09);
   --nav-link:    #475569;
   --nav-link-h:  #0F172A;
+  --nav-active:     #06B6D4;
+  --nav-active-bg:  rgba(6,182,212,0.08);
+  --nav-active-bd:  rgba(6,182,212,0.2);
   --ticker-bg:   #0F172A;
   --ticker-text: #38BDF8;
   --section-alt: #EEF2F7;
@@ -70,11 +73,14 @@
   --grid-c:      rgba(6, 182, 212, 0.04);
   --grid-hero:   rgba(6, 182, 212, 0.04);
   --orb-opacity: 0.13;
-  --nav-bg:      rgba(2, 6, 14, 0.75);
-  --nav-bg2:     rgba(2, 6, 14, 0.97);
-  --nav-bd:      rgba(6, 182, 212, 0.12);
-  --nav-link:    #64748B;
-  --nav-link-h:  #E2E8F0;
+  --nav-bg:      rgba(18, 153, 216, 0.92);
+  --nav-bg2:     rgba(14, 130, 188, 0.98);
+  --nav-bd:      rgba(255, 255, 255, 0.18);
+  --nav-link:    rgba(255, 255, 255, 0.78);
+  --nav-link-h:  #ffffff;
+  --nav-active:     #ffffff;
+  --nav-active-bg:  rgba(255, 255, 255, 0.2);
+  --nav-active-bd:  rgba(255, 255, 255, 0.35);
   --ticker-bg:   rgba(2, 6, 14, 0.92);
   --ticker-text: #38BDF8;
   --section-alt: #020913;
@@ -241,12 +247,21 @@ body {
 
 /* ─── Theme toggle button ────────────────────────────── */
 .theme-toggle {
-  width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--glass-bd);
-  background: var(--glass-bg); cursor: pointer; display: flex;
-  align-items: center; justify-content: center; color: var(--t3);
+  width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--nav-bd);
+  background: rgba(255,255,255,0.12); cursor: pointer; display: flex;
+  align-items: center; justify-content: center; color: var(--nav-link-h);
   transition: all 0.2s; backdrop-filter: blur(10px);
 }
 .theme-toggle:hover {
+  background: rgba(255,255,255,0.22);
+  border-color: rgba(255,255,255,0.4);
+}
+[data-theme="light"] .theme-toggle {
+  background: var(--glass-bg);
+  border-color: var(--glass-bd);
+  color: var(--t3);
+}
+[data-theme="light"] .theme-toggle:hover {
   border-color: rgba(6,182,212,0.5); color: #06B6D4;
   box-shadow: 0 0 14px rgba(6,182,212,0.2);
 }
