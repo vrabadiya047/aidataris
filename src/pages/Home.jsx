@@ -110,7 +110,7 @@ function PIIScanner() {
         <span className="terminal-dot" style={{ background: '#FF5F57' }} />
         <span className="terminal-dot" style={{ background: '#FFBD2E' }} />
         <span className="terminal-dot" style={{ background: '#28CA41' }} />
-        <span className="mono" style={{ color: '#64748B', fontSize: '0.72rem', marginLeft: 8 }}>
+        <span className="mono" style={{ color: 'var(--t4)', fontSize: '0.72rem', marginLeft: 8 }}>
           pii-shield  /  site_report_pilbara.pdf
         </span>
         <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 5 }}>
@@ -119,13 +119,13 @@ function PIIScanner() {
             transition={{ duration: 0.8, repeat: phase === 'scan' ? Infinity : 0 }}
             style={{
               width: 6, height: 6, borderRadius: '50%', display: 'inline-block',
-              background: phase === 'scan' ? '#F59E0B' : phase === 'done' ? '#10B981' : '#475569',
+              background: phase === 'scan' ? '#F59E0B' : phase === 'done' ? '#10B981' : 'var(--t5)',
               boxShadow: phase === 'done' ? '0 0 8px #10B981' : 'none',
             }}
           />
           <span className="mono" style={{
             fontSize: '0.65rem', fontWeight: 700,
-            color: phase === 'scan' ? '#F59E0B' : phase === 'done' ? '#10B981' : '#475569',
+            color: phase === 'scan' ? '#F59E0B' : phase === 'done' ? '#10B981' : 'var(--t5)',
           }}>
             {phase === 'scan' ? 'SCANNING' : phase === 'done' ? 'SECURED' : 'STANDBY'}
           </span>
@@ -147,10 +147,10 @@ function PIIScanner() {
           )}
         </AnimatePresence>
 
-        <pre className="mono" style={{ fontSize: '0.78rem', lineHeight: 1.9, color: '#64748B', whiteSpace: 'pre-wrap' }}>
+        <pre className="mono" style={{ fontSize: '0.78rem', lineHeight: 1.9, color: 'var(--t4)', whiteSpace: 'pre-wrap' }}>
           {SEGMENTS.map((seg, i) => {
             if (!seg.pii) return (
-              <span key={i} style={{ color: seg.dim ? '#334155' : '#94A3B8' }}>{seg.text}</span>
+              <span key={i} style={{ color: seg.dim ? 'var(--t6)' : 'var(--t3)' }}>{seg.text}</span>
             )
             const redacted = phase === 'done' && shown.has(seg.type)
             return (
@@ -168,7 +168,7 @@ function PIIScanner() {
                     <sup style={{ fontSize: '0.55rem', marginLeft: 3 }}>{seg.type}</sup>
                   </motion.span>
                 ) : (
-                  <span style={{ color: '#E2E8F0' }}>{seg.text}</span>
+                  <span style={{ color: 'var(--t1)' }}>{seg.text}</span>
                 )}
               </span>
             )
@@ -249,7 +249,7 @@ export default function Home() {
   const typeText = useTypewriter()
 
   return (
-    <main style={{ background: '#02060E' }}>
+    <main style={{ background: 'var(--bg)' }}>
 
       {/* ── Hero ───────────────────────────────────────── */}
       <section ref={heroRef} style={{ minHeight: '100vh', paddingTop: 100, display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
@@ -258,7 +258,7 @@ export default function Home() {
           <div style={{ position: 'absolute', width: 900, height: 900, borderRadius: '50%', top: -350, left: -200, background: 'radial-gradient(circle, rgba(6,182,212,0.14) 0%, transparent 65%)', animation: 'orb-1 14s ease-in-out infinite' }} />
           <div style={{ position: 'absolute', width: 700, height: 700, borderRadius: '50%', top: -100, right: -200, background: 'radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 65%)', animation: 'orb-2 18s ease-in-out infinite' }} />
           <div style={{ position: 'absolute', width: 500, height: 500, borderRadius: '50%', bottom: 0, right: '25%', background: 'radial-gradient(circle, rgba(245,158,11,0.07) 0%, transparent 65%)', animation: 'orb-3 11s ease-in-out infinite' }} />
-          <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(6,182,212,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(6,182,212,0.04) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+          <div className="hero-grid" />
         </motion.div>
         <Particles />
 
@@ -286,7 +286,7 @@ export default function Home() {
                 <motion.span
                   initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2, duration: 0.6 }}
-                  style={{ display: 'block', color: '#E2E8F0' }}
+                  style={{ display: 'block', color: 'var(--t1)' }}
                 >Your Data.</motion.span>
 
                 {/* Typewriter line */}
@@ -315,10 +315,10 @@ export default function Home() {
               <motion.p
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.6 }}
-                style={{ color: '#94A3B8', fontSize: '1.1rem', lineHeight: 1.75, maxWidth: 480, marginBottom: '2rem' }}
+                style={{ color: 'var(--t3)', fontSize: '1.1rem', lineHeight: 1.75, maxWidth: 480, marginBottom: '2rem' }}
               >
                 The world&apos;s first fully Sovereign RAG platform for high-security Australian enterprises.
-                <strong style={{ color: '#E2E8F0' }}> Intelligence without the cloud.</strong>
+                <strong style={{ color: 'var(--t1)' }}> Intelligence without the cloud.</strong>
               </motion.p>
 
               <motion.div
@@ -333,7 +333,7 @@ export default function Home() {
                     className="mono"
                     style={{
                       fontSize: '0.7rem', padding: '4px 12px', borderRadius: 20,
-                      border: '1px solid rgba(6,182,212,0.2)', color: '#94A3B8',
+                      border: '1px solid rgba(6,182,212,0.2)', color: 'var(--t3)',
                       background: 'rgba(6,182,212,0.05)',
                     }}
                   >{p}</motion.span>
@@ -366,7 +366,7 @@ export default function Home() {
             style={{
               margin: '3.5rem 1.5rem 0',
               display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
-              gap: '1px', background: 'rgba(6,182,212,0.1)',
+              gap: '1px', background: 'var(--bd)',
               borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(6,182,212,0.1)',
             }}
           >
@@ -376,11 +376,11 @@ export default function Home() {
               { label: 'Cloud Dependencies', val: 0,   suffix: '' },
               { label: 'Users Per Tenant',   val: 1000, suffix: '+' },
             ].map((s, i) => (
-              <div key={i} style={{ background: 'rgba(2,6,14,0.95)', padding: '1.5rem', textAlign: 'center' }}>
+              <div key={i} style={{ background: 'var(--stat-cell)', padding: '1.5rem', textAlign: 'center' }}>
                 <div className="mono" style={{ fontSize: '2rem', fontWeight: 800, color: '#06B6D4' }}>
                   <Counter target={s.val} suffix={s.suffix} />
                 </div>
-                <div style={{ color: '#64748B', fontSize: '0.75rem', marginTop: 4 }}>{s.label}</div>
+                <div style={{ color: 'var(--t4)', fontSize: '0.75rem', marginTop: 4 }}>{s.label}</div>
               </div>
             ))}
           </motion.div>
@@ -388,7 +388,7 @@ export default function Home() {
       </section>
 
       {/* ── Sovereign Advantage ──────────────────────── */}
-      <section className="section" style={{ background: '#020913' }}>
+      <section className="section" style={{ background: 'var(--bg2)' }}>
         <hr className="divider" style={{ marginBottom: '5rem' }} />
         <div className="container">
           <motion.div
@@ -397,11 +397,11 @@ export default function Home() {
             style={{ textAlign: 'center', marginBottom: '3.5rem' }}
           >
             <span className="label">The Sovereign Advantage</span>
-            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 900, color: '#E2E8F0', marginTop: '1rem', letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 900, color: 'var(--t1)', marginTop: '1rem', letterSpacing: '-0.02em' }}>
               A Fortress of Intelligence
             </h2>
-            <p style={{ color: '#94A3B8', marginTop: '0.75rem', maxWidth: 520, margin: '0.75rem auto 0', lineHeight: 1.7 }}>
-              Not just a chatbot — a <strong style={{ color: '#E2E8F0' }}>SaaS OS for Secure Knowledge</strong> engineered for organisations where data sovereignty is non-negotiable.
+            <p style={{ color: 'var(--t3)', marginTop: '0.75rem', maxWidth: 520, margin: '0.75rem auto 0', lineHeight: 1.7 }}>
+              Not just a chatbot — a <strong style={{ color: 'var(--t1)' }}>SaaS OS for Secure Knowledge</strong> engineered for organisations where data sovereignty is non-negotiable.
             </p>
           </motion.div>
 
@@ -426,11 +426,11 @@ export default function Home() {
                   }}
                 >{c.icon}</motion.div>
 
-                <h3 style={{ color: '#E2E8F0', fontWeight: 700, fontSize: '1.05rem', marginBottom: '0.6rem' }}>{c.title}</h3>
-                <p style={{ color: '#94A3B8', fontSize: '0.875rem', lineHeight: 1.7, marginBottom: '1.5rem' }}>{c.desc}</p>
+                <h3 style={{ color: 'var(--t1)', fontWeight: 700, fontSize: '1.05rem', marginBottom: '0.6rem' }}>{c.title}</h3>
+                <p style={{ color: 'var(--t3)', fontSize: '0.875rem', lineHeight: 1.7, marginBottom: '1.5rem' }}>{c.desc}</p>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.4rem' }}>
                   <span className="mono" style={{ color: c.color, fontWeight: 800, fontSize: '1.75rem' }}>{c.stat}</span>
-                  <span style={{ color: '#64748B', fontSize: '0.75rem' }}>{c.statLabel}</span>
+                  <span style={{ color: 'var(--t4)', fontSize: '0.75rem' }}>{c.statLabel}</span>
                 </div>
               </motion.div>
             ))}
@@ -447,7 +447,7 @@ export default function Home() {
               viewport={{ once: true }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
               <span className="label">Platform Technology</span>
-              <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', fontWeight: 900, color: '#E2E8F0', margin: '1rem 0', letterSpacing: '-0.02em' }}>
+              <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', fontWeight: 900, color: 'var(--t1)', margin: '1rem 0', letterSpacing: '-0.02em' }}>
                 Four Pillars of<br />
                 <span style={{
                   background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)',
@@ -456,7 +456,7 @@ export default function Home() {
                   animation: 'gradient-shift 5s ease infinite',
                 }}>Sovereign Intelligence</span>
               </h2>
-              <p style={{ color: '#94A3B8', lineHeight: 1.75, marginBottom: '2rem' }}>
+              <p style={{ color: 'var(--t3)', lineHeight: 1.75, marginBottom: '2rem' }}>
                 Self-correcting RAG, knowledge graphs, agentic tools, and multi-modal vision — all running locally within your infrastructure.
               </p>
               <Link to="/technology" className="btn-ghost">Deep dive into the tech →</Link>
@@ -480,7 +480,7 @@ export default function Home() {
                 >
                   <div style={{ fontSize: '1.5rem', marginBottom: '0.6rem' }}>{t.icon}</div>
                   <div style={{ color: t.col, fontWeight: 700, fontSize: '0.85rem', marginBottom: '0.25rem' }}>{t.label}</div>
-                  <div style={{ color: '#64748B', fontSize: '0.75rem' }}>{t.desc}</div>
+                  <div style={{ color: 'var(--t4)', fontSize: '0.75rem' }}>{t.desc}</div>
                 </motion.div>
               ))}
             </motion.div>
@@ -489,7 +489,7 @@ export default function Home() {
       </section>
 
       {/* ── Industry Strip ───────────────────────────── */}
-      <section className="section" style={{ background: '#020913' }}>
+      <section className="section" style={{ background: 'var(--bg2)' }}>
         <hr className="divider" style={{ marginBottom: '5rem' }} />
         <div className="container">
           <motion.div
@@ -498,7 +498,7 @@ export default function Home() {
             viewport={{ once: true }}
           >
             <span className="label">Industry Solutions</span>
-            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', fontWeight: 900, color: '#E2E8F0', marginTop: '1rem', letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', fontWeight: 900, color: 'var(--t1)', marginTop: '1rem', letterSpacing: '-0.02em' }}>
               Built for WA&apos;s Most Demanding Sectors
             </h2>
           </motion.div>
@@ -526,7 +526,7 @@ export default function Home() {
                   }}
                 >{ind.icon}</motion.div>
                 <h3 style={{ color: ind.col, fontWeight: 700, fontSize: '1rem', marginBottom: '0.5rem' }}>{ind.name}</h3>
-                <p style={{ color: '#94A3B8', fontSize: '0.875rem', lineHeight: 1.65, marginBottom: '1rem' }}>{ind.desc}</p>
+                <p style={{ color: 'var(--t3)', fontSize: '0.875rem', lineHeight: 1.65, marginBottom: '1rem' }}>{ind.desc}</p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
                   {ind.tags.map(t => (
                     <span key={t} className="mono" style={{ fontSize: '0.65rem', padding: '2px 8px', borderRadius: 4, background: ind.col + '12', color: ind.col, border: `1px solid ${ind.col}25` }}>{t}</span>
@@ -555,11 +555,11 @@ export default function Home() {
           style={{ position: 'relative', maxWidth: 640, margin: '0 auto' }}
         >
           <span className="label">Get Started</span>
-          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: '#E2E8F0', margin: '1.25rem 0', letterSpacing: '-0.03em' }}>
+          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: 'var(--t1)', margin: '1.25rem 0', letterSpacing: '-0.03em' }}>
             Ready to Secure<br />
             <span style={{ color: '#F59E0B' }}>Your Intelligence?</span>
           </h2>
-          <p style={{ color: '#94A3B8', lineHeight: 1.75, maxWidth: 480, margin: '0 auto 2.5rem' }}>
+          <p style={{ color: 'var(--t3)', lineHeight: 1.75, maxWidth: 480, margin: '0 auto 2.5rem' }}>
             Join Australian enterprises that trust AIDATARIS with their most sensitive data — completely on-premises, completely under their control.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>

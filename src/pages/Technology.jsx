@@ -40,12 +40,12 @@ function FlowBar({ steps, hi, color }) {
   return (
     <div className="mono" style={{
       display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap',
-      padding: '0.7rem 1rem', background: 'rgba(2,6,14,0.8)',
+      padding: '0.7rem 1rem', background: 'var(--term-bg)',
       borderRadius: 8, border: '1px solid rgba(6,182,212,0.08)',
       fontSize: '0.75rem',
     }}>
       {steps.map((s, i) => (
-        <span key={i} style={{ color: hi[i] ? color : s === '▶' ? '#334155' : '#64748B', fontWeight: hi[i] ? 700 : 400 }}>{s}</span>
+        <span key={i} style={{ color: hi[i] ? color : s === '▶' ? 'var(--t6)' : 'var(--t4)', fontWeight: hi[i] ? 700 : 400 }}>{s}</span>
       ))}
     </div>
   )
@@ -55,20 +55,20 @@ const fade = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0, transiti
 
 export default function Technology() {
   return (
-    <main style={{ background: '#02060E', minHeight: '100vh', paddingTop: 88 }}>
+    <main style={{ background: 'var(--bg)', minHeight: '100vh', paddingTop: 88 }}>
 
       {/* Hero */}
       <section style={{ padding: '5rem 1.5rem 3rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
           <div style={{ position: 'absolute', width: 800, height: 400, borderRadius: '50%', top: -200, left: '50%', transform: 'translateX(-50%)', background: 'radial-gradient(ellipse, rgba(6,182,212,0.07) 0%, transparent 70%)' }} />
-          <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(6,182,212,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(6,182,212,0.025) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+          <div className="hero-grid" />
         </div>
         <div style={{ position: 'relative', maxWidth: 700, margin: '0 auto' }}>
           <span className="label">Platform Technology</span>
-          <h1 style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.5rem)', fontWeight: 900, color: '#E2E8F0', margin: '1.25rem 0', letterSpacing: '-0.03em' }}>
+          <h1 style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.5rem)', fontWeight: 900, color: 'var(--t1)', margin: '1.25rem 0', letterSpacing: '-0.03em' }}>
             Intelligence Without<br /><span className="gradient-text">Compromise</span>
           </h1>
-          <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.75 }}>
+          <p style={{ color: 'var(--t5)', fontSize: '1.05rem', lineHeight: 1.75 }}>
             Four pillars of sovereign AI processing — each engineered to deliver enterprise-grade intelligence entirely within your own infrastructure.
           </p>
         </div>
@@ -101,12 +101,12 @@ export default function Technology() {
                   <span className="label" style={{ color: f.color, border: `1px solid ${f.color}30`, background: f.color + '0A' }}>{f.tag}</span>
                 </div>
 
-                <h2 style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.9rem)', fontWeight: 800, color: '#E2E8F0', marginBottom: '1rem', letterSpacing: '-0.02em' }}>{f.title}</h2>
-                <p style={{ color: '#475569', lineHeight: 1.75, marginBottom: '1.5rem', fontSize: '0.95rem' }}>{f.body}</p>
+                <h2 style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.9rem)', fontWeight: 800, color: 'var(--t1)', marginBottom: '1rem', letterSpacing: '-0.02em' }}>{f.title}</h2>
+                <p style={{ color: 'var(--t5)', lineHeight: 1.75, marginBottom: '1.5rem', fontSize: '0.95rem' }}>{f.body}</p>
 
                 <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.55rem', marginBottom: '1.5rem' }}>
                   {f.points.map((pt, pi) => (
-                    <li key={pi} style={{ display: 'flex', gap: '0.5rem', color: '#94A3B8', fontSize: '0.875rem', alignItems: 'flex-start' }}>
+                    <li key={pi} style={{ display: 'flex', gap: '0.5rem', color: 'var(--t3)', fontSize: '0.875rem', alignItems: 'flex-start' }}>
                       <span style={{ color: f.color, flexShrink: 0, marginTop: 1 }}>▸</span> {pt}
                     </li>
                   ))}
@@ -127,7 +127,7 @@ export default function Technology() {
                   }}>{f.icon}</div>
 
                   <div style={{ marginBottom: '1.25rem' }}>
-                    <div className="mono" style={{ color: '#475569', fontSize: '0.7rem', marginBottom: '0.4rem', letterSpacing: '0.1em' }}>PROCESSING PIPELINE</div>
+                    <div className="mono" style={{ color: 'var(--t5)', fontSize: '0.7rem', marginBottom: '0.4rem', letterSpacing: '0.1em' }}>PROCESSING PIPELINE</div>
                     <FlowBar steps={f.flow} hi={f.flowHi} color={f.color} />
                   </div>
 
@@ -148,7 +148,7 @@ export default function Technology() {
                       <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: f.color, animation: 'pulse-ring 2s ease-out infinite' }} />
                       <div style={{ position: 'absolute', inset: 2, borderRadius: '50%', background: f.color }} />
                     </div>
-                    <span className="mono" style={{ fontSize: '0.68rem', color: '#64748B' }}>MODULE ACTIVE</span>
+                    <span className="mono" style={{ fontSize: '0.68rem', color: 'var(--t4)' }}>MODULE ACTIVE</span>
                   </div>
                 </div>
               </div>
@@ -158,13 +158,13 @@ export default function Technology() {
       </section>
 
       {/* CTA */}
-      <section style={{ padding: '5rem 1.5rem', textAlign: 'center', background: '#020913' }}>
+      <section style={{ padding: '5rem 1.5rem', textAlign: 'center', background: 'var(--bg2)' }}>
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <span className="label">Next Step</span>
-          <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 900, color: '#E2E8F0', margin: '1rem 0', letterSpacing: '-0.02em' }}>
+          <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 900, color: 'var(--t1)', margin: '1rem 0', letterSpacing: '-0.02em' }}>
             See the Security Architecture
           </h2>
-          <p style={{ color: '#475569', marginBottom: '2rem', lineHeight: 1.7 }}>
+          <p style={{ color: 'var(--t5)', marginBottom: '2rem', lineHeight: 1.7 }}>
             Every byte stays within your perimeter. Explore our privacy and compliance engine.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>

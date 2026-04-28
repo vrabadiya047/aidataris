@@ -9,9 +9,9 @@ const VALUES = [
 ]
 
 const inputStyle = {
-  width: '100%', background: 'rgba(6,14,40,0.6)',
+  width: '100%', background: 'var(--input-bg)',
   border: '1px solid rgba(6,182,212,0.15)', borderRadius: 10,
-  padding: '0.8rem 1rem', color: '#E2E8F0', fontSize: '0.9rem',
+  padding: '0.8rem 1rem', color: 'var(--t1)', fontSize: '0.9rem',
   outline: 'none', transition: 'border-color 0.2s',
   fontFamily: 'Inter, sans-serif', boxSizing: 'border-box',
 }
@@ -22,20 +22,20 @@ export default function Company() {
   const set = k => e => setForm(f => ({ ...f, [k]: e.target.value }))
 
   return (
-    <main style={{ background: '#02060E', minHeight: '100vh', paddingTop: 88 }}>
+    <main style={{ background: 'var(--bg)', minHeight: '100vh', paddingTop: 88 }}>
 
       {/* Hero */}
       <section style={{ padding: '5rem 1.5rem 3rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
           <div style={{ position: 'absolute', width: 700, height: 350, borderRadius: '50%', top: -150, left: '50%', transform: 'translateX(-50%)', background: 'radial-gradient(ellipse, rgba(139,92,246,0.07) 0%, transparent 70%)' }} />
-          <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(6,182,212,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(6,182,212,0.025) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+          <div className="hero-grid" />
         </div>
         <div style={{ position: 'relative', maxWidth: 680, margin: '0 auto' }}>
           <span className="label">About AIDATARIS</span>
-          <h1 style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.5rem)', fontWeight: 900, color: '#E2E8F0', margin: '1.25rem 0', letterSpacing: '-0.03em' }}>
+          <h1 style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.5rem)', fontWeight: 900, color: 'var(--t1)', margin: '1.25rem 0', letterSpacing: '-0.03em' }}>
             Engineering the Future<br />of <span className="gradient-text">Secure Intelligence</span>
           </h1>
-          <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.75 }}>
+          <p style={{ color: 'var(--t5)', fontSize: '1.05rem', lineHeight: 1.75 }}>
             Perth-based. Enterprise-focused. Uncompromisingly sovereign. We build AI that your organisation controls — not the cloud.
           </p>
         </div>
@@ -47,14 +47,14 @@ export default function Company() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'start' }}>
             <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
               <span className="label">Our Mission</span>
-              <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.1rem)', fontWeight: 900, color: '#E2E8F0', margin: '1rem 0', letterSpacing: '-0.02em' }}>
+              <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.1rem)', fontWeight: 900, color: 'var(--t1)', margin: '1rem 0', letterSpacing: '-0.02em' }}>
                 Intelligence Without Compromise
               </h2>
               {['AIDATARIS was founded with a single belief: that enterprise organisations should never have to choose between powerful AI and data sovereignty.',
                 'Based in Perth, Western Australia, we serve the sectors that cannot afford data breaches — mining, government, legal, and healthcare.',
                 'Our platform runs entirely within your infrastructure. We never see your data. We never want to.'
               ].map((p, i) => (
-                <p key={i} style={{ color: '#475569', lineHeight: 1.75, marginBottom: '1rem', fontSize: '0.95rem' }}>{p}</p>
+                <p key={i} style={{ color: 'var(--t5)', lineHeight: 1.75, marginBottom: '1rem', fontSize: '0.95rem' }}>{p}</p>
               ))}
             </motion.div>
 
@@ -71,7 +71,7 @@ export default function Company() {
                     fontSize: '1.2rem', marginBottom: '0.75rem',
                   }}>{v.icon}</div>
                   <div style={{ color: v.c, fontWeight: 700, fontSize: '0.85rem', marginBottom: '0.4rem' }}>{v.t}</div>
-                  <div style={{ color: '#475569', fontSize: '0.78rem', lineHeight: 1.6 }}>{v.d}</div>
+                  <div style={{ color: 'var(--t5)', fontSize: '0.78rem', lineHeight: 1.6 }}>{v.d}</div>
                 </div>
               ))}
             </motion.div>
@@ -80,7 +80,7 @@ export default function Company() {
       </section>
 
       {/* Location strip */}
-      <section style={{ padding: '3rem 1.5rem', background: '#020913' }}>
+      <section style={{ padding: '3rem 1.5rem', background: 'var(--bg2)' }}>
         <hr className="divider" style={{ marginBottom: '3rem' }} />
         <div className="container" style={{ display: 'flex', justifyContent: 'center', gap: '3rem', flexWrap: 'wrap' }}>
           {[
@@ -90,8 +90,8 @@ export default function Company() {
           ].map((item, i) => (
             <div key={i} style={{ textAlign: 'center' }}>
               <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{item.icon}</div>
-              <div className="mono" style={{ color: '#64748B', fontSize: '0.65rem', letterSpacing: '0.12em', marginBottom: '0.25rem' }}>{item.l.toUpperCase()}</div>
-              <div style={{ color: '#94A3B8', fontSize: '0.9rem' }}>{item.v}</div>
+              <div className="mono" style={{ color: 'var(--t4)', fontSize: '0.65rem', letterSpacing: '0.12em', marginBottom: '0.25rem' }}>{item.l.toUpperCase()}</div>
+              <div style={{ color: 'var(--t3)', fontSize: '0.9rem' }}>{item.v}</div>
             </div>
           ))}
         </div>
@@ -102,10 +102,10 @@ export default function Company() {
         <div style={{ maxWidth: 720, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
             <span className="label">Get Started</span>
-            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', fontWeight: 900, color: '#E2E8F0', margin: '1.25rem 0', letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', fontWeight: 900, color: 'var(--t1)', margin: '1.25rem 0', letterSpacing: '-0.02em' }}>
               Request a <span className="gradient-text-amber">Private Demo</span>
             </h2>
-            <p style={{ color: '#475569', lineHeight: 1.75, maxWidth: 520, margin: '0 auto' }}>
+            <p style={{ color: 'var(--t5)', lineHeight: 1.75, maxWidth: 520, margin: '0 auto' }}>
               Our team will tailor a demo to your organisation&apos;s sector and security requirements. No generic walkthroughs.
             </p>
           </div>
@@ -118,7 +118,7 @@ export default function Company() {
             >
               <div style={{ width: 60, height: 60, borderRadius: '50%', background: '#10B98118', border: '1px solid #10B98135', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', margin: '0 auto 1.25rem' }}>✓</div>
               <h3 style={{ color: '#10B981', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.75rem' }}>Request Received</h3>
-              <p style={{ color: '#475569', lineHeight: 1.7 }}>
+              <p style={{ color: 'var(--t5)', lineHeight: 1.7 }}>
                 Our team will be in touch within 1 business day to schedule your private demo. Welcome to sovereign AI.
               </p>
             </motion.div>
@@ -136,36 +136,36 @@ export default function Company() {
                   { k: 'org',   l: 'Organisation', p: 'Rio Tinto Ltd',            t: 'text' },
                 ].map(f => (
                   <div key={f.k}>
-                    <label style={{ display: 'block', color: '#64748B', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem', fontFamily: 'JetBrains Mono, Courier New, monospace' }}>
+                    <label style={{ display: 'block', color: 'var(--t4)', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem', fontFamily: 'JetBrains Mono, Courier New, monospace' }}>
                       {f.l.toUpperCase()} *
                     </label>
                     <input required type={f.t} value={form[f.k]} onChange={set(f.k)} placeholder={f.p}
                       style={inputStyle}
                       onFocus={e => e.target.style.borderColor = 'rgba(6,182,212,0.5)'}
-                      onBlur={e => e.target.style.borderColor = 'rgba(6,182,212,0.15)'}
+                      onBlur={e => e.target.style.borderColor = 'var(--input-bd)'}
                     />
                   </div>
                 ))}
               </div>
 
               <div>
-                <label style={{ display: 'block', color: '#64748B', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem', fontFamily: 'JetBrains Mono, Courier New, monospace' }}>
+                <label style={{ display: 'block', color: 'var(--t4)', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem', fontFamily: 'JetBrains Mono, Courier New, monospace' }}>
                   SECTOR *
                 </label>
                 <select required value={form.sector} onChange={set('sector')}
                   style={{ ...inputStyle, cursor: 'pointer', appearance: 'none' }}
                   onFocus={e => e.target.style.borderColor = 'rgba(6,182,212,0.5)'}
-                  onBlur={e => e.target.style.borderColor = 'rgba(6,182,212,0.15)'}
+                  onBlur={e => e.target.style.borderColor = 'var(--input-bd)'}
                 >
                   <option value="">Select your sector...</option>
                   {['Mining & Energy', 'WA Government', 'Legal', 'Healthcare', 'Defence', 'Finance', 'Other'].map(s => (
-                    <option key={s} value={s} style={{ background: '#02060E' }}>{s}</option>
+                    <option key={s} value={s} style={{ background: 'var(--bg)' }}>{s}</option>
                   ))}
                 </select>
               </div>
 
               <div>
-                <label style={{ display: 'block', color: '#64748B', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem', fontFamily: 'JetBrains Mono, Courier New, monospace' }}>
+                <label style={{ display: 'block', color: 'var(--t4)', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem', fontFamily: 'JetBrains Mono, Courier New, monospace' }}>
                   WHAT ARE YOU TRYING TO SOLVE?
                 </label>
                 <textarea
@@ -173,7 +173,7 @@ export default function Company() {
                   placeholder="Describe your use case, current pain points, or questions about AIDATARIS..."
                   style={{ ...inputStyle, resize: 'vertical' }}
                   onFocus={e => e.target.style.borderColor = 'rgba(6,182,212,0.5)'}
-                  onBlur={e => e.target.style.borderColor = 'rgba(6,182,212,0.15)'}
+                  onBlur={e => e.target.style.borderColor = 'var(--input-bd)'}
                 />
               </div>
 
@@ -181,7 +181,7 @@ export default function Company() {
                 <button type="submit" className="btn-primary" style={{ fontSize: '1rem', padding: '0.875rem 2.25rem' }}>
                   Request Private Demo →
                 </button>
-                <p className="mono" style={{ color: '#64748B', fontSize: '0.7rem' }}>
+                <p className="mono" style={{ color: 'var(--t4)', fontSize: '0.7rem' }}>
                   Your data is stored on our systems only. Never shared.
                 </p>
               </div>

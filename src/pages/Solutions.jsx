@@ -49,20 +49,20 @@ export default function Solutions() {
   const sol = SOLUTIONS.find(s => s.id === active)
 
   return (
-    <main style={{ background: '#02060E', minHeight: '100vh', paddingTop: 88 }}>
+    <main style={{ background: 'var(--bg)', minHeight: '100vh', paddingTop: 88 }}>
 
       {/* Hero */}
       <section style={{ padding: '5rem 1.5rem 3rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
           <div style={{ position: 'absolute', width: 700, height: 350, borderRadius: '50%', top: -150, left: '50%', transform: 'translateX(-50%)', background: 'radial-gradient(ellipse, rgba(6,182,212,0.07) 0%, transparent 70%)' }} />
-          <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(6,182,212,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(6,182,212,0.025) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+          <div className="hero-grid" />
         </div>
         <div style={{ position: 'relative', maxWidth: 680, margin: '0 auto' }}>
           <span className="label">Industry Solutions</span>
-          <h1 style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.5rem)', fontWeight: 900, color: '#E2E8F0', margin: '1.25rem 0', letterSpacing: '-0.03em' }}>
+          <h1 style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.5rem)', fontWeight: 900, color: 'var(--t1)', margin: '1.25rem 0', letterSpacing: '-0.03em' }}>
             Built for WA&apos;s Most<br /><span className="gradient-text">Demanding Sectors</span>
           </h1>
-          <p style={{ color: '#94A3B8', fontSize: '1.05rem', lineHeight: 1.75 }}>
+          <p style={{ color: 'var(--t3)', fontSize: '1.05rem', lineHeight: 1.75 }}>
             AIDATARIS operates where cloud AI cannot — remote mine sites, secure government data centres, and confidential legal chambers.
           </p>
         </div>
@@ -74,7 +74,7 @@ export default function Solutions() {
           {/* Tab strip */}
           <div style={{
             display: 'flex', gap: '0.5rem', marginBottom: '3rem', flexWrap: 'wrap',
-            padding: '0.5rem', background: 'rgba(6,14,40,0.5)',
+            padding: '0.5rem', background: 'var(--glass-bg)',
             borderRadius: 14, border: '1px solid rgba(6,182,212,0.08)',
             width: 'fit-content',
           }}>
@@ -86,7 +86,7 @@ export default function Solutions() {
                   padding: '0.6rem 1.25rem', borderRadius: 10,
                   border: active === s.id ? `1px solid ${s.color}50` : '1px solid transparent',
                   background: active === s.id ? s.color + '15' : 'transparent',
-                  color: active === s.id ? s.color : '#94A3B8',
+                  color: active === s.id ? s.color : 'var(--t3)',
                   fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer',
                   transition: 'all 0.2s', fontFamily: 'Inter, sans-serif',
                 }}
@@ -112,18 +112,18 @@ export default function Solutions() {
                     }}>{sol.icon}</div>
                     <div>
                       <div style={{ color: sol.color, fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{sol.label}</div>
-                      <div style={{ color: '#94A3B8', fontWeight: 600, fontSize: '0.9rem' }}>{sol.tagline}</div>
+                      <div style={{ color: 'var(--t3)', fontWeight: 600, fontSize: '0.9rem' }}>{sol.tagline}</div>
                     </div>
                   </div>
 
-                  <p style={{ color: '#94A3B8', lineHeight: 1.75, marginBottom: '2rem', fontSize: '0.95rem' }}>{sol.desc}</p>
+                  <p style={{ color: 'var(--t3)', lineHeight: 1.75, marginBottom: '2rem', fontSize: '0.95rem' }}>{sol.desc}</p>
 
                   {/* Stats */}
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginBottom: '2rem' }}>
                     {sol.stats.map((st, i) => (
                       <div key={i} className="glass" style={{ padding: '1rem', textAlign: 'center', border: `1px solid ${sol.color}20` }}>
                         <div className="mono" style={{ color: sol.color, fontWeight: 800, fontSize: '1.4rem' }}>{st.v}</div>
-                        <div style={{ color: '#64748B', fontSize: '0.7rem', marginTop: 4 }}>{st.l}</div>
+                        <div style={{ color: 'var(--t4)', fontSize: '0.7rem', marginTop: 4 }}>{st.l}</div>
                       </div>
                     ))}
                   </div>
@@ -131,7 +131,7 @@ export default function Solutions() {
                   <div style={{
                     padding: '1rem 1.25rem', borderRadius: 10,
                     background: sol.color + '08', border: `1px solid ${sol.color}18`,
-                    color: '#64748B', fontSize: '0.85rem', lineHeight: 1.6, fontStyle: 'italic',
+                    color: 'var(--t4)', fontSize: '0.85rem', lineHeight: 1.6, fontStyle: 'italic',
                   }}>
                     💡 {sol.highlight}
                   </div>
@@ -145,15 +145,15 @@ export default function Solutions() {
                       transition={{ delay: i * 0.08 }}
                       style={{
                         padding: '1.25rem 1.5rem',
-                        background: 'rgba(6,14,40,0.5)',
+                        background: 'var(--glass-bg)',
                         border: `1px solid rgba(6,182,212,0.08)`,
                         borderLeft: `3px solid ${sol.color}`,
                         borderRadius: '0 12px 12px 0',
                         transition: 'border-color 0.2s',
                       }}
                     >
-                      <div style={{ color: '#E2E8F0', fontWeight: 700, fontSize: '0.9rem', marginBottom: '0.35rem' }}>{f.t}</div>
-                      <div style={{ color: '#94A3B8', fontSize: '0.83rem', lineHeight: 1.6 }}>{f.d}</div>
+                      <div style={{ color: 'var(--t1)', fontWeight: 700, fontSize: '0.9rem', marginBottom: '0.35rem' }}>{f.t}</div>
+                      <div style={{ color: 'var(--t3)', fontSize: '0.83rem', lineHeight: 1.6 }}>{f.d}</div>
                     </motion.div>
                   ))}
                 </div>
@@ -164,14 +164,14 @@ export default function Solutions() {
       </section>
 
       {/* CTA */}
-      <section style={{ padding: '5rem 1.5rem', textAlign: 'center', background: '#020913' }}>
+      <section style={{ padding: '5rem 1.5rem', textAlign: 'center', background: 'var(--bg2)' }}>
         <hr className="divider" style={{ marginBottom: '4rem' }} />
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <span className="label">Deploy Today</span>
-          <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 900, color: '#E2E8F0', margin: '1rem 0', letterSpacing: '-0.02em' }}>
+          <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 900, color: 'var(--t1)', margin: '1rem 0', letterSpacing: '-0.02em' }}>
             Your Sector. Your Infrastructure.
           </h2>
-          <p style={{ color: '#94A3B8', marginBottom: '2rem', lineHeight: 1.7 }}>
+          <p style={{ color: 'var(--t3)', marginBottom: '2rem', lineHeight: 1.7 }}>
             Let our team walk you through a sector-specific deployment plan tailored to your organisation&apos;s security requirements.
           </p>
           <Link to="/company" className="btn-primary">Request a Sector Demo →</Link>

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { ThemeProvider } from './ThemeContext'
 import './index.css'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -10,6 +11,7 @@ import Security from './pages/Security'
 import Solutions from './pages/Solutions'
 import AdminConsole from './pages/AdminConsole'
 import Company from './pages/Company'
+import Careers from './pages/Careers'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -45,6 +47,7 @@ function AppLayout() {
           <Route path="/solutions"  element={<AnimatedPage><Solutions /></AnimatedPage>} />
           <Route path="/admin"      element={<AnimatedPage><AdminConsole /></AnimatedPage>} />
           <Route path="/company"    element={<AnimatedPage><Company /></AnimatedPage>} />
+          <Route path="/careers"    element={<AnimatedPage><Careers /></AnimatedPage>} />
         </Routes>
       </AnimatePresence>
       <Footer />
@@ -54,8 +57,10 @@ function AppLayout() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AppLayout />
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        <AppLayout />
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }
