@@ -110,7 +110,7 @@ function PIIScanner() {
         <span className="terminal-dot" style={{ background: '#FF5F57' }} />
         <span className="terminal-dot" style={{ background: '#FFBD2E' }} />
         <span className="terminal-dot" style={{ background: '#28CA41' }} />
-        <span className="mono" style={{ color: 'var(--t4)', fontSize: '0.72rem', marginLeft: 8 }}>
+        <span className="mono" style={{ color: '#6B7280', fontSize: '0.72rem', marginLeft: 8 }}>
           pii-shield  /  site_report_pilbara.pdf
         </span>
         <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 5 }}>
@@ -119,13 +119,13 @@ function PIIScanner() {
             transition={{ duration: 0.8, repeat: phase === 'scan' ? Infinity : 0 }}
             style={{
               width: 6, height: 6, borderRadius: '50%', display: 'inline-block',
-              background: phase === 'scan' ? '#F59E0B' : phase === 'done' ? '#10B981' : 'var(--t5)',
+              background: phase === 'scan' ? '#F59E0B' : phase === 'done' ? '#10B981' : '#6B7280',
               boxShadow: phase === 'done' ? '0 0 8px #10B981' : 'none',
             }}
           />
           <span className="mono" style={{
             fontSize: '0.65rem', fontWeight: 700,
-            color: phase === 'scan' ? '#F59E0B' : phase === 'done' ? '#10B981' : 'var(--t5)',
+            color: phase === 'scan' ? '#F59E0B' : phase === 'done' ? '#10B981' : '#6B7280',
           }}>
             {phase === 'scan' ? 'SCANNING' : phase === 'done' ? 'SECURED' : 'STANDBY'}
           </span>
@@ -147,10 +147,10 @@ function PIIScanner() {
           )}
         </AnimatePresence>
 
-        <pre className="mono" style={{ fontSize: '0.78rem', lineHeight: 1.9, color: 'var(--t4)', whiteSpace: 'pre-wrap' }}>
+        <pre className="mono" style={{ fontSize: '0.78rem', lineHeight: 1.9, color: '#9CA3AF', whiteSpace: 'pre-wrap' }}>
           {SEGMENTS.map((seg, i) => {
             if (!seg.pii) return (
-              <span key={i} style={{ color: seg.dim ? 'var(--t6)' : 'var(--t3)' }}>{seg.text}</span>
+              <span key={i} style={{ color: seg.dim ? '#4B5563' : '#9CA3AF' }}>{seg.text}</span>
             )
             const redacted = phase === 'done' && shown.has(seg.type)
             return (
@@ -168,7 +168,7 @@ function PIIScanner() {
                     <sup style={{ fontSize: '0.55rem', marginLeft: 3 }}>{seg.type}</sup>
                   </motion.span>
                 ) : (
-                  <span style={{ color: 'var(--t1)' }}>{seg.text}</span>
+                  <span style={{ color: '#E5E7EB' }}>{seg.text}</span>
                 )}
               </span>
             )
