@@ -214,7 +214,7 @@ function RoleCard({ role }) {
                 </div>
 
                 <a
-                  href={`mailto:careers@aidataris.com.au?subject=Application — ${role.title}`}
+                  href={`mailto:support@aidataris.com.au?subject=Application — ${role.title}`}
                   className="btn-primary"
                   style={{ fontSize: '0.9rem', padding: '0.75rem 2rem' }}
                 >
@@ -309,7 +309,7 @@ export default function Careers() {
             If you care about data sovereignty, security, and building AI the right way, send us a note anyway. We read every email.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-            <a href="mailto:careers@aidataris.com.au" className="btn-primary">
+            <a href="mailto:support@aidataris.com.au" className="btn-primary">
               Send a Speculative Application →
             </a>
             <Link to="/company" className="btn-ghost">Learn About Us</Link>
