@@ -37,11 +37,33 @@ function Field({ label, children }) {
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } }
 const fade = { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.45 } } }
 
+const FORMSPREE = 'https://formspree.io/f/mojrazpn'
+
 export default function Contact() {
   const [inquiry, setInquiry] = useState('demo')
   const [form, setForm] = useState({ name: '', email: '', org: '', sector: '', msg: '' })
   const [done, setDone] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const set = k => e => setForm(f => ({ ...f, [k]: e.target.value }))
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch(FORMSPREE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ ...form, inquiryType: INQUIRY_TYPES.find(t => t.id === inquiry)?.label }),
+      })
+      if (res.ok) { setDone(true) } else { setError('Something went wrong. Please try again or email us directly.') }
+    } catch {
+      setError('Network error. Please check your connection and try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const focus = e => { e.target.style.borderColor = 'rgba(6,182,212,0.55)'; e.target.style.boxShadow = '0 0 0 3px rgba(6,182,212,0.08)' }
   const blur  = e => { e.target.style.borderColor = 'var(--input-bd)'; e.target.style.boxShadow = 'none' }
@@ -199,7 +221,7 @@ export default function Contact() {
                     </div>
 
                     {/* Form fields */}
-                    <form onSubmit={e => { e.preventDefault(); setDone(true) }}
+                    <form onSubmit={handleSubmit}
                       style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
 
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
@@ -238,10 +260,15 @@ export default function Contact() {
                           style={{ ...inputStyle, resize: 'vertical' }} onFocus={focus} onBlur={blur} />
                       </Field>
 
+                      {error && (
+                        <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: 8, padding: '0.75rem 1rem', color: '#F87171', fontSize: '0.82rem' }}>
+                          {error}
+                        </div>
+                      )}
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', paddingTop: '0.25rem' }}>
-                        <button type="submit" className="btn-primary"
-                          style={{ fontSize: '0.95rem', padding: '0.875rem 2rem', background: activeInquiry?.color === '#06B6D4' ? undefined : activeInquiry?.color }}>
-                          Send Enquiry →
+                        <button type="submit" disabled={loading} className="btn-primary"
+                          style={{ fontSize: '0.95rem', padding: '0.875rem 2rem', background: activeInquiry?.color === '#06B6D4' ? undefined : activeInquiry?.color, opacity: loading ? 0.7 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}>
+                          {loading ? 'Sending…' : 'Send Enquiry →'}
                         </button>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                           <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 6px #10B981' }} />

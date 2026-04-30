@@ -17,10 +17,32 @@ const inputStyle = {
   fontFamily: 'Inter, sans-serif', boxSizing: 'border-box',
 }
 
+const FORMSPREE = 'https://formspree.io/f/mojrazpn'
+
 export default function Company() {
   const [form, setForm] = useState({ name: '', email: '', org: '', sector: '', msg: '' })
   const [done, setDone] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const set = k => e => setForm(f => ({ ...f, [k]: e.target.value }))
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch(FORMSPREE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ ...form, formSource: 'Demo Request — Company Page' }),
+      })
+      if (res.ok) { setDone(true) } else { setError('Something went wrong. Please try again or email us directly.') }
+    } catch {
+      setError('Network error. Please check your connection and try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <main style={{ background: 'var(--bg)', minHeight: '100vh', paddingTop: 88 }}>
@@ -90,7 +112,7 @@ export default function Company() {
         <div className="container" style={{ display: 'flex', justifyContent: 'center', gap: '3rem', flexWrap: 'wrap' }}>
           {[
             { icon: '📍', l: 'Location', v: 'Perth, Western Australia' },
-            { icon: '✉',  l: 'Email',    v: 'contact@aidataris.com.au' },
+            { icon: '✉',  l: 'Email',    v: 'support@aidataris.com.au' },
             { icon: '🌐', l: 'Focus',    v: 'Enterprise · Government · Mining' },
           ].map((item, i) => (
             <div key={i} style={{ textAlign: 'center' }}>
@@ -130,7 +152,7 @@ export default function Company() {
           ) : (
             <motion.form
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-              onSubmit={e => { e.preventDefault(); setDone(true) }}
+              onSubmit={handleSubmit}
               className="glass"
               style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}
             >
@@ -182,9 +204,14 @@ export default function Company() {
                 />
               </div>
 
+              {error && (
+                <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: 8, padding: '0.75rem 1rem', color: '#F87171', fontSize: '0.82rem' }}>
+                  {error}
+                </div>
+              )}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-                <button type="submit" className="btn-primary" style={{ fontSize: '1rem', padding: '0.875rem 2.25rem' }}>
-                  Request Private Demo →
+                <button type="submit" disabled={loading} className="btn-primary" style={{ fontSize: '1rem', padding: '0.875rem 2.25rem', opacity: loading ? 0.7 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}>
+                  {loading ? 'Sending…' : 'Request Private Demo →'}
                 </button>
                 <p className="mono" style={{ color: 'var(--t4)', fontSize: '0.7rem' }}>
                   Your data is stored on our systems only. Never shared.
