@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { Helmet } from 'react-helmet-async'
 
 const VALUES = [
   { icon: '🛡', c: '#06B6D4', t: 'Sovereignty First',   d: 'We believe organisations have the right to own and control their intelligence — not lease it from a cloud provider.' },
@@ -23,6 +24,10 @@ export default function Company() {
 
   return (
     <main style={{ background: 'var(--bg)', minHeight: '100vh', paddingTop: 88 }}>
+      <Helmet>
+        <title>About AIDATARIS | Sovereign AI Company — Perth, Western Australia</title>
+        <meta name="description" content="AIDATARIS is a Perth-based enterprise AI company building sovereign, on-premises RAG platforms for Australian mining, government, and legal sectors. Data sovereignty is not optional." />
+      </Helmet>
 
       {/* Hero */}
       <section style={{ padding: '5rem 1.5rem 3rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
@@ -182,7 +187,7 @@ export default function Company() {
                   Request Private Demo →
                 </button>
                 <p className="mono" style={{ color: 'var(--t4)', fontSize: '0.7rem' }}>
-                  Your data is stored on your systems only. Never shared.
+                  Your data is stored on our systems only. Never shared.
                 </p>
               </div>
             </motion.form>

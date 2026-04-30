@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { Helmet } from 'react-helmet-async'
 
 const FEATURES = [
   {
@@ -56,6 +57,10 @@ const fade = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0, transiti
 export default function Technology() {
   return (
     <main style={{ background: 'var(--bg)', minHeight: '100vh', paddingTop: 88 }}>
+      <Helmet>
+        <title>Platform Technology | AIDATARIS Sovereign AI</title>
+        <meta name="description" content="Explore AIDATARIS's four pillars of on-premises AI: Self-RAG with critic loops, GraphRAG knowledge graphs, agentic local tool execution, and multi-modal vision — all running inside your infrastructure." />
+      </Helmet>
 
       {/* Hero */}
       <section style={{ padding: '5rem 1.5rem 3rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Helmet } from 'react-helmet-async'
 
 const SOLUTIONS = [
   {
@@ -50,6 +51,10 @@ export default function Solutions() {
 
   return (
     <main style={{ background: 'var(--bg)', minHeight: '100vh', paddingTop: 88 }}>
+      <Helmet>
+        <title>Industry Solutions | AIDATARIS Sovereign AI — Mining, Government & Legal</title>
+        <meta name="description" content="AIDATARIS Sovereign AI solutions for Western Australian mining, WA Government agencies, and legal & healthcare organisations. Air-gapped, data-sovereign, Privacy Act 1988 compliant." />
+      </Helmet>
 
       {/* Hero */}
       <section style={{ padding: '5rem 1.5rem 3rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>

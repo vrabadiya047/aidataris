@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { Helmet } from 'react-helmet-async'
 
 const PII = [
   { t: 'TFN',         l: 'Tax File Number',     c: '#F87171', e: '872 493 157' },
@@ -37,6 +38,10 @@ const container = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } 
 export default function Security() {
   return (
     <main style={{ background: 'var(--bg)', minHeight: '100vh', paddingTop: 88 }}>
+      <Helmet>
+        <title>Security & Privacy | AIDATARIS Sovereign AI</title>
+        <meta name="description" content="AIDATARIS automatically detects and redacts 12+ PII categories before indexing, with immutable audit logs and enterprise-grade authentication. Privacy Act 1988 compliant." />
+      </Helmet>
 
       {/* Hero */}
       <section style={{ padding: '5rem 1.5rem 3rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
@@ -126,26 +131,30 @@ export default function Security() {
                     <span className="mono" style={{ color: '#10B981', fontSize: '0.65rem', fontWeight: 700 }}>RECORDING</span>
                   </span>
                 </div>
-                {LOG.map((e, i) => (
-                  <div key={i} style={{
-                    display: 'grid', gridTemplateColumns: '70px 100px 1fr 80px',
-                    padding: '0.75rem 1.25rem',
-                    borderBottom: i < LOG.length - 1 ? '1px solid rgba(6,182,212,0.06)' : 'none',
-                    alignItems: 'center', gap: '0.75rem',
-                  }}>
-                    <span className="mono" style={{ color: 'var(--t5)', fontSize: '0.68rem' }}>{e.t}</span>
-                    <span className="mono" style={{ color: '#06B6D4', fontSize: '0.68rem' }}>{e.u}</span>
-                    <span className="mono" style={{ color: 'var(--t4)', fontSize: '0.68rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.q}</span>
-                    <span className="mono" style={{
-                      fontSize: '0.62rem', fontWeight: 700, padding: '2px 6px', borderRadius: 4, textAlign: 'center',
-                      background: e.s === 'OK' ? '#10B98118' : '#EF444418',
-                      color: e.s === 'OK' ? '#10B981' : '#EF4444',
-                      border: `1px solid ${e.s === 'OK' ? '#10B98130' : '#EF444430'}`,
-                    }}>
-                      {e.s === 'BLOCKED' ? '⚡ ' + e.s : '✓ ' + e.s}
-                    </span>
+                <div style={{ overflowX: 'auto' }}>
+                  <div style={{ minWidth: 480 }}>
+                    {LOG.map((e, i) => (
+                      <div key={i} style={{
+                        display: 'grid', gridTemplateColumns: '70px 100px 1fr 80px',
+                        padding: '0.75rem 1.25rem',
+                        borderBottom: i < LOG.length - 1 ? '1px solid rgba(6,182,212,0.06)' : 'none',
+                        alignItems: 'center', gap: '0.75rem',
+                      }}>
+                        <span className="mono" style={{ color: '#9CA3AF', fontSize: '0.68rem' }}>{e.t}</span>
+                        <span className="mono" style={{ color: '#06B6D4', fontSize: '0.68rem' }}>{e.u}</span>
+                        <span className="mono" style={{ color: '#6B7280', fontSize: '0.68rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.q}</span>
+                        <span className="mono" style={{
+                          fontSize: '0.62rem', fontWeight: 700, padding: '2px 6px', borderRadius: 4, textAlign: 'center',
+                          background: e.s === 'OK' ? '#10B98118' : '#EF444418',
+                          color: e.s === 'OK' ? '#10B981' : '#EF4444',
+                          border: `1px solid ${e.s === 'OK' ? '#10B98130' : '#EF444430'}`,
+                        }}>
+                          {e.s === 'BLOCKED' ? '⚡ ' + e.s : '✓ ' + e.s}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             </motion.div>
           </div>

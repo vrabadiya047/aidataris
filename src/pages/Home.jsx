@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { Helmet } from 'react-helmet-async'
 
 /* ── Typewriter ──────────────────────────────────────── */
 const PHRASES = ['Mining Operations.', 'Government Agencies.', 'Legal Chambers.', 'Critical Infrastructure.']
@@ -205,6 +206,190 @@ function FlowStep({ step, icon, color, title, desc, delay, isLast }) {
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.13 } } }
 const card = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } } }
 
+/* ── Chat mockup ─────────────────────────────────────── */
+function ChatMockup() {
+  const [citationOpen, setCitationOpen] = useState(false)
+
+  return (
+    <div style={{
+      background: '#0B1628',
+      border: '1px solid rgba(6,182,212,0.2)',
+      borderRadius: 18,
+      boxShadow: '0 0 0 1px rgba(6,182,212,0.06), 0 32px 80px rgba(0,0,0,0.45), 0 0 40px rgba(6,182,212,0.06)',
+      overflow: 'hidden',
+      fontFamily: 'Inter, sans-serif',
+    }}>
+      {/* Title bar */}
+      <div style={{
+        background: '#0D1F3A',
+        padding: '0.65rem 1rem',
+        display: 'flex', alignItems: 'center', gap: '0.5rem',
+        borderBottom: '1px solid rgba(6,182,212,0.1)',
+      }}>
+        <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#FF5F57' }} />
+        <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#FFBD2E' }} />
+        <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#28CA41' }} />
+        <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: '0.45rem',
+            background: 'rgba(6,182,212,0.07)', border: '1px solid rgba(6,182,212,0.15)',
+            borderRadius: 6, padding: '2px 10px',
+          }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 5px #10B981' }} />
+            <span className="mono" style={{ fontSize: '0.6rem', color: '#9CA3AF', letterSpacing: '0.06em' }}>AIDATARIS · LOCAL INFERENCE · SECURE</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Chat area */}
+      <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1rem', minHeight: 320 }}>
+
+        {/* System header */}
+        <div style={{ textAlign: 'center' }}>
+          <span className="mono" style={{ fontSize: '0.6rem', color: '#4B5563', letterSpacing: '0.1em' }}>TODAY · PILBARA SITE 07 · SESSION ENCRYPTED</span>
+        </div>
+
+        {/* User message */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ delay: 0.3, duration: 0.5 }}
+          style={{ display: 'flex', justifyContent: 'flex-end' }}
+        >
+          <div style={{
+            maxWidth: '78%',
+            background: 'linear-gradient(135deg, #0EA5E9, #2563EB)',
+            color: '#fff', borderRadius: '14px 14px 3px 14px',
+            padding: '0.75rem 1rem', fontSize: '0.83rem', lineHeight: 1.55, fontWeight: 500,
+            boxShadow: '0 4px 16px rgba(14,165,233,0.25)',
+          }}>
+            What is the max load for the Sector 4 ventilation shafts?
+          </div>
+        </motion.div>
+
+        {/* Thinking indicator then AI response */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ delay: 0.65, duration: 0.5 }}
+          style={{ display: 'flex', gap: '0.65rem', alignItems: 'flex-start' }}
+        >
+          {/* Avatar */}
+          <div style={{
+            width: 30, height: 30, borderRadius: 8, flexShrink: 0,
+            background: 'linear-gradient(135deg, #06B6D4, #8B5CF6)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '0.8rem', fontWeight: 800, color: '#fff',
+          }}>A</div>
+
+          <div style={{ flex: 1 }}>
+            <div style={{
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(6,182,212,0.15)',
+              borderRadius: '3px 14px 14px 14px',
+              padding: '0.85rem 1rem',
+            }}>
+              <p style={{ color: '#E5E7EB', fontSize: '0.83rem', lineHeight: 1.65, margin: 0, marginBottom: '0.75rem' }}>
+                Based on the{' '}
+                <span style={{
+                  background: 'rgba(6,182,212,0.15)', color: '#38BDF8',
+                  borderRadius: 4, padding: '1px 5px', fontSize: '0.78rem', fontWeight: 600,
+                }}>Pilbara Site Engineering Specs [Page 42]</span>
+                , the maximum load is{' '}
+                <span style={{ color: '#10B981', fontWeight: 700 }}>4,500kg</span>
+                . This was updated in the latest Q3 audit.
+              </p>
+
+              {/* Source citation button + expand */}
+              <div>
+                <button
+                  onClick={() => setCitationOpen(o => !o)}
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                    padding: '4px 10px', borderRadius: 6, cursor: 'pointer',
+                    background: citationOpen ? 'rgba(139,92,246,0.18)' : 'rgba(139,92,246,0.1)',
+                    border: '1px solid rgba(139,92,246,0.35)',
+                    color: '#A78BFA', fontSize: '0.7rem', fontWeight: 700,
+                    fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.05em',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  <span>📎</span>
+                  SOURCE CITATION
+                  <motion.span animate={{ rotate: citationOpen ? 180 : 0 }} transition={{ duration: 0.2 }} style={{ fontSize: '0.6rem' }}>▼</motion.span>
+                </button>
+
+                <AnimatePresence>
+                  {citationOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }}
+                      style={{ overflow: 'hidden' }}
+                    >
+                      <div style={{
+                        marginTop: '0.6rem', padding: '0.65rem 0.75rem',
+                        background: 'rgba(139,92,246,0.07)',
+                        border: '1px solid rgba(139,92,246,0.2)',
+                        borderRadius: 8,
+                      }}>
+                        {[
+                          { doc: 'Pilbara Site Engineering Specs v4.2', page: 'p. 42', match: '98%' },
+                          { doc: 'Q3 Structural Audit Report 2024',     page: 'p. 7',  match: '91%' },
+                        ].map((src, i) => (
+                          <div key={i} style={{
+                            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                            padding: '0.3rem 0',
+                            borderBottom: i === 0 ? '1px solid rgba(139,92,246,0.12)' : 'none',
+                          }}>
+                            <div>
+                              <div className="mono" style={{ color: '#C4B5FD', fontSize: '0.67rem', fontWeight: 600 }}>{src.doc}</div>
+                              <div className="mono" style={{ color: '#6B7280', fontSize: '0.6rem' }}>{src.page}</div>
+                            </div>
+                            <span className="mono" style={{
+                              fontSize: '0.6rem', fontWeight: 700, padding: '2px 6px', borderRadius: 4,
+                              background: 'rgba(16,185,129,0.12)', color: '#10B981', border: '1px solid rgba(16,185,129,0.25)',
+                            }}>{src.match}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Input bar */}
+      <div style={{
+        padding: '0.75rem 1rem',
+        borderTop: '1px solid rgba(6,182,212,0.1)',
+        background: '#0D1F3A',
+        display: 'flex', alignItems: 'center', gap: '0.6rem',
+      }}>
+        <div style={{
+          flex: 1, background: 'rgba(255,255,255,0.05)',
+          border: '1px solid rgba(6,182,212,0.15)',
+          borderRadius: 10, padding: '0.6rem 0.85rem',
+          color: '#4B5563', fontSize: '0.78rem',
+          fontFamily: 'Inter, sans-serif',
+        }}>Ask anything about your documents...</div>
+        <button style={{
+          width: 34, height: 34, borderRadius: 9, border: 'none',
+          background: 'linear-gradient(135deg, #06B6D4, #2563EB)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          cursor: 'pointer', fontSize: '0.9rem', flexShrink: 0,
+        }}>↑</button>
+        <button style={{
+          width: 34, height: 34, borderRadius: 9, border: '1px solid rgba(6,182,212,0.2)',
+          background: 'rgba(6,182,212,0.08)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          cursor: 'pointer', fontSize: '0.85rem', flexShrink: 0, color: '#06B6D4',
+        }}>🎙</button>
+      </div>
+    </div>
+  )
+}
+
 const FLOW_STEPS = [
   { step: 1, icon: '📄', color: '#06B6D4', title: 'Document Upload',      desc: 'PDF, DOCX, images, blueprints ingested into the secure pipeline' },
   { step: 2, icon: '🛡', color: '#F87171', title: 'PII Privacy Shield',   desc: 'TFNs, ABNs, Medicare numbers, names — redacted before indexing' },
@@ -245,6 +430,10 @@ export default function Home() {
 
   return (
     <main style={{ background: 'var(--bg)' }}>
+      <Helmet>
+        <title>AIDATARIS | Enterprise Sovereign AI &amp; Local RAG — Perth, Western Australia</title>
+        <meta name="description" content="100% on-premises, air-gapped Sovereign AI for Australian mining, government, and legal sectors. GraphRAG, agentic tools, PII protection. Zero cloud. Zero egress. Built in Perth, WA." />
+      </Helmet>
 
       {/* ── Hero ─────────────────────────────────────────── */}
       <section ref={heroRef} style={{ minHeight: '100vh', paddingTop: 100, display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
@@ -367,6 +556,68 @@ export default function Home() {
               <span key={i} className="mono" style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--t4)', letterSpacing: '0.06em' }}>{item}</span>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      {/* ── End-User Experience ──────────────────────────── */}
+      <section className="section">
+        <div className="container">
+          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <span className="label">The End-User Experience</span>
+            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 900, color: 'var(--t1)', marginTop: '1rem', letterSpacing: '-0.02em' }}>
+              Enterprise Security in the Back.<br />
+              <span className="gradient-text">Intuitive Chat in the Front.</span>
+            </h2>
+          </motion.div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
+
+            {/* Left: copy */}
+            <motion.div initial={{ opacity: 0, x: -28 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}>
+              <h3 style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.85rem)', fontWeight: 800, color: 'var(--t1)', marginBottom: '1.25rem', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
+                An interface your team<br />already knows how to use.
+              </h3>
+              <p style={{ color: 'var(--t3)', lineHeight: 1.8, fontSize: '0.975rem', marginBottom: '2rem' }}>
+                You don&apos;t need to train your engineers to use complex databases. AIDATARIS provides a sleek, conversational interface. Employees simply type or speak their questions, and the AI retrieves the exact blueprints, safety manuals, and compliance codes they need — complete with source citations.
+              </p>
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.85rem', marginBottom: '2.25rem' }}>
+                {[
+                  { icon: '💬', text: 'Natural language chat interface' },
+                  { icon: '📎', text: 'Inline document previews & citations' },
+                  { icon: '🎙', text: 'Voice-to-text for field engineers' },
+                ].map((pt, i) => (
+                  <motion.li key={i}
+                    initial={{ opacity: 0, x: -16 }} whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }} transition={{ delay: 0.15 + i * 0.1, duration: 0.4 }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}
+                  >
+                    <span style={{
+                      width: 36, height: 36, borderRadius: 9, flexShrink: 0,
+                      background: 'rgba(6,182,212,0.1)', border: '1px solid rgba(6,182,212,0.2)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem',
+                    }}>{pt.icon}</span>
+                    <span style={{ color: 'var(--t2)', fontWeight: 600, fontSize: '0.925rem' }}>{pt.text}</span>
+                  </motion.li>
+                ))}
+              </ul>
+              <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 }}>
+                <div style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '0.6rem',
+                  padding: '0.65rem 1.1rem', borderRadius: 8,
+                  background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)',
+                }}>
+                  <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px #10B981' }} />
+                  <span className="mono" style={{ color: '#10B981', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em' }}>ZERO RETRAINING REQUIRED FOR END USERS</span>
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* Right: chat mockup */}
+            <motion.div initial={{ opacity: 0, x: 28 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}>
+              <ChatMockup />
+            </motion.div>
+          </div>
         </div>
       </section>
 

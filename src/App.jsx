@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { HelmetProvider } from 'react-helmet-async'
 import { ThemeProvider } from './ThemeContext'
 import './index.css'
 import Navbar from './components/Navbar'
@@ -59,10 +60,12 @@ function AppLayout() {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <BrowserRouter>
-        <AppLayout />
-      </BrowserRouter>
-    </ThemeProvider>
+    <HelmetProvider>
+      <ThemeProvider>
+        <BrowserRouter>
+          <AppLayout />
+        </BrowserRouter>
+      </ThemeProvider>
+    </HelmetProvider>
   )
 }

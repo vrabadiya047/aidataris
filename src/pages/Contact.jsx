@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Helmet } from 'react-helmet-async'
 
 const INQUIRY_TYPES = [
   { id: 'demo',        icon: '🖥',  label: 'Book a Demo',          color: '#06B6D4', desc: 'See AIDATARIS deployed live in a private walkthrough.' },
@@ -49,6 +50,10 @@ export default function Contact() {
 
   return (
     <main style={{ background: 'var(--bg)', minHeight: '100vh', paddingTop: 88 }}>
+      <Helmet>
+        <title>Contact Us | AIDATARIS — Book an On-Premises AI Demo</title>
+        <meta name="description" content="Get in touch with AIDATARIS to book a private on-premises demo, ask technical questions, or discuss enterprise licensing. Perth-based team, response within 1 business day." />
+      </Helmet>
 
       {/* Hero */}
       <section style={{ padding: '5rem 1.5rem 3rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>

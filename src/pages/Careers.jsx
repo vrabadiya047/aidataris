@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Helmet } from 'react-helmet-async'
 
 const PERKS = [
   { icon: '🏠', t: 'Hybrid / Remote WA',    d: 'Work from our Perth HQ or fully remote within Western Australia.' },
@@ -232,6 +233,10 @@ function RoleCard({ role }) {
 export default function Careers() {
   return (
     <main style={{ background: 'var(--bg)', minHeight: '100vh', paddingTop: 88 }}>
+      <Helmet>
+        <title>Careers | AIDATARIS — Build Sovereign AI in Perth, WA</title>
+        <meta name="description" content="Join AIDATARIS in Perth, WA. Open roles: Frontend Developer, Software Engineer, AI Engineer. Build on-premises AI for Australia's most security-conscious enterprises." />
+      </Helmet>
 
       {/* Hero */}
       <section style={{ padding: '5rem 1.5rem 3rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
