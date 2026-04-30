@@ -101,10 +101,8 @@ export default function Contact() {
               {/* Contact cards */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', marginBottom: '2.5rem' }}>
                 {[
-                  { icon: '✉',  label: 'General Enquiries', value: 'contact@aidataris.com.au', color: '#06B6D4', href: 'mailto:contact@aidataris.com.au' },
-                  { icon: '💼', label: 'Sales & Demos',      value: 'sales@aidataris.com.au',    color: '#F59E0B', href: 'mailto:sales@aidataris.com.au' },
-                  { icon: '🔧', label: 'Technical Support',  value: 'support@aidataris.com.au',  color: '#8B5CF6', href: 'mailto:support@aidataris.com.au' },
-                  { icon: '📍', label: 'Headquarters',       value: 'Perth, Western Australia',  color: '#10B981', href: null },
+                  { icon: '✉',  label: 'Email Us',      value: 'support@aidataris.com.au', color: '#06B6D4', href: 'mailto:support@aidataris.com.au' },
+                  { icon: '📍', label: 'Headquarters',  value: 'Perth, Western Australia',  color: '#10B981', href: null },
                 ].map((c, i) => (
                   <motion.a
                     key={i}
