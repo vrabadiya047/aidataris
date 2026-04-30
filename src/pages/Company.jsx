@@ -182,7 +182,7 @@ export default function Company() {
                   Request Private Demo →
                 </button>
                 <p className="mono" style={{ color: 'var(--t4)', fontSize: '0.7rem' }}>
-                  Your data is stored on our systems only. Never shared.
+                  Your data is stored on your systems only. Never shared.
                 </p>
               </div>
             </motion.form>

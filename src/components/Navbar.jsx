@@ -13,7 +13,7 @@ const LINKS = [
   { to: '/solutions',  label: 'Solutions' },
   { to: '/admin',      label: 'Admin Console' },
   { to: '/company',    label: 'Company' },
-  { to: '/careers',   label: 'Careers' },
+  { to: '/contact',   label: 'Contact' },
 ]
 
 function SunIcon() {

@@ -19,7 +19,7 @@ export default function Footer() {
           {[
             { h: 'Platform',  links: [['Technology', '/technology'], ['Security & Compliance', '/security'], ['Admin Console', '/admin']] },
             { h: 'Solutions', links: [['Mining & Energy', '/solutions'], ['WA Government', '/solutions'], ['Legal & Health', '/solutions']] },
-            { h: 'Company',   links: [['About', '/company'], ['Careers', '/careers'], ['Contact', '/company'], ['Request Demo', '/company']] },
+            { h: 'Company',   links: [['About', '/company'], ['Careers', '/careers'], ['Contact Us', '/contact'], ['Request Demo', '/contact']] },
           ].map(col => (
             <div key={col.h}>
               <h4 className="mono" style={{ color: '#06B6D4', fontWeight: 700, fontSize: '0.68rem', letterSpacing: '0.12em', marginBottom: '1rem' }}>
