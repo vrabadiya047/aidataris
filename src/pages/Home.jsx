@@ -3,28 +3,6 @@ import { Link } from 'react-router-dom'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 
-/* ── Typewriter ──────────────────────────────────────── */
-const PHRASES = ['Mining Operations.', 'Government Agencies.', 'Legal Chambers.', 'Critical Infrastructure.']
-
-function useTypewriter() {
-  const [text, setText] = useState('')
-  const [idx, setIdx] = useState(0)
-  const [typing, setTyping] = useState(true)
-  useEffect(() => {
-    const word = PHRASES[idx]
-    let t
-    if (typing) {
-      if (text.length < word.length) t = setTimeout(() => setText(word.slice(0, text.length + 1)), 72)
-      else t = setTimeout(() => setTyping(false), 2000)
-    } else {
-      if (text.length > 0) t = setTimeout(() => setText(text.slice(0, -1)), 36)
-      else { setIdx(i => (i + 1) % PHRASES.length); setTyping(true) }
-    }
-    return () => clearTimeout(t)
-  }, [text, typing, idx])
-  return text
-}
-
 /* ── Particles ───────────────────────────────────────── */
 function Particles() {
   const particles = useMemo(() =>
@@ -426,7 +404,6 @@ export default function Home() {
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
   const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
-  const typeText = useTypewriter()
 
   return (
     <main style={{ background: 'var(--bg)' }}>
@@ -454,25 +431,25 @@ export default function Home() {
                 <span className="label">Enterprise Sovereign AI · Perth, Western Australia</span>
               </motion.div>
 
-              <h1 style={{ fontSize: 'clamp(2.2rem, 4.8vw, 3.9rem)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '1.5rem' }}>
+              <h1 style={{ fontSize: 'clamp(2.2rem, 4.8vw, 3.9rem)', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-0.03em', marginBottom: '1.5rem' }}>
                 <motion.span initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, duration: 0.6 }}
                   style={{ display: 'block', color: 'var(--t1)' }}>
-                  Enterprise Sovereign AI.
+                  Sovereign AI for
                 </motion.span>
                 <motion.span initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.32, duration: 0.6 }}
-                  style={{ display: 'block', color: 'var(--t1)', fontSize: '0.72em', fontWeight: 700, marginTop: '0.1em' }}>
-                  100% Local Inference for
+                  style={{ display: 'block', color: 'var(--t1)' }}>
+                  High-Security Australian
                 </motion.span>
-                <span style={{
-                  display: 'block', minHeight: '1.1em', fontSize: '0.72em', fontWeight: 700,
-                  background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)',
-                  backgroundSize: '200% 200%', WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-                  animation: 'gradient-shift 5s ease infinite',
-                }}>
-                  {typeText}
-                  <motion.span animate={{ opacity: [1, 0, 1] }} transition={{ duration: 0.8, repeat: Infinity, ease: 'steps(1)' }} style={{ WebkitTextFillColor: '#06B6D4', marginLeft: 2 }}>|</motion.span>
-                </span>
+                <motion.span initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.44, duration: 0.6 }}
+                  style={{
+                    display: 'block',
+                    background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)',
+                    backgroundSize: '200% 200%', WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                    animation: 'gradient-shift 5s ease infinite',
+                  }}>
+                  Enterprise.
+                </motion.span>
               </h1>
 
               <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }}
@@ -482,8 +459,8 @@ export default function Home() {
 
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65 }}
                 style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <Link to="/company" className="btn-primary">Book an On-Premises Demo →</Link>
-                <Link to="/technology" className="btn-ghost">Explore the Architecture</Link>
+                <Link to="/company" className="btn-primary">Book On-Premises Demo →</Link>
+                <Link to="/security" className="btn-ghost">View Security Architecture</Link>
               </motion.div>
 
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
@@ -556,6 +533,158 @@ export default function Home() {
               <span key={i} className="mono" style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--t4)', letterSpacing: '0.06em' }}>{item}</span>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      {/* ── Solutions ───────────────────────────────────── */}
+      <section className="section">
+        <div className="container">
+          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+            <span className="label">Our Solutions</span>
+            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 900, color: 'var(--t1)', marginTop: '1rem', letterSpacing: '-0.02em' }}>
+              Enterprise Products.<br /><span className="gradient-text">Built for Security-First Organisations.</span>
+            </h2>
+            <p style={{ color: 'var(--t4)', marginTop: '0.75rem', maxWidth: 520, margin: '0.75rem auto 0', lineHeight: 1.7 }}>
+              Three flagship products designed to solve the hardest intelligence problems in high-security Australian enterprise.
+            </p>
+          </motion.div>
+
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+            {[
+              {
+                icon: '🕸', color: '#06B6D4',
+                name: 'Sovereign RAG',
+                tagline: 'Private document intelligence',
+                desc: 'Query your entire document corpus in natural language — contracts, manuals, blueprints, compliance codes — with zero data leaving your perimeter. Powered by Qdrant vector search and Neo4j knowledge graphs.',
+                tags: ['Qdrant Vector DB', 'Neo4j GraphRAG', 'Local Ollama LLM'],
+                link: '/solutions',
+              },
+              {
+                icon: '🛡', color: '#8B5CF6',
+                name: 'Compliance Shield',
+                tagline: 'Auto-PII redaction',
+                desc: 'Every document ingested is automatically scanned and redacted across 12+ PII categories — TFN, ABN, Medicare, credit cards, and more — before indexing. A cryptographically-signed audit trail satisfies your compliance officers.',
+                tags: ['12+ PII Categories', 'Signed Audit Log', 'Privacy Act 1988'],
+                link: '/security',
+              },
+              {
+                icon: '📡', color: '#F59E0B',
+                name: 'Offline Edge AI',
+                tagline: 'P2P sync for remote sites',
+                desc: 'Full RAG intelligence with zero internet dependency. Pre-loaded knowledge bases sync peer-to-peer across remote Pilbara sites. Voice-to-text transcription runs entirely on-device. Operations never stop, even when the network does.',
+                tags: ['P2P Sync', 'Air-Gapped', 'Voice-to-Text'],
+                link: '/solutions',
+              },
+            ].map((sol, i) => (
+              <motion.div key={i} variants={card} className="glass"
+                style={{ padding: '2.25rem', position: 'relative', overflow: 'hidden', cursor: 'pointer' }}
+                whileHover={{ y: -6 }} transition={{ type: 'spring', stiffness: 280 }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${sol.color}, transparent)` }} />
+                <div style={{
+                  width: 52, height: 52, borderRadius: 14, background: sol.color + '18',
+                  border: `1px solid ${sol.color}35`, display: 'flex', alignItems: 'center',
+                  justifyContent: 'center', fontSize: '1.5rem', marginBottom: '1.25rem',
+                }}>{sol.icon}</div>
+                <div className="mono" style={{ color: sol.color, fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.4rem' }}>
+                  {sol.tagline.toUpperCase()}
+                </div>
+                <h3 style={{ color: 'var(--t1)', fontWeight: 800, fontSize: '1.15rem', marginBottom: '0.75rem' }}>{sol.name}</h3>
+                <p style={{ color: 'var(--t3)', fontSize: '0.875rem', lineHeight: 1.75, marginBottom: '1.25rem' }}>{sol.desc}</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginBottom: '1.5rem' }}>
+                  {sol.tags.map(t => (
+                    <span key={t} className="mono" style={{ fontSize: '0.62rem', padding: '2px 8px', borderRadius: 4, background: sol.color + '12', color: sol.color, border: `1px solid ${sol.color}25` }}>{t}</span>
+                  ))}
+                </div>
+                <Link to={sol.link} style={{ color: sol.color, fontSize: '0.82rem', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                  Learn more →
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Leadership ───────────────────────────────────── */}
+      <section className="section" style={{ background: 'var(--bg2)' }}>
+        <hr className="divider" style={{ marginBottom: '5rem' }} />
+        <div className="container">
+          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+            <span className="label">Our Leadership</span>
+            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 900, color: 'var(--t1)', marginTop: '1rem', letterSpacing: '-0.02em' }}>
+              Built by Engineers Who've<br /><span className="gradient-text">Worked in the Field.</span>
+            </h2>
+          </motion.div>
+
+          <div style={{ maxWidth: 780, margin: '0 auto' }}>
+            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+              className="glass" style={{ padding: '2.5rem', border: '1px solid rgba(6,182,212,0.18)', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #06B6D4, #8B5CF6)' }} />
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '2rem', alignItems: 'start' }}>
+                {/* Avatar */}
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{
+                    width: 88, height: 88, borderRadius: 20,
+                    background: 'linear-gradient(135deg, #06B6D4, #8B5CF6)',
+                    boxShadow: '0 0 30px rgba(6,182,212,0.25)',
+                    marginBottom: '0.75rem', overflow: 'hidden',
+                  }}>
+                    <img src="/photo.png" alt="Vivek Rabadiya"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  </div>
+                  <div className="mono" style={{ fontSize: '0.6rem', color: '#06B6D4', fontWeight: 700, letterSpacing: '0.1em' }}>FOUNDER & CEO</div>
+                </div>
+
+                {/* Bio */}
+                <div>
+                  <h3 style={{ color: 'var(--t1)', fontWeight: 900, fontSize: '1.4rem', letterSpacing: '-0.02em', marginBottom: '0.25rem' }}>Vivek Rabadiya</h3>
+                  <p style={{ color: 'var(--t4)', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
+                    Enterprise AI architect with research experience at the <span style={{ color: '#06B6D4', fontWeight: 600 }}>German Aerospace Center (DLR)</span> and academic grounding through <span style={{ color: '#8B5CF6', fontWeight: 600 }}>EIT Perth</span>. Specialises in deploying sovereign, on-premises AI systems for high-security environments where cloud is not an option.
+                  </p>
+
+                  {/* Credentials */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                    {[
+                      { icon: '🚀', label: 'German Aerospace Center (DLR)', color: '#06B6D4' },
+                      { icon: '🎓', label: 'EIT Perth',                      color: '#8B5CF6' },
+                    ].map((c, i) => (
+                      <div key={i} style={{
+                        display: 'flex', alignItems: 'center', gap: '0.5rem',
+                        padding: '0.45rem 0.85rem', borderRadius: 8,
+                        background: c.color + '0E', border: `1px solid ${c.color}25`,
+                      }}>
+                        <span style={{ fontSize: '0.9rem' }}>{c.icon}</span>
+                        <span style={{ color: c.color, fontSize: '0.78rem', fontWeight: 600 }}>{c.label}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Tech stack */}
+                  <div>
+                    <div className="mono" style={{ color: 'var(--t5)', fontSize: '0.63rem', letterSpacing: '0.12em', marginBottom: '0.6rem' }}>CORE STACK</div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                      {[
+                        { name: 'Qdrant',  color: '#06B6D4' },
+                        { name: 'Neo4j',   color: '#10B981' },
+                        { name: 'Ollama',  color: '#F59E0B' },
+                        { name: 'Python',  color: '#8B5CF6' },
+                        { name: 'GraphRAG',color: '#38BDF8' },
+                        { name: 'FastAPI', color: '#34D399' },
+                      ].map(s => (
+                        <span key={s.name} className="mono" style={{
+                          fontSize: '0.68rem', padding: '3px 10px', borderRadius: 20,
+                          background: s.color + '12', color: s.color, border: `1px solid ${s.color}25`, fontWeight: 700,
+                        }}>{s.name}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -794,8 +923,8 @@ export default function Home() {
             Join Australian enterprises that trust AIDATARIS with their most sensitive data — completely on-premises, zero egress, complete governance.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/company" className="btn-primary">Book an On-Premises Demo →</Link>
-            <Link to="/technology" className="btn-ghost">Explore the Architecture</Link>
+            <Link to="/company" className="btn-primary">Book On-Premises Demo →</Link>
+            <Link to="/security" className="btn-ghost">View Security Architecture</Link>
           </div>
         </motion.div>
       </section>
