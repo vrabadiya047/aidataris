@@ -144,7 +144,7 @@ export default function Footer() {
 
             {[
               { h: 'Platform',  links: [['Technology', '/technology'], ['Security & Compliance', '/security'], ['Admin Console', '/admin']] },
-              { h: 'Solutions', links: [['Mining & Energy', '/solutions'], ['WA Government', '/solutions'], ['Legal & Health', '/solutions']] },
+              { h: 'Solutions', links: [['Mining & Energy', '/solutions?tab=mining'], ['WA Government', '/solutions?tab=government'], ['Legal & Health', '/solutions?tab=legal']] },
               { h: 'Company',   links: [['About', '/company'], ['Careers', '/careers'], ['Contact Us', '/contact'], ['Request Demo', '/contact']] },
             ].map(col => (
               <div key={col.h}>

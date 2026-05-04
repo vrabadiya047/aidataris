@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 
@@ -46,7 +46,22 @@ const SOLUTIONS = [
 ]
 
 export default function Solutions() {
-  const [active, setActive] = useState('mining')
+  const [searchParams] = useSearchParams()
+  const tabsRef = useRef(null)
+  const [active, setActive] = useState(() => {
+    const tab = searchParams.get('tab')
+    return SOLUTIONS.find(s => s.id === tab) ? tab : 'mining'
+  })
+
+  useEffect(() => {
+    const tab = searchParams.get('tab')
+    if (tab && SOLUTIONS.find(s => s.id === tab)) {
+      setActive(tab)
+      setTimeout(() => {
+        tabsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 100)
+    }
+  }, [searchParams])
   const sol = SOLUTIONS.find(s => s.id === active)
 
   return (
@@ -74,7 +89,7 @@ export default function Solutions() {
       </section>
 
       {/* Tabs + Content */}
-      <section className="section">
+      <section className="section" ref={tabsRef}>
         <div className="container">
           {/* Tab strip */}
           <div style={{
