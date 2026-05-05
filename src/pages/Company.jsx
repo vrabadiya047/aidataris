@@ -17,6 +17,7 @@ const inputStyle = {
   fontFamily: 'Inter, sans-serif', boxSizing: 'border-box',
 }
 
+const FORMSPREE = 'https://formspree.io/f/mojrazpn'
 
 export default function Company() {
   const [form, setForm] = useState({ name: '', email: '', org: '', sector: '', msg: '' })
