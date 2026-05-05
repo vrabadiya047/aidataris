@@ -67,60 +67,60 @@ const ARCH_LAYERS = [
 /* ── Platform pillars ────────────────────────────────── */
 const PILLARS = [
   {
-    num: '01', icon: '🔄', color: '#06B6D4', tag: 'Self-Correcting RAG',
-    title: 'Zero Hallucinations. Guaranteed.',
-    body: 'AIDATARIS employs a Self-RAG architecture with a built-in Critic loop that scores retrieval relevance before every response. If the context doesn\'t justify an answer, the system refuses — never fabricates.',
+    num: '01', icon: '🔐', color: '#06B6D4', tag: 'Data Sovereignty',
+    title: 'Your Data Never Leaves Your Network.',
+    body: 'Every document, query, and AI response is processed entirely within your infrastructure. No cloud API calls, no data egress, no third-party processing. You own every byte — always.',
     points: [
-      'Critic model scores retrieval before every answer',
-      'Auto re-query when context score fails threshold',
-      'Confidence score attached to every response',
-      'Source citations always included',
+      'All AI inference runs locally on your hardware',
+      'Zero external API calls at any point in the pipeline',
+      'Full control over data retention and deletion',
+      'Air-gap compatible for classified environments',
     ],
-    flow: ['Query', '▶', 'Retrieve', '▶', 'Critic', '▶', 'Answer'],
-    flowHi: [false, false, false, false, true, false, true],
-    outcome: { metric: '0', label: 'Hallucination Rate' },
+    flow: ['Your Data', '▶', 'Your Network', '▶', 'Your Hardware', '▶', 'Your Answer'],
+    flowHi: [false, false, false, false, false, false, true],
+    outcome: { metric: '0', label: 'Bytes Leave Your Network' },
   },
   {
-    num: '02', icon: '🕸', color: '#8B5CF6', tag: 'GraphRAG',
-    title: 'Map Every Relationship in Your Data.',
-    body: 'Standard RAG finds paragraphs. GraphRAG finds connections. Our knowledge graph engine maps relationships between entities, regulations, personnel, and projects — enabling multi-hop reasoning across your entire corpus.',
+    num: '02', icon: '🧠', color: '#8B5CF6', tag: 'Intelligent Retrieval',
+    title: 'Find Hidden Insights Across Your Documents.',
+    body: 'Standard keyword search finds paragraphs. AIDATARIS finds connections. Our AI maps relationships across people, assets, regulations, and projects — answering questions that span your entire document history.',
     points: [
-      'Entity extraction from unstructured documents',
-      'Relationship graphs across personnel, assets & law',
-      'Multi-hop queries spanning disparate sources',
-      'Ideal for complex engineering and legal document sets',
+      'Natural language queries across any document type',
+      'Cross-document reasoning and relationship mapping',
+      'Source citations included with every answer',
+      'Searches years of records in seconds',
     ],
-    flow: ['Doc', '▶', 'Entities', '▶', 'Graph', '▶', 'Reasoning'],
-    flowHi: [false, false, false, false, true, false, true],
-    outcome: { metric: '4×', label: 'Deeper Context' },
+    flow: ['Question', '▶', 'Search', '▶', 'Connect', '▶', 'Cited Answer'],
+    flowHi: [false, false, false, false, false, false, true],
+    outcome: { metric: '4×', label: 'Deeper Context Than Search' },
   },
   {
-    num: '03', icon: '⚙', color: '#F59E0B', tag: 'Agentic Tool Calling',
-    title: 'AI That Acts. Not Just Answers.',
-    body: 'AIDATARIS agents invoke local Python tools for real computation — budget analysis, timeline modelling, unit conversions, regulatory cross-checks. Intelligence that delivers actionable output, not just text.',
+    num: '03', icon: '⚙', color: '#F59E0B', tag: 'Agentic Automation',
+    title: 'Automate Analysis Tasks. Free Your Team.',
+    body: 'AI agents run complex multi-step tasks automatically — compliance checks, report generation, risk analysis, cost modelling. What took your team days now runs in minutes, on your infrastructure, without manual input.',
     points: [
-      'Local Python tool execution (zero external API calls)',
+      'Automated compliance checking and gap analysis',
+      'Report generation from raw data and documents',
       'Budget and cost analysis with live calculations',
-      'Project timeline and scheduling computation',
-      'Custom tool registration for domain-specific tasks',
+      'Custom workflow automation for domain tasks',
     ],
-    flow: ['Intent', '▶', 'Select Tool', '▶', 'Execute', '▶', 'Synthesise'],
-    flowHi: [false, false, false, false, true, false, true],
-    outcome: { metric: '100%', label: 'Local Execution' },
+    flow: ['Task', '▶', 'Plan', '▶', 'Execute', '▶', 'Deliver'],
+    flowHi: [false, false, false, false, false, false, true],
+    outcome: { metric: '100%', label: 'Local — No External APIs' },
   },
   {
-    num: '04', icon: '👁', color: '#10B981', tag: 'Multi-Modal Vision',
-    title: 'Blueprints. Photos. Scans. All Local.',
-    body: 'Beyond text. AIDATARIS processes engineering blueprints, site photographs, scanned legal documents, and handwritten notes — all through the vision LLM running entirely within your infrastructure.',
+    num: '04', icon: '✅', color: '#10B981', tag: 'Compliance by Design',
+    title: 'Audit Trail Built in From Day One.',
+    body: 'Every query is logged with timestamps, user identity, source documents, and AI reasoning. Immutable audit trails meet government, legal, and financial compliance requirements without additional tooling.',
     points: [
-      'Engineering blueprint and CAD drawing analysis',
-      'Scanned PDF and handwritten document OCR',
-      'Site photograph interpretation and annotation',
-      'Table and chart extraction from any document type',
+      'Immutable audit log for every query and response',
+      'User identity and role tracked for all actions',
+      'Source citations attached to every AI answer',
+      'Meets Privacy Act, ISM, PSPF, and ASD Essential Eight',
     ],
-    flow: ['Image', '▶', 'Vision LLM', '▶', 'Extract', '▶', 'Index'],
-    flowHi: [false, false, false, false, true, false, true],
-    outcome: { metric: '40+', label: 'File Formats' },
+    flow: ['Query', '▶', 'Authenticate', '▶', 'Answer', '▶', 'Log'],
+    flowHi: [false, false, false, false, false, false, true],
+    outcome: { metric: '8', label: 'Compliance Frameworks Covered' },
   },
 ]
 
@@ -222,9 +222,9 @@ export default function Technology() {
   return (
     <main style={{ background: 'var(--bg)', minHeight: '100vh', paddingTop: 88 }}>
       <Helmet>
-        <title>Platform Architecture | AIDATARIS Sovereign AI</title>
-        <meta name="description" content="Explore AIDATARIS's sovereign AI architecture: Self-RAG, GraphRAG, Agentic Tool Calling, and Multi-Modal Vision — all running 100% on-premise with zero cloud dependency." />
-        <meta name="keywords" content="on-premise AI architecture, GraphRAG, sovereign AI platform, Ollama enterprise, air-gap AI deployment, RAG architecture Perth" />
+        <title>Platform — How AIDATARIS Works | On-Premise AI for High-Security Industries</title>
+        <meta name="description" content="AIDATARIS installs a complete AI system inside your infrastructure. No cloud. No data egress. Intelligent document search, automated analysis, and full compliance audit — all on your hardware." />
+        <meta name="keywords" content="on-premise AI platform, air-gapped AI, secure AI architecture, sovereign AI Australia, document AI Perth, enterprise AI deployment" />
       </Helmet>
 
       {/* ── HERO ─────────────────────────────────────────── */}
@@ -233,24 +233,23 @@ export default function Technology() {
           <div style={{ position: 'absolute', width: 900, height: 400, borderRadius: '50%', top: -200, left: '50%', transform: 'translateX(-50%)', background: 'radial-gradient(ellipse, rgba(139,92,246,0.08) 0%, transparent 70%)' }} />
           <div className="hero-grid" />
         </div>
-        <div style={{ position: 'relative', maxWidth: 720, margin: '0 auto' }}>
+        <div style={{ position: 'relative', maxWidth: 760, margin: '0 auto' }}>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <span className="label">Platform Architecture</span>
+            <span className="label">How It Works</span>
           </motion.div>
           <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6 }}
             style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.8rem)', fontWeight: 900, color: 'var(--t1)', margin: '1.25rem 0', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
-            Intelligence Without<br />
+            AI That Runs Inside<br />
             <span style={{ background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)', backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', animation: 'gradient-shift 5s ease infinite' }}>
-              Compromise
+              Your Infrastructure.
             </span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.5 }}
-            style={{ color: 'var(--t4)', fontSize: '1.05rem', lineHeight: 1.78 }}>
-            Five integrated layers of sovereign AI infrastructure — engineered to deliver enterprise-grade intelligence entirely within your perimeter.
+            style={{ color: 'var(--t4)', fontSize: '1.05rem', lineHeight: 1.78, maxWidth: 580, margin: '0 auto 2.5rem' }}>
+            We install a complete intelligence system on your own hardware. It connects to your documents, answers your team's questions, and automates analysis tasks — without a single byte leaving your network.
           </motion.p>
-          {/* Quick stats */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
-            style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '2.5rem', flexWrap: 'wrap' }}>
+            style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
             {[
               { val: '0',    label: 'External API Calls' },
               { val: '100%', label: 'On-Premise' },
@@ -266,8 +265,51 @@ export default function Technology() {
         </div>
       </section>
 
+      {/* ── PLAIN ENGLISH OVERVIEW ───────────────────────── */}
+      <section style={{ padding: '5rem 1.5rem', background: 'var(--bg2)' }}>
+        <div className="container">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+            {[
+              {
+                step: '01', color: '#06B6D4', icon: '📦',
+                title: 'We Install on Your Hardware',
+                desc: 'AIDATARIS arrives as a secure software bundle. We install it on a server inside your building — on-site or via secure remote session. Nothing goes to the cloud.',
+              },
+              {
+                step: '02', color: '#8B5CF6', icon: '📄',
+                title: 'Connect to Your Documents',
+                desc: 'We connect to your existing file systems, SharePoint, shared drives, or document repositories. Your files stay where they are — we index them locally.',
+              },
+              {
+                step: '03', color: '#F59E0B', icon: '🧠',
+                title: 'AI Understands Your Content',
+                desc: 'The system reads and structures your documents — reports, contracts, equipment logs, policies. It builds a knowledge base that understands context, not just keywords.',
+              },
+              {
+                step: '04', color: '#10B981', icon: '💬',
+                title: 'Your Team Gets Answers',
+                desc: 'Staff ask questions in plain English. The AI searches your knowledge base, cites its sources, and delivers accurate answers in seconds. Every query is logged for audit.',
+              },
+            ].map((item, i) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }}
+                style={{ padding: '2rem', borderRadius: 14, background: 'var(--glass-bg)', border: `1px solid ${item.color}22`, position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: item.color + '70' }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+                  <span className="mono" style={{ color: item.color, fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em' }}>{item.step}</span>
+                  <div style={{ width: 36, height: 36, borderRadius: 10, background: item.color + '15', border: `1px solid ${item.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}>{item.icon}</div>
+                </div>
+                <h3 style={{ color: 'var(--t1)', fontWeight: 700, fontSize: '1rem', marginBottom: '0.5rem', letterSpacing: '-0.01em' }}>{item.title}</h3>
+                <p style={{ color: 'var(--t4)', fontSize: '0.85rem', lineHeight: 1.72 }}>{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── SYSTEM ARCHITECTURE DIAGRAM ──────────────────── */}
-      <section style={{ padding: '4rem 1.5rem', background: 'var(--bg2)' }}>
+      <section style={{ padding: '4rem 1.5rem' }}>
         <div className="container">
           <EditorialRule label="01 · System Architecture" />
 
@@ -536,19 +578,78 @@ export default function Technology() {
         </div>
       </section>
 
+      {/* ── DEPLOYMENT MODEL ─────────────────────────────── */}
+      <section style={{ padding: '6rem 1.5rem' }}>
+        <div className="container">
+          <EditorialRule label="05 · Deployment Options" />
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+            style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', marginBottom: '0.75rem', maxWidth: 540, lineHeight: 1.15 }}>
+            Three Ways to Deploy.{' '}
+            <span style={{ background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)', backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', animation: 'gradient-shift 5s ease infinite' }}>
+              All Secure.
+            </span>
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.15 }}
+            style={{ color: 'var(--t4)', fontSize: '0.95rem', lineHeight: 1.75, maxWidth: 480, marginBottom: '3.5rem' }}>
+            We adapt to your infrastructure requirements. Whether you have an existing server room, a private cloud, or need a fully air-gapped deployment, we have a model that fits.
+          </motion.p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem' }}>
+            {[
+              {
+                icon: '🏢', color: '#06B6D4', title: 'On-Premise',
+                desc: 'Deployed on a server inside your building. Full physical control. Your IT team manages the hardware.',
+                tags: ['Your Hardware', 'Your Building', 'IT Team Managed'],
+              },
+              {
+                icon: '📡', color: '#F87171', title: 'Air-Gapped',
+                desc: 'No network connectivity required. Delivered as an offline bundle for classified environments, remote sites, or SCIF facilities.',
+                tags: ['No Internet Required', 'Offline Bundle', 'Remote Sites'],
+                highlight: true,
+              },
+              {
+                icon: '☁', color: '#8B5CF6', title: 'Private Cloud',
+                desc: 'Deployed within your organisation\'s private cloud (Azure Gov, AWS GovCloud, or on-prem VMware/Hyper-V) — isolated from public endpoints.',
+                tags: ['Private Tenancy', 'Isolated Network', 'Your Cloud Account'],
+              },
+            ].map((opt, i) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="glass"
+                style={{ padding: '2rem', border: `1px solid ${opt.color}22`, position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: opt.color + (opt.highlight ? 'CC' : '60') }} />
+                {opt.highlight && (
+                  <div style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
+                    <span className="mono" style={{ fontSize: '0.55rem', fontWeight: 700, letterSpacing: '0.1em', padding: '2px 7px', borderRadius: 4, background: opt.color + '20', color: opt.color, border: `1px solid ${opt.color}40` }}>MOST SECURE</span>
+                  </div>
+                )}
+                <div style={{ width: 44, height: 44, borderRadius: 12, background: opt.color + '15', border: `1px solid ${opt.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', marginBottom: '1rem' }}>{opt.icon}</div>
+                <h3 style={{ color: 'var(--t1)', fontWeight: 800, fontSize: '1.1rem', marginBottom: '0.6rem', letterSpacing: '-0.01em' }}>{opt.title}</h3>
+                <p style={{ color: 'var(--t4)', fontSize: '0.85rem', lineHeight: 1.7, marginBottom: '1.25rem' }}>{opt.desc}</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                  {opt.tags.map(t => (
+                    <span key={t} className="mono" style={{ fontSize: '0.6rem', padding: '2px 8px', borderRadius: 4, background: opt.color + '12', color: opt.color, border: `1px solid ${opt.color}28` }}>{t}</span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── CTA ──────────────────────────────────────────── */}
       <section style={{ padding: '6rem 1.5rem', textAlign: 'center', background: 'var(--bg2)' }}>
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
-          <span className="label">Next Step</span>
+          <span className="label">Ready to Deploy?</span>
           <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 900, color: 'var(--t1)', margin: '1.25rem 0', letterSpacing: '-0.03em', lineHeight: 1.2 }}>
-            See the Security Architecture
+            Book a Free Architecture Consultation
           </h2>
           <p style={{ color: 'var(--t4)', marginBottom: '2.5rem', lineHeight: 1.75 }}>
-            Every byte stays within your perimeter. Explore the compliance and privacy engine that enterprise clients rely on.
+            We'll assess your infrastructure, your data sources, and your compliance requirements — then tell you exactly what deployment would look like. No commitment required.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-            <Link to="/security" className="btn-primary">Security & Compliance →</Link>
-            <Link to="/contact" className="btn-ghost">Request Architecture Brief</Link>
+            <Link to="/contact" className="btn-primary">Book Free Consultation →</Link>
+            <Link to="/security" className="btn-ghost">Security & Compliance</Link>
           </div>
         </div>
       </section>
