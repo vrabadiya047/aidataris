@@ -466,7 +466,7 @@ const DIFFERENTIATORS = [
   { icon: '📡', color: '#F59E0B', title: 'Air-Gap Ready',           desc: 'Fully operational with no internet access. Mining sites, classified facilities, remote operations — all supported.' },
   { icon: '⚡', color: '#10B981', title: 'Fast Deployment',         desc: 'Working prototype in weeks, not quarters. We move fast without cutting corners on security or reliability.' },
   { icon: '🏛', color: '#F87171', title: 'Enterprise-Grade',        desc: 'Built to meet government, legal, and financial compliance from day one. Not bolted on as an afterthought.' },
-  { icon: '🤝', color: '#A78BFA', title: 'Transparent Partnership', desc: 'No black-box solutions. We explain everything we build so your team understands and owns the system.' },
+  { icon: '🎯', color: '#A78BFA', title: 'Designed for High-Risk Environments', desc: 'Purpose-built for classified facilities, remote mine sites, and critical infrastructure. Where failure is not an option — and our architecture reflects that.' },
 ]
 
 const CASE_STUDIES = [
@@ -496,7 +496,123 @@ const CASE_STUDIES = [
     ],
     tags: ['Machine Learning', 'IoT Sensors', 'Real-Time', 'On-Premise'],
   },
+  {
+    label: 'Case Study 03', color: '#8B5CF6', icon: '⛏',
+    title: 'Mining Safety Knowledge Base — Pilbara Site',
+    industry: 'Mining & Resources · Pilbara, Western Australia',
+    problem: 'A Pilbara mining operation with 800+ staff had years of safety reports, MSDS sheets, equipment manuals, and incident records spread across shared drives no one could search efficiently. Safety officers spent 3–4 hours per day manually retrieving compliance documents — and remote sites had no reliable internet for cloud tools.',
+    solution: 'We deployed an air-gapped AIDATARIS instance on the site\'s existing server — no new hardware required. The system indexed 14,000+ documents and enabled staff to query safety procedures, hazard registers, and incident history in natural language. Zero internet required, fully operational underground and at remote stations.',
+    results: [
+      { metric: '14K+', label: 'Documents indexed on-premise' },
+      { metric: '3h',   label: 'Daily document retrieval time eliminated' },
+      { metric: '100%', label: 'Air-gapped — no internet dependency' },
+    ],
+    tags: ['Air-Gapped', 'Safety Compliance', 'Document AI', 'Mining'],
+  },
 ]
+
+/* ── Dashboard UI Mockup ─────────────────────────────── */
+function DashboardMockup() {
+  const bars = [32, 55, 48, 72, 90, 58, 80, 95, 70, 88, 78, 64, 92, 85, 96]
+  const maxBar = Math.max(...bars)
+  return (
+    <div style={{
+      border: '1px solid rgba(6,182,212,0.22)', borderRadius: 16, overflow: 'hidden',
+      boxShadow: '0 40px 100px rgba(0,0,0,0.5), 0 0 0 1px rgba(6,182,212,0.06)',
+      background: '#0D1117',
+    }}>
+      {/* Window chrome */}
+      <div style={{ background: '#070C10', padding: '0.7rem 1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(6,182,212,0.1)' }}>
+        <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#FF5F57', flexShrink: 0 }} />
+        <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#FFBD2E', flexShrink: 0 }} />
+        <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#28CA41', flexShrink: 0 }} />
+        <div style={{ flex: 1, textAlign: 'center' }}>
+          <span style={{ fontFamily: 'JetBrains Mono, monospace', color: '#374151', fontSize: '0.62rem', letterSpacing: '0.08em' }}>
+            AIDATARIS Admin Console · Intelligence Dashboard · On-Premise Instance
+          </span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexShrink: 0 }}>
+          <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 6px #10B981' }} />
+          <span style={{ fontFamily: 'JetBrains Mono, monospace', color: '#10B981', fontSize: '0.55rem', fontWeight: 700 }}>LIVE</span>
+        </div>
+      </div>
+
+      {/* KPI metrics row */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '1px', background: 'rgba(6,182,212,0.07)' }}>
+        {[
+          { l: 'Documents Indexed', v: '14,293', d: '+289 this week', c: '#06B6D4' },
+          { l: 'Queries Answered', v: '3,847', d: '↑ 18% vs last month', c: '#8B5CF6' },
+          { l: 'Compliance Score', v: '99.2%', d: 'ISM · PSPF · E8', c: '#10B981' },
+          { l: 'PII Auto-Redacted', v: '6,102', d: 'TFN · ABN · PHI', c: '#F59E0B' },
+        ].map((m, i) => (
+          <div key={i} style={{ padding: '0.85rem 1rem', background: '#0D1117' }}>
+            <div style={{ fontFamily: 'JetBrains Mono, monospace', color: '#374151', fontSize: '0.55rem', letterSpacing: '0.06em', marginBottom: '0.3rem', textTransform: 'uppercase' }}>{m.l}</div>
+            <div style={{ color: m.c, fontSize: '1.25rem', fontWeight: 900, letterSpacing: '-0.02em', lineHeight: 1 }}>{m.v}</div>
+            <div style={{ fontFamily: 'JetBrains Mono, monospace', color: '#1F2937', fontSize: '0.55rem', marginTop: '0.25rem' }}>{m.d}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Chart + Status columns */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'rgba(6,182,212,0.07)' }}>
+        {/* Bar chart */}
+        <div style={{ padding: '0.9rem 1.1rem', background: '#0D1117' }}>
+          <div style={{ fontFamily: 'JetBrains Mono, monospace', color: '#374151', fontSize: '0.55rem', letterSpacing: '0.1em', marginBottom: '0.65rem', textTransform: 'uppercase' }}>Query Volume · 15-Day Window</div>
+          <div style={{ display: 'flex', alignItems: 'flex-end', gap: '3px', height: 52 }}>
+            {bars.map((h, i) => (
+              <div key={i} style={{
+                flex: 1,
+                height: `${(h / maxBar) * 100}%`,
+                background: i === bars.length - 1 ? '#06B6D4' : `rgba(6,182,212,${0.1 + (h / maxBar) * 0.3})`,
+                borderRadius: '2px 2px 0 0',
+              }} />
+            ))}
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '3px' }}>
+            {['21','22','23','24','25','26','27','28','29','30','1','2','3','4','5'].map((d, i) => (
+              <span key={i} style={{ fontFamily: 'JetBrains Mono, monospace', color: '#1F2937', fontSize: '0.48rem' }}>{d}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* System status */}
+        <div style={{ padding: '0.9rem 1.1rem', background: '#0D1117' }}>
+          <div style={{ fontFamily: 'JetBrains Mono, monospace', color: '#374151', fontSize: '0.55rem', letterSpacing: '0.1em', marginBottom: '0.65rem', textTransform: 'uppercase' }}>System Status · Zero External Calls</div>
+          {[
+            { l: 'Ollama LLM Runtime', s: 'ONLINE', c: '#10B981' },
+            { l: 'Qdrant Vector DB', s: 'ONLINE', c: '#10B981' },
+            { l: 'Neo4j Knowledge Graph', s: 'ONLINE', c: '#10B981' },
+            { l: 'External Internet', s: 'BLOCKED', c: '#EF4444' },
+          ].map((item, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.28rem 0', borderBottom: i < 3 ? '1px solid rgba(6,182,212,0.06)' : 'none' }}>
+              <div style={{ width: 5, height: 5, borderRadius: '50%', background: item.c, boxShadow: `0 0 5px ${item.c}90`, flexShrink: 0 }} />
+              <span style={{ color: '#4B5563', fontSize: '0.7rem', flex: 1 }}>{item.l}</span>
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', color: item.c, fontSize: '0.52rem', fontWeight: 700 }}>{item.s}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Audit log - recent queries */}
+      <div style={{ padding: '0.7rem 1.1rem', background: '#0D1117', borderTop: '1px solid rgba(6,182,212,0.07)' }}>
+        <div style={{ fontFamily: 'JetBrains Mono, monospace', color: '#374151', fontSize: '0.55rem', letterSpacing: '0.1em', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Live Audit Log — Last 3 Queries</div>
+        {[
+          { q: 'Show maintenance incidents for Excavator E-7 past 90 days', u: 'j.thornton', t: '2m', src: '14 docs cited' },
+          { q: 'Compliance gap analysis against WHS Act section 47', u: 'a.morrison', t: '11m', src: '8 docs cited' },
+          { q: 'Summarise Q3 safety reports — Pilbara site — all incidents', u: 'r.chen', t: '29m', src: '23 docs cited' },
+        ].map((q, i) => (
+          <div key={i} style={{ display: 'flex', gap: '0.55rem', padding: '0.32rem 0', borderBottom: i < 2 ? '1px solid rgba(6,182,212,0.05)' : 'none', alignItems: 'center' }}>
+            <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#10B981', flexShrink: 0 }} />
+            <span style={{ color: '#4B5563', fontSize: '0.68rem', flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{q.q}</span>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', color: '#374151', fontSize: '0.55rem', flexShrink: 0 }}>{q.u}</span>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', color: '#06B6D4', fontSize: '0.55rem', fontWeight: 600, flexShrink: 0 }}>{q.src}</span>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', color: '#1F2937', fontSize: '0.52rem', flexShrink: 0 }}>{q.t} ago</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 /* ── GradText shorthand ──────────────────────────────── */
 const GRAD = { background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)', backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', animation: 'gradient-shift 5s ease infinite' }
@@ -511,9 +627,9 @@ export default function Home() {
   return (
     <main style={{ background: 'var(--bg)' }}>
       <Helmet>
-        <title>AIDATARIS | Secure On-Premise AI Systems for High-Security Industries — Perth, WA</title>
-        <meta name="description" content="AIDATARIS deploys on-premise, air-gapped AI systems for mining, government, and legal industries across Australia. Your data never leaves your infrastructure. Book a free consultation." />
-        <meta name="keywords" content="on-prem AI Australia, secure AI systems Perth, air-gapped AI, AI solutions Perth, sovereign AI, government AI Australia, mining AI, on-premise AI deployment" />
+        <title>Sovereign AI Platform Australia | AIDATARIS</title>
+        <meta name="description" content="Secure, on-premise AI systems for mining, government, and enterprise in Australia. No cloud. Full data control. Perth-based sovereign AI platform." />
+        <meta name="keywords" content="Sovereign AI platform, AI solutions Perth, On-prem AI Australia, on-premise AI deployment, air-gapped AI, secure AI systems Perth, sovereign AI Australia, government AI Australia, mining AI, enterprise AI Perth" />
         <meta property="og:title" content="AIDATARIS | Secure AI Systems That Run Inside Your Organisation" />
         <meta property="og:description" content="Deploy AI without sending your data to the cloud. On-premise, air-gapped intelligence for high-security industries. Perth, WA." />
       </Helmet>
@@ -541,8 +657,8 @@ export default function Home() {
 
             <h1 style={{ fontSize: 'clamp(2.8rem, 6.5vw, 5.5rem)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.04em', marginBottom: '2rem', maxWidth: 900 }}>
               {[
-                { text: 'Secure AI Systems That', delay: 0.15 },
-                { text: 'Run Inside Your', delay: 0.27 },
+                { text: 'On-Premise AI Systems', delay: 0.15 },
+                { text: 'for High-Security Industries', delay: 0.27 },
               ].map((line, i) => (
                 <motion.span key={i}
                   initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }}
@@ -555,7 +671,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.39, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 style={{ display: 'block', ...GRAD }}>
-                Organisation.
+                No Cloud. No Data Leakage.
               </motion.span>
             </h1>
 
@@ -615,13 +731,20 @@ export default function Home() {
             <div>
               <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                 style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', lineHeight: 1.15, marginBottom: '1.25rem' }}>
-                Cloud AI is Not{' '}
-                <span style={GRAD}>Safe for Serious Work.</span>
+                The Compliance Risk Your Leadership{' '}
+                <span style={GRAD}>Cannot Afford to Ignore.</span>
               </motion.h2>
               <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.15 }}
                 style={{ color: 'var(--t3)', fontSize: '0.95rem', lineHeight: 1.8, maxWidth: 460 }}>
-                High-security industries face a problem no cloud AI vendor can solve: your data is too sensitive, too regulated, or too critical to send anywhere outside your network.
+                Every query your team sends to a cloud AI platform is a data exposure event. For mining, government, and legal organisations operating under Australian privacy law, one sensitive query can constitute a compliance breach — and no cloud vendor can be held accountable. The risk is real, growing, and entirely preventable.
               </motion.p>
+              <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
+                style={{ marginTop: '1.5rem', padding: '1rem 1.25rem', borderRadius: 10, background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.18)', display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                <span style={{ color: '#EF4444', fontSize: '1.1rem', flexShrink: 0 }}>⚠</span>
+                <p style={{ color: '#F87171', fontSize: '0.82rem', lineHeight: 1.7, margin: 0 }}>
+                  <strong>Australian Privacy Act 1988</strong> requires organisations to protect personal information from unauthorised disclosure. Cloud AI vendors process your data on overseas servers — outside your legal control.
+                </p>
+              </motion.div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
@@ -804,8 +927,60 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── USE CASES ────────────────────────────────────── */}
+      {/* ── PLATFORM DASHBOARD PREVIEW ───────────────────── */}
       <section style={{ padding: '8rem 1.5rem', background: 'var(--bg2)' }}>
+        <div className="container">
+          <EditorialRule label="Platform Preview" />
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '5rem', alignItems: 'center' }}>
+            <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}>
+              <span className="label" style={{ marginBottom: '1.25rem', display: 'inline-block' }}>Enterprise Intelligence Console</span>
+              <h2 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', lineHeight: 1.12, marginBottom: '1.25rem' }}>
+                A Complete Intelligence Interface.{' '}
+                <span style={GRAD}>Running on Your Hardware.</span>
+              </h2>
+              <p style={{ color: 'var(--t3)', fontSize: '0.95rem', lineHeight: 1.82, marginBottom: '1.75rem' }}>
+                The AIDATARIS admin console gives your team everything they need — semantic search across your document library, real-time compliance status, immutable audit logs, and system health monitoring. All running inside your network, with zero cloud dependency.
+              </p>
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.8rem', marginBottom: '2.25rem' }}>
+                {[
+                  { icon: '📊', text: 'Real-time query analytics and usage tracking per user' },
+                  { icon: '🛡', text: 'Live compliance dashboard — ISM, PSPF, Essential Eight' },
+                  { icon: '📋', text: 'Tamper-proof audit log with source citations for every query' },
+                  { icon: '⚡', text: 'System health monitoring — zero external network calls' },
+                ].map((item, i) => (
+                  <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', color: 'var(--t3)', fontSize: '0.875rem', lineHeight: 1.65 }}>
+                    <span style={{ fontSize: '1rem', flexShrink: 0, marginTop: '0.1rem' }}>{item.icon}</span>
+                    {item.text}
+                  </li>
+                ))}
+              </ul>
+              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                <Link to="/book" className="btn-primary">Book a Live Demo →</Link>
+                <Link to="/platform" className="btn-ghost">See Architecture</Link>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 28 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
+              <DashboardMockup />
+              <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
+                {[
+                  { icon: '🔒', text: '100% On-Premise' },
+                  { icon: '📡', text: 'Air-Gap Compatible' },
+                  { icon: '⚙', text: 'Deployed in Weeks' },
+                ].map((item, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--t5)', fontSize: '0.75rem' }}>
+                    <span>{item.icon}</span> {item.text}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── USE CASES ────────────────────────────────────── */}
+      <section style={{ padding: '8rem 1.5rem' }}>
         <div className="container">
           <EditorialRule label="02 · Industries We Serve" />
 

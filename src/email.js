@@ -153,6 +153,7 @@ export function getKeyFilePath() {
 }
 
 export async function sendBookingEmails(body, eventDetails) {
+  console.log('[booking-email] SMTP_USER set?', !!SMTP_USER, '| SMTP_PASS set?', !!SMTP_PASS)
   if (!SMTP_USER || !SMTP_PASS) {
     console.warn('⚠  SMTP not configured — skipping booking emails.')
     return
@@ -178,10 +179,11 @@ export async function sendBookingEmails(body, eventDetails) {
     ? `<p><a href="${eventDetails.htmlLink}" style="color:#8B5CF6">Open in Google Calendar →</a></p>`
     : ''
 
-  await transporter.sendMail({
-    from:    `"AIDATARIS Bookings" <${SMTP_USER}>`,
-    to:      SMTP_USER,
-    subject: `New Booking: ${name}${org ? ' · ' + org : ''} — ${date} at ${time} AWST`,
+  try {
+    const info = await transporter.sendMail({
+      from:    `"AIDATARIS Bookings" <${SMTP_USER}>`,
+      to:      SMTP_USER,
+      subject: `New Booking: ${name}${org ? ' · ' + org : ''} — ${date} at ${time} AWST`,
     html: `
       <div style="font-family:Inter,Arial,sans-serif;max-width:560px;margin:0 auto;color:#1a1a2e">
         <div style="background:#0f0f1a;padding:24px 32px;border-radius:12px 12px 0 0">
@@ -210,39 +212,46 @@ export async function sendBookingEmails(body, eventDetails) {
           <p style="margin-top:24px;color:#9ca3af;font-size:0.78rem">This booking was submitted via the AIDATARIS website calendar.</p>
         </div>
       </div>`,
-  })
+    })
+    console.log(`✉  Notification sent to ${SMTP_USER} — messageId: ${info.messageId}`)
+  } catch (err) {
+    console.error('✗  Notification email FAILED:', err.message)
+  }
 
-  await transporter.sendMail({
-    from:    `"AIDATARIS" <${SMTP_USER}>`,
-    to:      email,
-    subject: `Your AIDATARIS Consultation is Confirmed — ${date}`,
-    html: `
-      <div style="font-family:Inter,Arial,sans-serif;max-width:560px;margin:0 auto;color:#1a1a2e">
-        <div style="background:#0f0f1a;padding:24px 32px;border-radius:12px 12px 0 0">
-          <h2 style="color:#06B6D4;margin:0;font-size:1.3rem;letter-spacing:-0.02em">Consultation Confirmed</h2>
-          <p style="color:#94a3b8;margin:8px 0 0;font-size:0.88rem">AIDATARIS — Sovereign AI for Serious Organisations</p>
-        </div>
-        <div style="background:#fff;padding:32px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px">
-          <p style="color:#374151;font-size:0.95rem;line-height:1.6;margin:0 0 24px">Hi ${name}, thanks for booking a consultation. Here are your session details:</p>
-          <div style="background:#f9fafb;border-radius:10px;padding:20px;margin-bottom:24px">
-            ${[
-              ['Date',     date],
-              ['Time',     timeDisplay],
-              ['Duration', duration || '—'],
-              ['Format',   meetingType || '—'],
-            ].map(([k, v]) => `
-              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #e5e7eb">
-                <span style="color:#6b7280;font-size:0.78rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase">${k}</span>
-                <span style="color:#111827;font-size:0.88rem;font-weight:600">${v}</span>
-              </div>`).join('')}
+  try {
+    const info2 = await transporter.sendMail({
+      from:    `"AIDATARIS" <${SMTP_USER}>`,
+      to:      email,
+      subject: `Your AIDATARIS Consultation is Confirmed — ${date}`,
+      html: `
+        <div style="font-family:Inter,Arial,sans-serif;max-width:560px;margin:0 auto;color:#1a1a2e">
+          <div style="background:#0f0f1a;padding:24px 32px;border-radius:12px 12px 0 0">
+            <h2 style="color:#06B6D4;margin:0;font-size:1.3rem;letter-spacing:-0.02em">Consultation Confirmed</h2>
+            <p style="color:#94a3b8;margin:8px 0 0;font-size:0.88rem">AIDATARIS — Sovereign AI for Serious Organisations</p>
           </div>
-          <p style="color:#374151;font-size:0.88rem;line-height:1.6">We'll be in touch within 1 business day to confirm and share a meeting link. If anything changes, reply to this email or contact us at <a href="mailto:${SMTP_USER}" style="color:#8B5CF6">${SMTP_USER}</a>.</p>
-          <p style="margin-top:24px;color:#9ca3af;font-size:0.78rem">AIDATARIS · Perth, Western Australia · aidataris.com.au</p>
-        </div>
-      </div>`,
-  })
-
-  console.log(`✉  Booking emails sent — notify: ${SMTP_USER}, confirm: ${email}`)
+          <div style="background:#fff;padding:32px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px">
+            <p style="color:#374151;font-size:0.95rem;line-height:1.6;margin:0 0 24px">Hi ${name}, thanks for booking a consultation. Here are your session details:</p>
+            <div style="background:#f9fafb;border-radius:10px;padding:20px;margin-bottom:24px">
+              ${[
+                ['Date',     date],
+                ['Time',     timeDisplay],
+                ['Duration', duration || '—'],
+                ['Format',   meetingType || '—'],
+              ].map(([k, v]) => `
+                <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #e5e7eb">
+                  <span style="color:#6b7280;font-size:0.78rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase">${k}</span>
+                  <span style="color:#111827;font-size:0.88rem;font-weight:600">${v}</span>
+                </div>`).join('')}
+            </div>
+            <p style="color:#374151;font-size:0.88rem;line-height:1.6">We'll be in touch within 1 business day to confirm and share a meeting link. If anything changes, reply to this email or contact us at <a href="mailto:${SMTP_USER}" style="color:#8B5CF6">${SMTP_USER}</a>.</p>
+            <p style="margin-top:24px;color:#9ca3af;font-size:0.78rem">AIDATARIS · Perth, Western Australia · aidataris.com.au</p>
+          </div>
+        </div>`,
+    })
+    console.log(`✉  Confirmation sent to ${email} — messageId: ${info2.messageId}`)
+  } catch (err) {
+    console.error('✗  Confirmation email FAILED:', err.message)
+  }
 }
 
 /** Export slot computation for serverless availability endpoint */
