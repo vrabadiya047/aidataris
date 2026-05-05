@@ -1,7 +1,6 @@
-import { sendContactEmail } from '../src/email.js'
+import { sendSubscribeEmail } from '../src/email.js'
 
 export default async function handler(req, res) {
-  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
@@ -32,11 +31,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    await sendContactEmail(body)
+    await sendSubscribeEmail(body)
     res.writeHead(200, { 'Content-Type': 'application/json' })
     res.end(JSON.stringify({ ok: true }))
   } catch (err) {
-    console.error('[contact]', err.message)
+    console.error('[subscribe]', err.message)
     res.writeHead(500, { 'Content-Type': 'application/json' })
     res.end(JSON.stringify({ error: err.message || 'Failed to send email' }))
   }

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 
 /* ── Config ──────────────────────────────────────────────*/
-const API_BASE  = ''  // empty = same origin via Vite proxy; in production set to your server URL
+const API_BASE  = typeof window !== 'undefined' ? window.location.origin : ''  // empty = same origin via Vite proxy; in production set to your server URL
 
 const DURATION_OPTIONS = [
   { id: '30', label: '30 min', desc: 'Quick overview',   color: '#06B6D4' },
