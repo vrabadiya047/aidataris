@@ -50,7 +50,7 @@ export default function Contact() {
     setLoading(true)
     setError('')
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch(`${window.location.origin}/api/contact`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ ...form, inquiryType: INQUIRY_TYPES.find(t => t.id === inquiry)?.label }),
