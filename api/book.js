@@ -97,7 +97,10 @@ export default async function handler(req, res) {
     return
   }
 
-  const { name, email, date, time } = body
+  const date = body.date || body.preferredDate
+  const time = body.time || body.preferredTime
+
+  const { name, email } = body
   if (!name || !email) {
     res.writeHead(400, { 'Content-Type': 'application/json' })
     res.end(JSON.stringify({ error: 'name and email are required' }))
