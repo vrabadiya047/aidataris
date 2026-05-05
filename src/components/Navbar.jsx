@@ -4,21 +4,20 @@ import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
 import Logo from './Logo'
 import { useTheme } from '../ThemeContext'
 
-const STATUS = ['⬤ AI_INFERENCE: LOCAL', '⬤ DATA_EGRESS: 0 BYTES', '⬤ PII_SHIELD: ACTIVE', '⬤ UPTIME: 99.99%', '⬤ ENCRYPTION: AES-256', '⬤ CLOUD_DEPS: NONE', '⬤ AIR_GAP: READY', '⬤ VERSION: 2.1.0']
-
 const LINKS = [
   { to: '/',           label: 'Home' },
+  { to: '/solutions',  label: 'Solutions' },
   { to: '/technology', label: 'Technology' },
   { to: '/security',   label: 'Security' },
-  { to: '/solutions',  label: 'Solutions' },
-  { to: '/admin',      label: 'Admin Console' },
   { to: '/company',    label: 'Company' },
-  { to: '/contact',   label: 'Contact' },
+  { to: '/contact',    label: 'Contact' },
 ]
+
+const STATUS = ['⬤ AI_INFERENCE: LOCAL', '⬤ DATA_EGRESS: 0 BYTES', '⬤ PII_SHIELD: ACTIVE', '⬤ UPTIME: 99.99%', '⬤ CLOUD_DEPS: NONE', '⬤ AIR_GAP: READY', '⬤ ENCRYPTION: AES-256']
 
 function SunIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
       <circle cx="12" cy="12" r="5"/>
       <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
       <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
@@ -30,23 +29,23 @@ function SunIcon() {
 
 function MoonIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
       <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
     </svg>
   )
 }
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen]       = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const location = useLocation()
-  const { theme, toggle } = useTheme()
-  const { scrollYProgress } = useScroll()
-  const scaleX = useSpring(scrollYProgress, { stiffness: 300, damping: 30 })
+  const location              = useLocation()
+  const { theme, toggle }     = useTheme()
+  const { scrollYProgress }   = useScroll()
+  const scaleX                = useSpring(scrollYProgress, { stiffness: 400, damping: 35 })
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 24)
-    window.addEventListener('scroll', fn)
+    const fn = () => setScrolled(window.scrollY > 40)
+    window.addEventListener('scroll', fn, { passive: true })
     return () => window.removeEventListener('scroll', fn)
   }, [])
 
@@ -56,86 +55,99 @@ export default function Navbar() {
 
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200 }}>
-      {/* Scroll progress */}
+
+      {/* Scroll progress bar */}
       <motion.div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, zIndex: 201,
+        position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, zIndex: 210,
         background: 'linear-gradient(90deg, #06B6D4, #8B5CF6, #F59E0B)',
         transformOrigin: '0%', scaleX,
       }} />
 
       {/* Status ticker */}
       <div style={{
-        background: 'var(--ticker-bg)',
-        borderBottom: '1px solid rgba(6,182,212,0.12)',
-        overflow: 'hidden', height: 28,
-        display: 'flex', alignItems: 'center',
+        background: 'var(--ticker-bg)', borderBottom: '1px solid rgba(6,182,212,0.1)',
+        overflow: 'hidden', height: 26, display: 'flex', alignItems: 'center',
       }}>
-        <div style={{ display: 'flex', animation: 'marquee 30s linear infinite', whiteSpace: 'nowrap' }}>
+        <motion.div
+          animate={{ x: [0, '-50%'] }}
+          transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+          style={{ display: 'flex', whiteSpace: 'nowrap' }}
+        >
           {[ticker, ticker].map((t, i) => (
-            <span key={i} className="mono" style={{ color: 'var(--ticker-text)', fontSize: '0.65rem', letterSpacing: '0.08em', paddingRight: 60 }}>{t}</span>
+            <span key={i} className="mono" style={{ color: 'var(--ticker-text)', fontSize: '0.62rem', letterSpacing: '0.08em', paddingRight: 80, opacity: 0.75 }}>{t}</span>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       {/* Main nav */}
       <nav style={{
         background: scrolled ? 'var(--nav-bg2)' : 'var(--nav-bg)',
-        backdropFilter: 'blur(20px)',
+        backdropFilter: 'blur(24px) saturate(200%)',
+        WebkitBackdropFilter: 'blur(24px) saturate(200%)',
         borderBottom: `1px solid var(--nav-bd)`,
-        transition: 'background 0.3s',
+        transition: 'background 0.4s, box-shadow 0.4s',
+        boxShadow: scrolled ? '0 8px 32px rgba(0,0,0,0.12)' : 'none',
       }}>
-        <div className="container" style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          height: 60, padding: '0 1.5rem',
-        }}>
+        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 62, padding: '0 1.5rem' }}>
+
           {/* Logo */}
           <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-            <Logo size={32} />
-            <span style={{ color: 'var(--t1)', fontWeight: 800, fontSize: '1.1rem', letterSpacing: '0.08em' }}>
+            <motion.div whileHover={{ scale: 1.05 }} transition={{ type: 'spring', stiffness: 400 }}>
+              <Logo size={32} />
+            </motion.div>
+            <span style={{ color: 'var(--nav-link-h)', fontWeight: 800, fontSize: '1.05rem', letterSpacing: '0.1em' }}>
               AIDATARIS
             </span>
           </Link>
 
           {/* Desktop links */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }} className="nav-desk">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.1rem' }} className="nav-desk">
             {LINKS.map(link => {
               const active = location.pathname === link.to
               return (
-                <Link key={link.to} to={link.to} style={{
-                  color: active ? 'var(--nav-active, #06B6D4)' : 'var(--nav-link)',
-                  textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500,
-                  padding: '0.4rem 0.75rem', borderRadius: 8,
-                  background: active ? 'var(--nav-active-bg, rgba(6,182,212,0.08))' : 'transparent',
-                  border: active ? '1px solid var(--nav-active-bd, rgba(6,182,212,0.2))' : '1px solid transparent',
-                  transition: 'all 0.2s',
-                }}
-                  onMouseEnter={e => { if (!active) { e.currentTarget.style.color = 'var(--nav-link-h)'; e.currentTarget.style.background = 'rgba(255,255,255,0.12)' } }}
+                <Link key={link.to} to={link.to}
+                  style={{
+                    color: active ? 'var(--nav-active)' : 'var(--nav-link)',
+                    textDecoration: 'none', fontSize: '0.84rem', fontWeight: active ? 600 : 500,
+                    padding: '0.45rem 0.85rem', borderRadius: 9, position: 'relative',
+                    background: active ? 'var(--nav-active-bg)' : 'transparent',
+                    border: active ? '1px solid var(--nav-active-bd)' : '1px solid transparent',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={e => { if (!active) { e.currentTarget.style.color = 'var(--nav-link-h)'; e.currentTarget.style.background = 'rgba(255,255,255,0.1)' } }}
                   onMouseLeave={e => { if (!active) { e.currentTarget.style.color = 'var(--nav-link)'; e.currentTarget.style.background = 'transparent' } }}
                 >
                   {link.label}
+                  {active && (
+                    <motion.div layoutId="nav-pill"
+                      style={{ position: 'absolute', bottom: -1, left: '50%', transform: 'translateX(-50%)', width: 4, height: 4, borderRadius: '50%', background: '#06B6D4' }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }} />
+                  )}
                 </Link>
               )
             })}
           </div>
 
           {/* Right actions */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }} className="nav-desk">
-            <button className="theme-toggle" onClick={toggle} title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }} className="nav-desk">
+            <motion.button className="theme-toggle" onClick={toggle} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} title="Toggle theme">
               <AnimatePresence mode="wait">
                 <motion.span key={theme}
-                  initial={{ opacity: 0, rotate: -30, scale: 0.7 }}
-                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                  exit={{ opacity: 0, rotate: 30, scale: 0.7 }}
+                  initial={{ opacity: 0, rotate: -30, scale: 0.6 }}
+                  animate={{ opacity: 1, rotate: 0,   scale: 1   }}
+                  exit={  { opacity: 0, rotate:  30, scale: 0.6 }}
                   transition={{ duration: 0.2 }}
                   style={{ display: 'flex' }}
                 >
                   {theme === 'light' ? <MoonIcon /> : <SunIcon />}
                 </motion.span>
               </AnimatePresence>
-            </button>
-            <Link to="/company" className="btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.83rem' }}>
-              Request Demo
-            </Link>
+            </motion.button>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+              <Link to="/contact" className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.82rem' }}>
+                Book Consultation
+              </Link>
+            </motion.div>
           </div>
 
           {/* Mobile controls */}
@@ -143,18 +155,24 @@ export default function Navbar() {
             <button className="theme-toggle" onClick={toggle}>
               <AnimatePresence mode="wait">
                 <motion.span key={theme}
-                  initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.7 }} transition={{ duration: 0.2 }}
+                  initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.6 }} transition={{ duration: 0.2 }}
                   style={{ display: 'flex' }}
                 >
                   {theme === 'light' ? <MoonIcon /> : <SunIcon />}
                 </motion.span>
               </AnimatePresence>
             </button>
-            <button onClick={() => setOpen(!open)}
-              style={{ background: 'none', border: 'none', color: 'var(--t1)', fontSize: '1.3rem', cursor: 'pointer' }}>
-              {open ? '✕' : '☰'}
-            </button>
+            <motion.button onClick={() => setOpen(!open)} whileTap={{ scale: 0.92 }}
+              style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 9, color: 'var(--nav-link-h)', fontSize: '1.1rem', cursor: 'pointer', width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <AnimatePresence mode="wait">
+                <motion.span key={open ? 'x' : 'menu'}
+                  initial={{ opacity: 0, rotate: -90 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0, rotate: 90 }}
+                  transition={{ duration: 0.15 }}>
+                  {open ? '✕' : '☰'}
+                </motion.span>
+              </AnimatePresence>
+            </motion.button>
           </div>
         </div>
 
@@ -162,23 +180,32 @@ export default function Navbar() {
         <AnimatePresence>
           {open && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              style={{ overflow: 'hidden', borderTop: '1px solid var(--nav-bd)', background: 'var(--nav-bg2)' }}
+              initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              style={{ overflow: 'hidden', borderTop: '1px solid var(--nav-bd)', background: 'var(--nav-bg2)', backdropFilter: 'blur(24px)' }}
             >
-              <div style={{ padding: '1rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                {LINKS.map(link => (
-                  <Link key={link.to} to={link.to} style={{
-                    color: location.pathname === link.to ? '#06B6D4' : 'var(--nav-link)',
-                    textDecoration: 'none', padding: '0.7rem 0.75rem', borderRadius: 8,
-                    borderBottom: '1px solid var(--bd-s)', fontSize: '0.95rem',
-                  }}>
-                    {link.label}
-                  </Link>
+              <div style={{ padding: '1.25rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                {LINKS.map((link, i) => (
+                  <motion.div key={link.to}
+                    initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05, duration: 0.3 }}>
+                    <Link to={link.to} style={{
+                      display: 'block', color: location.pathname === link.to ? '#06B6D4' : 'var(--nav-link)',
+                      textDecoration: 'none', padding: '0.75rem 0.85rem', borderRadius: 10,
+                      fontWeight: location.pathname === link.to ? 600 : 500,
+                      background: location.pathname === link.to ? 'rgba(6,182,212,0.08)' : 'transparent',
+                      fontSize: '0.95rem', transition: 'all 0.15s',
+                    }}>
+                      {link.label}
+                    </Link>
+                  </motion.div>
                 ))}
-                <Link to="/company" className="btn-primary" style={{ textAlign: 'center', marginTop: '0.75rem' }}>
-                  Request Demo
-                </Link>
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+                  style={{ marginTop: '0.75rem' }}>
+                  <Link to="/contact" className="btn-primary" style={{ textAlign: 'center', justifyContent: 'center' }}>
+                    Book Free Consultation →
+                  </Link>
+                </motion.div>
               </div>
             </motion.div>
           )}

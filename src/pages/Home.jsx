@@ -1,28 +1,81 @@
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 
-/* ── Particles ───────────────────────────────────────── */
-function Particles() {
-  const particles = useMemo(() =>
-    Array.from({ length: 24 }, (_, i) => ({
-      id: i, x: Math.random() * 100, startY: Math.random() * 100,
-      size: Math.random() * 2 + 1, dur: Math.random() * 10 + 8, delay: Math.random() * 8,
-      color: ['#06B6D4', '#8B5CF6', '#F59E0B', '#38BDF8'][Math.floor(Math.random() * 4)],
+/* ── Force-Directed Graph ────────────────────────────── */
+function ForceGraph() {
+  const canvasRef = useRef(null)
+  const mouseRef  = useRef({ x: -9999, y: -9999 })
+  const animRef   = useRef(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight }
+    resize()
+    const ro = new ResizeObserver(resize)
+    ro.observe(canvas)
+    const onMove = e => { const r = canvas.getBoundingClientRect(); mouseRef.current = { x: e.clientX - r.left, y: e.clientY - r.top } }
+    window.addEventListener('mousemove', onMove)
+
+    const N = 42
+    const COLORS = ['#06B6D4', '#38BDF8', '#8B5CF6', '#06B6D4', '#06B6D4']
+    const nodes = Array.from({ length: N }, () => ({
+      x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2.2 + 1.2, col: COLORS[Math.floor(Math.random() * COLORS.length)],
     }))
-  , [])
-  return (
-    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
-      {particles.map(p => (
-        <motion.div key={p.id}
-          style={{ position: 'absolute', left: p.x + '%', borderRadius: '50%', width: p.size, height: p.size, background: p.color }}
-          animate={{ y: [p.startY + 'vh', (p.startY - 60) + 'vh'], opacity: [0, 0.6, 0] }}
-          transition={{ duration: p.dur, delay: p.delay, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      ))}
-    </div>
-  )
+    const edges = []
+    nodes.forEach((_, i) => {
+      const count = Math.floor(Math.random() * 2) + 2
+      for (let k = 0; k < count; k++) { const j = Math.floor(Math.random() * N); if (j !== i) edges.push([i, j]) }
+    })
+
+    function tick() {
+      const W = canvas.width, H = canvas.height, mx = mouseRef.current.x, my = mouseRef.current.y
+      for (let i = 0; i < N; i++) {
+        const a = nodes[i]
+        for (let j = i + 1; j < N; j++) {
+          const b = nodes[j], dx = b.x - a.x, dy = b.y - a.y, d = Math.sqrt(dx*dx+dy*dy)||1
+          if (d < 110) { const f=(110-d)/110*0.25, fx=(dx/d)*f, fy=(dy/d)*f; a.vx-=fx; a.vy-=fy; b.vx+=fx; b.vy+=fy }
+        }
+        const mdx=a.x-mx, mdy=a.y-my, md=Math.sqrt(mdx*mdx+mdy*mdy)||1
+        if (md < 180) { const f=(180-md)/180*0.9; a.vx+=(mdx/md)*f; a.vy+=(mdy/md)*f }
+      }
+      edges.forEach(([si,ti]) => {
+        const a=nodes[si], b=nodes[ti], dx=b.x-a.x, dy=b.y-a.y, d=Math.sqrt(dx*dx+dy*dy)||1
+        const f=(d-130)/130*0.04, fx=(dx/d)*f, fy=(dy/d)*f
+        a.vx+=fx; a.vy+=fy; b.vx-=fx; b.vy-=fy
+      })
+      nodes.forEach(n => {
+        n.vx*=0.88; n.vy*=0.88; n.x+=n.vx; n.y+=n.vy
+        if(n.x<0){n.x=0;n.vx*=-1} if(n.x>W){n.x=W;n.vx*=-1}
+        if(n.y<0){n.y=0;n.vy*=-1} if(n.y>H){n.y=H;n.vy*=-1}
+      })
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      edges.forEach(([si,ti]) => {
+        const a=nodes[si], b=nodes[ti], dx=b.x-a.x, dy=b.y-a.y, d=Math.sqrt(dx*dx+dy*dy)
+        if(d>260) return
+        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y)
+        ctx.strokeStyle=`rgba(6,182,212,${(1-d/260)*0.18})`; ctx.lineWidth=0.7; ctx.stroke()
+      })
+      nodes.forEach(n => {
+        ctx.beginPath(); ctx.arc(n.x,n.y,n.r+3,0,Math.PI*2); ctx.fillStyle=n.col+'18'; ctx.fill()
+        ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2); ctx.fillStyle=n.col+'90'; ctx.fill()
+      })
+    }
+
+    function loop() { tick(); draw(); animRef.current = requestAnimationFrame(loop) }
+    loop()
+    return () => { cancelAnimationFrame(animRef.current); ro.disconnect(); window.removeEventListener('mousemove', onMove) }
+  }, [])
+
+  return <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }} />
 }
 
 /* ── PII Scanner terminal ────────────────────────────── */
@@ -72,11 +125,8 @@ function PIIScanner() {
         <span className="terminal-dot" style={{ background: '#28CA41' }} />
         <span className="mono" style={{ color: '#6B7280', fontSize: '0.72rem', marginLeft: 8 }}>pii-shield  /  site_report_pilbara.pdf</span>
         <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 5 }}>
-          <motion.span
-            animate={{ opacity: phase === 'scan' ? [1, 0.3, 1] : 1 }}
-            transition={{ duration: 0.8, repeat: phase === 'scan' ? Infinity : 0 }}
-            style={{ width: 6, height: 6, borderRadius: '50%', display: 'inline-block', background: phase === 'scan' ? '#F59E0B' : phase === 'done' ? '#10B981' : '#6B7280', boxShadow: phase === 'done' ? '0 0 8px #10B981' : 'none' }}
-          />
+          <motion.span animate={{ opacity: phase === 'scan' ? [1, 0.3, 1] : 1 }} transition={{ duration: 0.8, repeat: phase === 'scan' ? Infinity : 0 }}
+            style={{ width: 6, height: 6, borderRadius: '50%', display: 'inline-block', background: phase === 'scan' ? '#F59E0B' : phase === 'done' ? '#10B981' : '#6B7280', boxShadow: phase === 'done' ? '0 0 8px #10B981' : 'none' }} />
           <span className="mono" style={{ fontSize: '0.65rem', fontWeight: 700, color: phase === 'scan' ? '#F59E0B' : phase === 'done' ? '#10B981' : '#6B7280' }}>
             {phase === 'scan' ? 'SCANNING' : phase === 'done' ? 'SECURED' : 'STANDBY'}
           </span>
@@ -101,9 +151,7 @@ function PIIScanner() {
                     {'█'.repeat(Math.min(seg.text.length, 10))}
                     <sup style={{ fontSize: '0.55rem', marginLeft: 3 }}>{seg.type}</sup>
                   </motion.span>
-                ) : (
-                  <span style={{ color: '#E5E7EB' }}>{seg.text}</span>
-                )}
+                ) : <span style={{ color: '#E5E7EB' }}>{seg.text}</span>}
               </span>
             )
           })}
@@ -146,722 +194,550 @@ function Counter({ target, suffix = '' }) {
   return <span ref={elRef}>{val}{suffix}</span>
 }
 
-/* ── Architecture flow step ──────────────────────────── */
-function FlowStep({ step, icon, color, title, desc, delay, isLast }) {
+/* ── Editorial rule header ───────────────────────────── */
+function EditorialRule({ label }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', flex: 1, minWidth: 0 }}>
-      <motion.div
-        initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }} transition={{ delay, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        className="glass"
-        style={{ flex: 1, padding: '1.5rem 1.25rem', border: `1px solid ${color}25`, position: 'relative', textAlign: 'center' }}
-      >
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: color, borderRadius: '16px 16px 0 0' }} />
-        <div className="mono" style={{ fontSize: '0.6rem', fontWeight: 700, color, letterSpacing: '0.15em', marginBottom: '0.75rem' }}>STEP {step}</div>
-        <div style={{
-          width: 48, height: 48, borderRadius: 12, margin: '0 auto 0.85rem',
-          background: color + '15', border: `1px solid ${color}35`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem',
-        }}>{icon}</div>
-        <div style={{ color: 'var(--t1)', fontWeight: 700, fontSize: '0.85rem', marginBottom: '0.4rem' }}>{title}</div>
-        <div style={{ color: 'var(--t5)', fontSize: '0.75rem', lineHeight: 1.55 }}>{desc}</div>
-      </motion.div>
-
-      {!isLast && (
-        <motion.div
-          initial={{ opacity: 0, scaleX: 0 }} whileInView={{ opacity: 1, scaleX: 1 }}
-          viewport={{ once: true }} transition={{ delay: delay + 0.3, duration: 0.4 }}
-          style={{ flexShrink: 0, display: 'flex', alignItems: 'center', padding: '0 0.4rem' }}
-        >
-          <div style={{ width: 28, height: 2, background: `linear-gradient(90deg, ${color}, #06B6D4)`, opacity: 0.6 }} />
-          <div style={{ width: 0, height: 0, borderTop: '5px solid transparent', borderBottom: '5px solid transparent', borderLeft: `6px solid #06B6D4`, opacity: 0.6 }} />
-        </motion.div>
-      )}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '4rem' }}>
+      <div style={{ flex: 1, height: 1, background: 'var(--divider-c)' }} />
+      <span className="label">{label}</span>
+      <div style={{ flex: 1, height: 1, background: 'var(--divider-c)' }} />
     </div>
   )
 }
 
-const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.13 } } }
-const card = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } } }
-
-/* ── Chat mockup ─────────────────────────────────────── */
-function ChatMockup() {
-  const [citationOpen, setCitationOpen] = useState(false)
-
-  return (
-    <div style={{
-      background: '#0B1628',
-      border: '1px solid rgba(6,182,212,0.2)',
-      borderRadius: 18,
-      boxShadow: '0 0 0 1px rgba(6,182,212,0.06), 0 32px 80px rgba(0,0,0,0.45), 0 0 40px rgba(6,182,212,0.06)',
-      overflow: 'hidden',
-      fontFamily: 'Inter, sans-serif',
-    }}>
-      {/* Title bar */}
-      <div style={{
-        background: '#0D1F3A',
-        padding: '0.65rem 1rem',
-        display: 'flex', alignItems: 'center', gap: '0.5rem',
-        borderBottom: '1px solid rgba(6,182,212,0.1)',
-      }}>
-        <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#FF5F57' }} />
-        <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#FFBD2E' }} />
-        <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#28CA41' }} />
-        <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: '0.45rem',
-            background: 'rgba(6,182,212,0.07)', border: '1px solid rgba(6,182,212,0.15)',
-            borderRadius: 6, padding: '2px 10px',
-          }}>
-            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 5px #10B981' }} />
-            <span className="mono" style={{ fontSize: '0.6rem', color: '#9CA3AF', letterSpacing: '0.06em' }}>AIDATARIS · LOCAL INFERENCE · SECURE</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Chat area */}
-      <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1rem', minHeight: 320 }}>
-
-        {/* System header */}
-        <div style={{ textAlign: 'center' }}>
-          <span className="mono" style={{ fontSize: '0.6rem', color: '#4B5563', letterSpacing: '0.1em' }}>TODAY · PILBARA SITE 07 · SESSION ENCRYPTED</span>
-        </div>
-
-        {/* User message */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ delay: 0.3, duration: 0.5 }}
-          style={{ display: 'flex', justifyContent: 'flex-end' }}
-        >
-          <div style={{
-            maxWidth: '78%',
-            background: 'linear-gradient(135deg, #0EA5E9, #2563EB)',
-            color: '#fff', borderRadius: '14px 14px 3px 14px',
-            padding: '0.75rem 1rem', fontSize: '0.83rem', lineHeight: 1.55, fontWeight: 500,
-            boxShadow: '0 4px 16px rgba(14,165,233,0.25)',
-          }}>
-            What is the max load for the Sector 4 ventilation shafts?
-          </div>
-        </motion.div>
-
-        {/* Thinking indicator then AI response */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ delay: 0.65, duration: 0.5 }}
-          style={{ display: 'flex', gap: '0.65rem', alignItems: 'flex-start' }}
-        >
-          {/* Avatar */}
-          <div style={{
-            width: 30, height: 30, borderRadius: 8, flexShrink: 0,
-            background: 'linear-gradient(135deg, #06B6D4, #8B5CF6)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '0.8rem', fontWeight: 800, color: '#fff',
-          }}>A</div>
-
-          <div style={{ flex: 1 }}>
-            <div style={{
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(6,182,212,0.15)',
-              borderRadius: '3px 14px 14px 14px',
-              padding: '0.85rem 1rem',
-            }}>
-              <p style={{ color: '#E5E7EB', fontSize: '0.83rem', lineHeight: 1.65, margin: 0, marginBottom: '0.75rem' }}>
-                Based on the{' '}
-                <span style={{
-                  background: 'rgba(6,182,212,0.15)', color: '#38BDF8',
-                  borderRadius: 4, padding: '1px 5px', fontSize: '0.78rem', fontWeight: 600,
-                }}>Pilbara Site Engineering Specs [Page 42]</span>
-                , the maximum load is{' '}
-                <span style={{ color: '#10B981', fontWeight: 700 }}>4,500kg</span>
-                . This was updated in the latest Q3 audit.
-              </p>
-
-              {/* Source citation button + expand */}
-              <div>
-                <button
-                  onClick={() => setCitationOpen(o => !o)}
-                  style={{
-                    display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-                    padding: '4px 10px', borderRadius: 6, cursor: 'pointer',
-                    background: citationOpen ? 'rgba(139,92,246,0.18)' : 'rgba(139,92,246,0.1)',
-                    border: '1px solid rgba(139,92,246,0.35)',
-                    color: '#A78BFA', fontSize: '0.7rem', fontWeight: 700,
-                    fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.05em',
-                    transition: 'all 0.2s',
-                  }}
-                >
-                  <span>📎</span>
-                  SOURCE CITATION
-                  <motion.span animate={{ rotate: citationOpen ? 180 : 0 }} transition={{ duration: 0.2 }} style={{ fontSize: '0.6rem' }}>▼</motion.span>
-                </button>
-
-                <AnimatePresence>
-                  {citationOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }}
-                      style={{ overflow: 'hidden' }}
-                    >
-                      <div style={{
-                        marginTop: '0.6rem', padding: '0.65rem 0.75rem',
-                        background: 'rgba(139,92,246,0.07)',
-                        border: '1px solid rgba(139,92,246,0.2)',
-                        borderRadius: 8,
-                      }}>
-                        {[
-                          { doc: 'Pilbara Site Engineering Specs v4.2', page: 'p. 42', match: '98%' },
-                          { doc: 'Q3 Structural Audit Report 2024',     page: 'p. 7',  match: '91%' },
-                        ].map((src, i) => (
-                          <div key={i} style={{
-                            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                            padding: '0.3rem 0',
-                            borderBottom: i === 0 ? '1px solid rgba(139,92,246,0.12)' : 'none',
-                          }}>
-                            <div>
-                              <div className="mono" style={{ color: '#C4B5FD', fontSize: '0.67rem', fontWeight: 600 }}>{src.doc}</div>
-                              <div className="mono" style={{ color: '#6B7280', fontSize: '0.6rem' }}>{src.page}</div>
-                            </div>
-                            <span className="mono" style={{
-                              fontSize: '0.6rem', fontWeight: 700, padding: '2px 6px', borderRadius: 4,
-                              background: 'rgba(16,185,129,0.12)', color: '#10B981', border: '1px solid rgba(16,185,129,0.25)',
-                            }}>{src.match}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Input bar */}
-      <div style={{
-        padding: '0.75rem 1rem',
-        borderTop: '1px solid rgba(6,182,212,0.1)',
-        background: '#0D1F3A',
-        display: 'flex', alignItems: 'center', gap: '0.6rem',
-      }}>
-        <div style={{
-          flex: 1, background: 'rgba(255,255,255,0.05)',
-          border: '1px solid rgba(6,182,212,0.15)',
-          borderRadius: 10, padding: '0.6rem 0.85rem',
-          color: '#4B5563', fontSize: '0.78rem',
-          fontFamily: 'Inter, sans-serif',
-        }}>Ask anything about your documents...</div>
-        <button style={{
-          width: 34, height: 34, borderRadius: 9, border: 'none',
-          background: 'linear-gradient(135deg, #06B6D4, #2563EB)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          cursor: 'pointer', fontSize: '0.9rem', flexShrink: 0,
-        }}>↑</button>
-        <button style={{
-          width: 34, height: 34, borderRadius: 9, border: '1px solid rgba(6,182,212,0.2)',
-          background: 'rgba(6,182,212,0.08)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          cursor: 'pointer', fontSize: '0.85rem', flexShrink: 0, color: '#06B6D4',
-        }}>🎙</button>
-      </div>
-    </div>
-  )
-}
-
-const FLOW_STEPS = [
-  { step: 1, icon: '📄', color: '#06B6D4', title: 'Document Upload',      desc: 'PDF, DOCX, images, blueprints ingested into the secure pipeline' },
-  { step: 2, icon: '🛡', color: '#F87171', title: 'PII Privacy Shield',   desc: 'TFNs, ABNs, Medicare numbers, names — redacted before indexing' },
-  { step: 3, icon: '🕸', color: '#8B5CF6', title: 'Qdrant + Neo4j Engine', desc: 'GraphRAG builds entity relationships across your entire corpus' },
-  { step: 4, icon: '🤖', color: '#10B981', title: 'Local Ollama LLM',     desc: 'On-premises inference. Zero cloud calls. Zero data egress.' },
-]
-
-const BENEFITS = [
+/* ── Data ────────────────────────────────────────────── */
+const SERVICES = [
   {
-    icon: '🏢', color: '#06B6D4',
-    title: 'Complete Departmental Isolation.',
-    desc: 'Host Legal, HR, and Engineering on a single server with mathematically guaranteed zero data overlap via Hierarchical Multi-Tenancy. Each department operates in a cryptographically isolated namespace — a query from Legal cannot surface Engineering data. Ever.',
-    stat: '0', statLabel: 'Cross-Dept Leakage',
-    tags: ['Multi-Tenancy', 'Namespace Isolation', 'Cryptographic Walls'],
+    icon: '🧠', color: '#06B6D4', title: 'AI Consulting',
+    tagline: 'Strategy to deployment',
+    desc: 'We map where AI creates real ROI in your business, build a practical roadmap, and guide you through every step — from proof-of-concept to production.',
+    benefits: ['Identify automation opportunities', 'Clear ROI from day one', 'No wasted investment'],
   },
   {
-    icon: '⚙', color: '#F59E0B',
-    title: 'Autonomous Engineering Tools.',
-    desc: 'Our AI doesn\'t just read; it safely executes local Python math, pipeline, and timeline calculations to verify site budgets with 100% precision. No external API calls. No data leaving your environment. Computation that your compliance team can actually audit.',
-    stat: '100%', statLabel: 'Local Computation',
-    tags: ['Agentic Tools', 'Local Python', 'Zero External APIs'],
+    icon: '⚙', color: '#8B5CF6', title: 'Data Engineering',
+    tagline: 'Turn raw data into business intelligence',
+    desc: 'We design and build data pipelines, warehouses, and analytics platforms that give you clean, reliable data your AI can actually learn from.',
+    benefits: ['Eliminate data silos', 'Real-time dashboards', 'Scalable infrastructure'],
   },
   {
-    icon: '🔒', color: '#10B981',
-    title: 'Automated Privacy Shield.',
-    desc: 'Every query and document is scrubbed of sensitive PII before indexing, backed by a permanent, cryptographically-signed audit trail for your compliance officers. 12+ PII categories detected automatically — TFN, ABN, Medicare, credit cards, passports, and more.',
-    stat: '12+', statLabel: 'PII Categories',
-    tags: ['Auto-Redaction', 'Signed Audit Log', 'Privacy Act 1988'],
+    icon: '📈', color: '#10B981', title: 'Machine Learning Solutions',
+    tagline: 'Predictions that drive decisions',
+    desc: 'Custom ML models trained on your data to predict outcomes, detect anomalies, and automate complex decisions — built for your exact business problem.',
+    benefits: ['Predictive maintenance', 'Demand forecasting', 'Anomaly detection'],
+  },
+  {
+    icon: '🔒', color: '#F59E0B', title: 'On-Premise AI Systems',
+    tagline: '★ Our unique strength',
+    desc: 'AI that runs entirely within your own infrastructure. Your data never leaves your servers. Perfect for regulated industries and organisations that cannot use cloud AI.',
+    benefits: ['Zero data egress', 'Regulatory compliance', 'Complete data sovereignty'],
+    highlight: true,
   },
 ]
 
+const USE_CASES = [
+  {
+    icon: '☀', color: '#F59E0B', industry: 'Solar Companies',
+    title: 'AI-Powered Solar Intelligence',
+    problem: 'Manual panel inspections are expensive, infrequent, and miss early-stage defects — costing operators thousands in lost yield each season.',
+    solution: 'Computer vision models analyse drone footage to detect hotspots, soiling, and cell degradation automatically. Cleaning routes are optimised by AI.',
+    results: ['40% reduction in inspection costs', '15% improvement in energy yield', 'Faults detected weeks earlier'],
+  },
+  {
+    icon: '🏗', color: '#06B6D4', industry: 'Infrastructure',
+    title: 'Predictive Maintenance AI',
+    problem: 'Unplanned equipment failures cause costly downtime, emergency repairs, and safety risks on construction and infrastructure sites.',
+    solution: 'ML models continuously analyse sensor data to predict failures days before they occur, enabling planned maintenance windows instead of emergency responses.',
+    results: ['60% reduction in unplanned downtime', 'Up to 30% lower maintenance costs', 'Improved on-site safety record'],
+  },
+  {
+    icon: '💼', color: '#8B5CF6', industry: 'Business Automation',
+    title: 'Intelligent Process Automation',
+    problem: 'Manual document handling, repetitive data entry, and slow reporting cycles drain resources that should be focused on growing the business.',
+    solution: 'Custom AI agents automate document processing, customer queries, compliance reporting, and workflows — all running inside your own systems.',
+    results: ['70% faster document processing', 'Staff freed for high-value work', 'Consistent, error-free outputs'],
+  },
+]
+
+const DIFFERENTIATORS = [
+  { icon: '🛡', color: '#06B6D4', title: 'Secure On-Premise AI',     desc: 'Your data never leaves your building. We deploy AI inside your infrastructure — no cloud, no third parties, no risk.' },
+  { icon: '🔧', color: '#8B5CF6', title: 'Custom-Built Solutions',    desc: 'No templates. No off-the-shelf software. Every system is engineered from scratch to solve your specific problem.' },
+  { icon: '📍', color: '#F59E0B', title: 'Perth, WA Based',           desc: 'Local team. Australian business hours. We understand WA regulations, industries, and the unique challenges of operating here.' },
+  { icon: '⚡', color: '#10B981', title: 'Fast Deployment',           desc: 'From consultation to working prototype in weeks, not months. We move fast without cutting corners on quality or security.' },
+  { icon: '📐', color: '#F87171', title: 'Scalable Architecture',     desc: 'Built to grow with you. Start with one use case and expand across your organisation without rebuilding from scratch.' },
+  { icon: '🤝', color: '#A78BFA', title: 'Transparent Partnership',   desc: 'No black-box solutions. We explain what we build and why, so your team understands and owns the system we deliver.' },
+]
+
+const CASE_STUDIES = [
+  {
+    label: 'Case Study 01', color: '#F59E0B', icon: '☀',
+    title: 'Solar Panel Performance Monitoring AI',
+    industry: 'Solar Energy · Western Australia',
+    problem: 'A WA solar operator managing 12,000+ panels across regional sites had no reliable way to identify underperforming cells early. Manual inspections cost over $80,000/year and missed 30% of faults until they became critical failures.',
+    solution: 'We built an on-premise computer vision pipeline that ingests drone imagery and thermal data, automatically flags degraded cells, and generates prioritised maintenance work orders — all running on the client\'s local server.',
+    results: [
+      { metric: '43%', label: 'Reduction in inspection cost' },
+      { metric: '17%', label: 'Increase in annual energy yield' },
+      { metric: '3×',  label: 'Faster fault detection' },
+    ],
+    tags: ['Computer Vision', 'On-Premise', 'Thermal Imaging', 'Python'],
+  },
+  {
+    label: 'Case Study 02', color: '#06B6D4', icon: '🏗',
+    title: 'Predictive Maintenance for Infrastructure',
+    industry: 'Civil Infrastructure · Perth Metro',
+    problem: 'A Perth infrastructure company was losing an estimated $200,000/year to unplanned equipment failures. Maintenance was purely reactive — teams would respond after breakdowns rather than preventing them.',
+    solution: 'We designed and deployed a real-time ML system that ingests sensor data from 60+ machines, learns normal operating patterns, and alerts engineers when anomalous readings predict failure — typically 4–7 days in advance.',
+    results: [
+      { metric: '61%',  label: 'Reduction in unplanned downtime' },
+      { metric: '$180K', label: 'Estimated annual savings' },
+      { metric: '4–7',  label: 'Days advance warning' },
+    ],
+    tags: ['Machine Learning', 'IoT Sensors', 'Real-Time', 'On-Premise'],
+  },
+]
+
+/* ── Home ────────────────────────────────────────────── */
 export default function Home() {
   const heroRef = useRef(null)
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
-  const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
   const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
+  const heroY       = useTransform(scrollYProgress, [0, 1], ['0%', '18%'])
 
   return (
     <main style={{ background: 'var(--bg)' }}>
       <Helmet>
-        <title>AIDATARIS | Enterprise Sovereign AI &amp; Local RAG — Perth, Western Australia</title>
-        <meta name="description" content="100% on-premises, air-gapped Sovereign AI for Australian mining, government, and legal sectors. GraphRAG, agentic tools, PII protection. Zero cloud. Zero egress. Built in Perth, WA." />
+        <title>AIDATARIS | Secure AI & Data Solutions for Australian Businesses — Perth, WA</title>
+        <meta name="description" content="AIDATARIS builds custom AI systems, data engineering pipelines, and on-premise ML solutions for Australian businesses. Secure, sovereign AI for solar, infrastructure, and enterprise. Perth, WA." />
+        <meta name="keywords" content="AI solutions Perth, data engineering Australia, machine learning consulting WA, on-premise AI, sovereign AI Perth, AI for solar companies, predictive maintenance AI" />
       </Helmet>
 
-      {/* ── Hero ─────────────────────────────────────────── */}
+      {/* ── HERO ─────────────────────────────────────────── */}
       <section ref={heroRef} style={{ minHeight: '100vh', paddingTop: 100, display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
-        <motion.div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', y: heroY }}>
-          <div style={{ position: 'absolute', width: 900, height: 900, borderRadius: '50%', top: -350, left: -200, background: 'radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 65%)', animation: 'orb-1 14s ease-in-out infinite' }} />
-          <div style={{ position: 'absolute', width: 700, height: 700, borderRadius: '50%', top: -100, right: -200, background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 65%)', animation: 'orb-2 18s ease-in-out infinite' }} />
-          <div style={{ position: 'absolute', width: 500, height: 500, borderRadius: '50%', bottom: 0, right: '25%', background: 'radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 65%)', animation: 'orb-3 11s ease-in-out infinite' }} />
-          <div className="hero-grid" />
-        </motion.div>
-        <Particles />
+        <ForceGraph />
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
+          <motion.div animate={{ scale: [1, 1.12, 1], x: [0, 40, 0], y: [0, -30, 0] }} transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
+            style={{ position: 'absolute', width: 800, height: 800, borderRadius: '50%', top: -300, left: -200, background: 'radial-gradient(circle, rgba(6,182,212,0.1) 0%, transparent 65%)' }} />
+          <motion.div animate={{ scale: [1, 1.08, 1], x: [0, -50, 0], y: [0, 40, 0] }} transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+            style={{ position: 'absolute', width: 600, height: 600, borderRadius: '50%', top: -80, right: -150, background: 'radial-gradient(circle, rgba(139,92,246,0.07) 0%, transparent 65%)' }} />
+        </div>
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: 'radial-gradient(ellipse 80% 60% at 50% 50%, transparent 25%, var(--bg) 100%)' }} />
 
-        <motion.div style={{ position: 'relative', zIndex: 1, width: '100%', opacity: heroOpacity }} className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '4rem', alignItems: 'center', padding: '2rem 1.5rem' }}>
+        <motion.div style={{ position: 'relative', zIndex: 1, width: '100%', opacity: heroOpacity, y: heroY }}>
+          <div className="container" style={{ padding: '2rem 1.5rem' }}>
 
-            {/* Left copy */}
-            <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1, duration: 0.5 }} style={{ marginBottom: '1.5rem' }}>
-                <span className="label">Enterprise Sovereign AI · Perth, Western Australia</span>
-              </motion.div>
-
-              <h1 style={{ fontSize: 'clamp(2.2rem, 4.8vw, 3.9rem)', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-0.03em', marginBottom: '1.5rem' }}>
-                <motion.span initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, duration: 0.6 }}
-                  style={{ display: 'block', color: 'var(--t1)' }}>
-                  Sovereign AI for
-                </motion.span>
-                <motion.span initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.32, duration: 0.6 }}
-                  style={{ display: 'block', color: 'var(--t1)' }}>
-                  High-Security Australian
-                </motion.span>
-                <motion.span initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.44, duration: 0.6 }}
-                  style={{
-                    display: 'block',
-                    background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)',
-                    backgroundSize: '200% 200%', WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-                    animation: 'gradient-shift 5s ease infinite',
-                  }}>
-                  Enterprise.
-                </motion.span>
-              </h1>
-
-              <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }}
-                style={{ color: 'var(--t3)', fontSize: '1.05rem', lineHeight: 1.8, maxWidth: 500, marginBottom: '2.25rem' }}>
-                Bring the intelligence to your data, not your data to the cloud. The secure, air-gapped RAG architecture built for Western Australia.
-              </motion.p>
-
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65 }}
-                style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <Link to="/company" className="btn-primary">Book On-Premises Demo →</Link>
-                <Link to="/security" className="btn-ghost">View Security Architecture</Link>
-              </motion.div>
-
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
-                style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginTop: '1.75rem' }}>
-                {['Self-RAG', 'GraphRAG', 'Agentic Tools', 'Multi-Modal Vision', 'Air-Gapped', 'PII Shield'].map((p, i) => (
-                  <motion.span key={p} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.9 + i * 0.07 }}
-                    className="mono" style={{ fontSize: '0.68rem', padding: '3px 10px', borderRadius: 20, border: '1px solid rgba(6,182,212,0.2)', color: 'var(--t4)', background: 'rgba(6,182,212,0.05)' }}>
-                    {p}
-                  </motion.span>
-                ))}
-              </motion.div>
+            {/* Label row */}
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05, duration: 0.5 }}
+              style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '2.75rem', flexWrap: 'wrap' }}>
+              <span className="label">Perth, Western Australia</span>
+              <div style={{ height: 1, width: 60, background: 'var(--divider-c)' }} />
+              <span className="mono" style={{ color: 'var(--t5)', fontSize: '0.68rem', letterSpacing: '0.08em' }}>AI Consulting · Data Engineering · On-Premise</span>
             </motion.div>
 
-            {/* Right: PII terminal */}
-            <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}>
+            {/* H1 — massive editorial */}
+            <h1 style={{ fontSize: 'clamp(2.8rem, 6.5vw, 5.5rem)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.04em', marginBottom: '2rem', maxWidth: 860 }}>
+              {[
+                { text: 'Secure AI & Data', delay: 0.15 },
+                { text: 'Solutions for', delay: 0.27 },
+              ].map((line, i) => (
+                <motion.span key={i}
+                  initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: line.delay, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  style={{ display: 'block', color: 'var(--t1)' }}>
+                  {line.text}
+                </motion.span>
+              ))}
+              <motion.span
+                initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.39, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                style={{ display: 'block', background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)', backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', animation: 'gradient-shift 5s ease infinite' }}>
+                Australian Business.
+              </motion.span>
+            </h1>
+
+            {/* Sub-headline */}
+            <motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.52, duration: 0.65 }}
+              style={{ color: 'var(--t3)', fontSize: 'clamp(1rem, 1.8vw, 1.15rem)', lineHeight: 1.8, maxWidth: 580, marginBottom: '2.75rem' }}>
+              We build custom AI systems that run{' '}
+              <em style={{ color: '#06B6D4', fontStyle: 'normal', fontWeight: 600 }}>inside your infrastructure</em> — keeping your data private, secure, and fully under your control.
+            </motion.p>
+
+            {/* CTAs */}
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65, duration: 0.5 }}
+              style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '3rem' }}>
+              <Link to="/contact" className="btn-primary" style={{ fontSize: '1rem', padding: '0.9rem 2.1rem' }}>Book Free Consultation →</Link>
+              <Link to="/contact" className="btn-ghost"   style={{ fontSize: '1rem', padding: '0.9rem 2.1rem' }}>Get a Quote</Link>
+            </motion.div>
+
+            {/* Tags */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
+              style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '5rem' }}>
+              {['On-Premise AI', 'Data Engineering', 'ML Solutions', 'AI Consulting', 'Zero Cloud', 'Perth Based'].map((p, i) => (
+                <motion.span key={p} initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.9 + i * 0.06 }}
+                  className="mono" style={{ fontSize: '0.68rem', padding: '3px 10px', borderRadius: 20, border: '1px solid rgba(6,182,212,0.2)', color: 'var(--t4)', background: 'rgba(6,182,212,0.05)' }}>
+                  {p}
+                </motion.span>
+              ))}
+            </motion.div>
+
+            {/* PIIScanner + Stats grid */}
+            <motion.div initial={{ opacity: 0, y: 36 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', alignItems: 'center' }}>
               <PIIScanner />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'var(--bd)', borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(6,182,212,0.1)' }}>
+                {[
+                  { label: 'Industries Served',   val: 8,   suffix: '+' },
+                  { label: 'Local Processing',     val: 100, suffix: '%' },
+                  { label: 'Cloud Dependencies',   val: 0,   suffix: '' },
+                  { label: 'PII Types Protected',  val: 12,  suffix: '+' },
+                ].map((s, i) => (
+                  <div key={i} style={{ background: 'var(--stat-cell)', padding: '2rem', textAlign: 'center' }}>
+                    <div className="mono" style={{ fontSize: '2.2rem', fontWeight: 800, color: '#06B6D4', letterSpacing: '-0.03em' }}>
+                      <Counter target={s.val} suffix={s.suffix} />
+                    </div>
+                    <div style={{ color: 'var(--t4)', fontSize: '0.75rem', marginTop: 6 }}>{s.label}</div>
+                  </div>
+                ))}
+              </div>
             </motion.div>
+
+          </div>
+        </motion.div>
+      </section>
+
+      {/* ── SERVICES ─────────────────────────────────────── */}
+      <section style={{ padding: '8rem 1.5rem', background: 'var(--bg2)' }}>
+        <div className="container">
+          <EditorialRule label="01 · What We Build" />
+
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+            style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', marginBottom: '4rem', maxWidth: 620, lineHeight: 1.15 }}>
+            AI Services With Real{' '}
+            <span style={{ background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)', backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', animation: 'gradient-shift 5s ease infinite' }}>Business Impact</span>
+          </motion.h2>
+
+          <div>
+            {SERVICES.map((svc, i) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.55, delay: i * 0.07 }}
+                whileHover={{ x: 6 }} transition2={{ type: 'spring', stiffness: 280, damping: 22 }}
+                style={{ display: 'grid', gridTemplateColumns: '5.5rem 1fr', gap: '2.5rem', padding: '2.75rem 0', borderBottom: '1px solid var(--bd)', alignItems: 'start' }}>
+
+                {/* Stroke number */}
+                <div style={{
+                  fontSize: 'clamp(3rem, 5vw, 4.5rem)', fontWeight: 900, lineHeight: 1,
+                  color: 'transparent', WebkitTextStroke: `1px ${svc.color}40`,
+                  letterSpacing: '-0.04em', paddingTop: '0.3rem', fontFamily: 'Inter, sans-serif',
+                  userSelect: 'none',
+                }}>
+                  {String(i + 1).padStart(2, '0')}
+                </div>
+
+                {/* Content */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '2rem', alignItems: 'start' }}>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.8rem' }}>
+                      <div style={{ width: 42, height: 42, borderRadius: 11, background: svc.color + '15', border: `1px solid ${svc.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>{svc.icon}</div>
+                      <div>
+                        {svc.highlight && <div className="mono" style={{ color: svc.color, fontSize: '0.55rem', fontWeight: 700, letterSpacing: '0.12em', marginBottom: '2px' }}>★ UNIQUE TO US</div>}
+                        <h3 style={{ color: 'var(--t1)', fontWeight: 800, fontSize: '1.15rem', letterSpacing: '-0.015em' }}>{svc.title}</h3>
+                      </div>
+                    </div>
+                    <div className="mono" style={{ color: svc.color, fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.75rem' }}>{svc.tagline.toUpperCase()}</div>
+                    <p style={{ color: 'var(--t3)', fontSize: '0.9rem', lineHeight: 1.78 }}>{svc.desc}</p>
+                  </div>
+                  <div style={{ paddingTop: '0.25rem' }}>
+                    <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
+                      {svc.benefits.map((b, j) => (
+                        <li key={j} style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', color: 'var(--t3)', fontSize: '0.875rem' }}>
+                          <span style={{ width: 6, height: 6, borderRadius: '50%', background: svc.color, flexShrink: 0, boxShadow: `0 0 6px ${svc.color}80` }} />
+                          {b}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── HOW IT WORKS ─────────────────────────────────── */}
+      <section style={{ padding: '8rem 1.5rem' }}>
+        <div className="container">
+          <EditorialRule label="How It Works" />
+
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+            style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', marginBottom: '0.75rem', maxWidth: 560, lineHeight: 1.15 }}>
+            Document to Intelligence{' '}
+            <span style={{ background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)', backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', animation: 'gradient-shift 5s ease infinite' }}>in Five Steps.</span>
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+            style={{ color: 'var(--t4)', fontSize: '0.95rem', lineHeight: 1.75, maxWidth: 480, marginBottom: '4.5rem' }}>
+            From raw PDF upload to a cited, audited AI response — everything runs on your hardware, inside your network.
+          </motion.p>
+
+          {/* Steps grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0', border: '1px solid var(--bd)', borderRadius: 16, overflow: 'hidden' }}>
+            {[
+              { num: '01', icon: '📄', color: '#06B6D4', title: 'Upload Documents', desc: 'PDFs, Word docs, images, scanned files — any format accepted locally.' },
+              { num: '02', icon: '🛡', color: '#F87171', title: 'PII Auto-Detection', desc: '12+ sensitive data categories detected and permanently redacted before storage.' },
+              { num: '03', icon: '🕸', color: '#8B5CF6', title: 'Intelligent Indexing', desc: 'Semantic vector embeddings and a knowledge graph built from your content.' },
+              { num: '04', icon: '🧠', color: '#F59E0B', title: 'AI Query & Reasoning', desc: 'Natural language queries with multi-hop graph reasoning and local tool calling.' },
+              { num: '05', icon: '✓',  color: '#10B981', title: 'Cited, Audited Answer', desc: 'Every response includes source citations and is written to the immutable audit log.' },
+            ].map((step, i, arr) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }}
+                style={{
+                  padding: '2.25rem 1.75rem',
+                  borderRight: i < arr.length - 1 ? '1px solid var(--bd)' : 'none',
+                  background: 'var(--glass-bg)',
+                  transition: 'background 0.3s',
+                }}
+                whileHover={{ background: step.color + '06' }}>
+                <div className="mono" style={{ color: step.color, fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em', marginBottom: '1rem' }}>{step.num}</div>
+                <div style={{ width: 44, height: 44, borderRadius: 11, background: step.color + '15', border: `1px solid ${step.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', marginBottom: '1rem' }}>
+                  {step.icon}
+                </div>
+                <h3 style={{ color: 'var(--t1)', fontWeight: 700, fontSize: '0.95rem', marginBottom: '0.5rem', letterSpacing: '-0.01em', lineHeight: 1.3 }}>{step.title}</h3>
+                <p style={{ color: 'var(--t4)', fontSize: '0.82rem', lineHeight: 1.65 }}>{step.desc}</p>
+              </motion.div>
+            ))}
           </div>
 
-          {/* Stats strip */}
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 0.6 }}
-            style={{ margin: '3.5rem 1.5rem 0', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1px', background: 'var(--bd)', borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(6,182,212,0.1)' }}>
+          {/* Supporting note */}
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
+            style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
             {[
-              { label: 'PII Types Detected',  val: 12,   suffix: '+' },
-              { label: 'Local Processing',    val: 100,  suffix: '%' },
-              { label: 'Cloud Dependencies',  val: 0,    suffix: '' },
-              { label: 'Users Per Tenant',    val: 1000, suffix: '+' },
-            ].map((s, i) => (
-              <div key={i} style={{ background: 'var(--stat-cell)', padding: '1.5rem', textAlign: 'center' }}>
-                <div className="mono" style={{ fontSize: '2rem', fontWeight: 800, color: '#06B6D4' }}><Counter target={s.val} suffix={s.suffix} /></div>
-                <div style={{ color: 'var(--t4)', fontSize: '0.75rem', marginTop: 4 }}>{s.label}</div>
+              { icon: '⚡', text: 'Average query response < 3 seconds on-prem' },
+              { icon: '🔒', text: 'Zero bytes leave your network at any step' },
+              { icon: '📋', text: 'Full audit trail generated automatically' },
+            ].map((item, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--t5)', fontSize: '0.8rem' }}>
+                <span>{item.icon}</span> {item.text}
               </div>
             ))}
           </motion.div>
-        </motion.div>
-      </section>
-
-      {/* ── Architecture & Trust ─────────────────────────── */}
-      <section className="section" style={{ background: 'var(--bg2)' }}>
-        <hr className="divider" style={{ marginBottom: '5rem' }} />
-        <div className="container">
-          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <span className="label">Zero-Egress Data Pipeline</span>
-            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 900, color: 'var(--t1)', marginTop: '1rem', letterSpacing: '-0.02em' }}>
-              How Your Data Stays <span className="gradient-text">Sovereign</span>
-            </h2>
-            <p style={{ color: 'var(--t4)', marginTop: '0.75rem', maxWidth: 540, margin: '0.75rem auto 0', lineHeight: 1.7 }}>
-              Every byte follows the same immutable pipeline — ingestion, redaction, indexing, inference — entirely within your perimeter.
-            </p>
-          </motion.div>
-
-          {/* Flow diagram */}
-          <div style={{ display: 'flex', alignItems: 'stretch', gap: 0, overflowX: 'auto', paddingBottom: '0.5rem' }}>
-            {FLOW_STEPS.map((s, i) => (
-              <FlowStep key={s.step} {...s} delay={i * 0.15} isLast={i === FLOW_STEPS.length - 1} />
-            ))}
-          </div>
-
-          {/* Trust banner */}
-          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5, duration: 0.5 }}
-            style={{ marginTop: '3rem', padding: '1.25rem 2rem', borderRadius: 12, background: 'rgba(6,182,212,0.04)', border: '1px solid rgba(6,182,212,0.12)', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '0.5rem 2rem' }}>
-            {[
-              '✦ Australian Privacy Principles (APP)',
-              '✦ ISO 27001 Readiness',
-              '✦ Zero-Egress Architecture',
-              '✦ ASD Essential Eight Aligned',
-              '✦ PSPF Compatible',
-            ].map((item, i) => (
-              <span key={i} className="mono" style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--t4)', letterSpacing: '0.06em' }}>{item}</span>
-            ))}
-          </motion.div>
         </div>
       </section>
 
-      {/* ── Solutions ───────────────────────────────────── */}
-      <section className="section">
+      {/* ── USE CASES ────────────────────────────────────── */}
+      <section style={{ padding: '8rem 1.5rem' }}>
         <div className="container">
-          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <span className="label">Our Solutions</span>
-            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 900, color: 'var(--t1)', marginTop: '1rem', letterSpacing: '-0.02em' }}>
-              Enterprise Products.<br /><span className="gradient-text">Built for Security-First Organisations.</span>
-            </h2>
-            <p style={{ color: 'var(--t4)', marginTop: '0.75rem', maxWidth: 520, margin: '0.75rem auto 0', lineHeight: 1.7 }}>
-              Three flagship products designed to solve the hardest intelligence problems in high-security Australian enterprise.
-            </p>
-          </motion.div>
+          <EditorialRule label="02 · Real-World Applications" />
 
-          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-            {[
-              {
-                icon: '🕸', color: '#06B6D4',
-                name: 'Sovereign RAG',
-                tagline: 'Private document intelligence',
-                desc: 'Query your entire document corpus in natural language — contracts, manuals, blueprints, compliance codes — with zero data leaving your perimeter. Powered by Qdrant vector search and Neo4j knowledge graphs.',
-                tags: ['Qdrant Vector DB', 'Neo4j GraphRAG', 'Local Ollama LLM'],
-                link: '/solutions',
-              },
-              {
-                icon: '🛡', color: '#8B5CF6',
-                name: 'Compliance Shield',
-                tagline: 'Auto-PII redaction',
-                desc: 'Every document ingested is automatically scanned and redacted across 12+ PII categories — TFN, ABN, Medicare, credit cards, and more — before indexing. A cryptographically-signed audit trail satisfies your compliance officers.',
-                tags: ['12+ PII Categories', 'Signed Audit Log', 'Privacy Act 1988'],
-                link: '/security',
-              },
-              {
-                icon: '📡', color: '#F59E0B',
-                name: 'Offline Edge AI',
-                tagline: 'P2P sync for remote sites',
-                desc: 'Full RAG intelligence with zero internet dependency. Pre-loaded knowledge bases sync peer-to-peer across remote Pilbara sites. Voice-to-text transcription runs entirely on-device. Operations never stop, even when the network does.',
-                tags: ['P2P Sync', 'Air-Gapped', 'Voice-to-Text'],
-                link: '/solutions',
-              },
-            ].map((sol, i) => (
-              <motion.div key={i} variants={card} className="glass"
-                style={{ padding: '2.25rem', position: 'relative', overflow: 'hidden', cursor: 'pointer' }}
-                whileHover={{ y: -6 }} transition={{ type: 'spring', stiffness: 280 }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${sol.color}, transparent)` }} />
-                <div style={{
-                  width: 52, height: 52, borderRadius: 14, background: sol.color + '18',
-                  border: `1px solid ${sol.color}35`, display: 'flex', alignItems: 'center',
-                  justifyContent: 'center', fontSize: '1.5rem', marginBottom: '1.25rem',
-                }}>{sol.icon}</div>
-                <div className="mono" style={{ color: sol.color, fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.4rem' }}>
-                  {sol.tagline.toUpperCase()}
-                </div>
-                <h3 style={{ color: 'var(--t1)', fontWeight: 800, fontSize: '1.15rem', marginBottom: '0.75rem' }}>{sol.name}</h3>
-                <p style={{ color: 'var(--t3)', fontSize: '0.875rem', lineHeight: 1.75, marginBottom: '1.25rem' }}>{sol.desc}</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginBottom: '1.5rem' }}>
-                  {sol.tags.map(t => (
-                    <span key={t} className="mono" style={{ fontSize: '0.62rem', padding: '2px 8px', borderRadius: 4, background: sol.color + '12', color: sol.color, border: `1px solid ${sol.color}25` }}>{t}</span>
-                  ))}
-                </div>
-                <Link to={sol.link} style={{ color: sol.color, fontSize: '0.82rem', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-                  Learn more →
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+            style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', marginBottom: '4rem', maxWidth: 600, lineHeight: 1.15 }}>
+            AI Working in the Field.{' '}
+            <span style={{ background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)', backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', animation: 'gradient-shift 5s ease infinite' }}>Right Now.</span>
+          </motion.h2>
 
-      {/* ── Leadership ───────────────────────────────────── */}
-      <section className="section" style={{ background: 'var(--bg2)' }}>
-        <hr className="divider" style={{ marginBottom: '5rem' }} />
-        <div className="container">
-          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <span className="label">Our Leadership</span>
-            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 900, color: 'var(--t1)', marginTop: '1rem', letterSpacing: '-0.02em' }}>
-              Built by Engineers Who've<br /><span className="gradient-text">Worked in the Field.</span>
-            </h2>
-          </motion.div>
-
-          <div style={{ maxWidth: 780, margin: '0 auto' }}>
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
-              className="glass" style={{ padding: '2.5rem', border: '1px solid rgba(6,182,212,0.18)', position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #06B6D4, #8B5CF6)' }} />
-
-              <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '2rem', alignItems: 'start' }}>
-                {/* Avatar */}
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{
-                    width: 88, height: 88, borderRadius: 20,
-                    background: 'linear-gradient(135deg, #06B6D4, #8B5CF6)',
-                    boxShadow: '0 0 30px rgba(6,182,212,0.25)',
-                    marginBottom: '0.75rem', overflow: 'hidden',
-                  }}>
-                    <img src="/photo.png" alt="Vivek Rabadiya"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                  </div>
-                  <div className="mono" style={{ fontSize: '0.6rem', color: '#06B6D4', fontWeight: 700, letterSpacing: '0.1em' }}>FOUNDER & CEO</div>
-                </div>
-
-                {/* Bio */}
-                <div>
-                  <h3 style={{ color: 'var(--t1)', fontWeight: 900, fontSize: '1.4rem', letterSpacing: '-0.02em', marginBottom: '0.25rem' }}>Vivek Rabadiya</h3>
-                  <p style={{ color: 'var(--t4)', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
-                    Enterprise AI architect with research experience at the <span style={{ color: '#06B6D4', fontWeight: 600 }}>German Aerospace Center (DLR)</span> and academic grounding through <span style={{ color: '#8B5CF6', fontWeight: 600 }}>EIT Perth</span>. Specialises in deploying sovereign, on-premises AI systems for high-security environments where cloud is not an option.
-                  </p>
-
-                  {/* Credentials */}
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1.5rem' }}>
-                    {[
-                      { icon: '🚀', label: 'German Aerospace Center (DLR)', color: '#06B6D4' },
-                      { icon: '🎓', label: 'EIT Perth',                      color: '#8B5CF6' },
-                    ].map((c, i) => (
-                      <div key={i} style={{
-                        display: 'flex', alignItems: 'center', gap: '0.5rem',
-                        padding: '0.45rem 0.85rem', borderRadius: 8,
-                        background: c.color + '0E', border: `1px solid ${c.color}25`,
-                      }}>
-                        <span style={{ fontSize: '0.9rem' }}>{c.icon}</span>
-                        <span style={{ color: c.color, fontSize: '0.78rem', fontWeight: 600 }}>{c.label}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Tech stack */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            {USE_CASES.map((uc, i) => (
+              <motion.div key={i} className="glass"
+                initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }} transition={{ delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ boxShadow: `0 24px 64px rgba(0,0,0,0.16), 0 0 40px ${uc.color}12` }}
+                style={{ padding: '2.75rem', position: 'relative', overflow: 'hidden', border: `1px solid ${uc.color}22` }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: 4, background: uc.color, borderRadius: '16px 0 0 16px' }} />
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2.5rem', alignItems: 'start' }}>
                   <div>
-                    <div className="mono" style={{ color: 'var(--t5)', fontSize: '0.63rem', letterSpacing: '0.12em', marginBottom: '0.6rem' }}>CORE STACK</div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-                      {[
-                        { name: 'Qdrant',  color: '#06B6D4' },
-                        { name: 'Neo4j',   color: '#10B981' },
-                        { name: 'Ollama',  color: '#F59E0B' },
-                        { name: 'Python',  color: '#8B5CF6' },
-                        { name: 'GraphRAG',color: '#38BDF8' },
-                        { name: 'FastAPI', color: '#34D399' },
-                      ].map(s => (
-                        <span key={s.name} className="mono" style={{
-                          fontSize: '0.68rem', padding: '3px 10px', borderRadius: 20,
-                          background: s.color + '12', color: s.color, border: `1px solid ${s.color}25`, fontWeight: 700,
-                        }}>{s.name}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+                      <div style={{ width: 44, height: 44, borderRadius: 12, background: uc.color + '18', border: `1px solid ${uc.color}35`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem' }}>{uc.icon}</div>
+                      <div>
+                        <div className="mono" style={{ color: uc.color, fontSize: '0.63rem', fontWeight: 700, letterSpacing: '0.1em' }}>{uc.industry.toUpperCase()}</div>
+                        <h3 style={{ color: 'var(--t1)', fontWeight: 800, fontSize: '1.08rem', lineHeight: 1.3 }}>{uc.title}</h3>
+                      </div>
+                    </div>
+                    <div style={{ marginBottom: '0.85rem' }}>
+                      <div className="mono" style={{ color: '#F87171', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.35rem' }}>THE PROBLEM</div>
+                      <p style={{ color: 'var(--t3)', fontSize: '0.875rem', lineHeight: 1.75 }}>{uc.problem}</p>
+                    </div>
+                    <div>
+                      <div className="mono" style={{ color: '#06B6D4', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.35rem' }}>OUR SOLUTION</div>
+                      <p style={{ color: 'var(--t3)', fontSize: '0.875rem', lineHeight: 1.75 }}>{uc.solution}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="mono" style={{ color: '#10B981', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '1rem' }}>RESULTS</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                      {uc.results.map((r, j) => (
+                        <div key={j} style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', padding: '0.7rem 1rem', borderRadius: 8, background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}>
+                          <span style={{ color: '#10B981', fontSize: '0.9rem' }}>▸</span>
+                          <span style={{ color: 'var(--t2)', fontSize: '0.875rem', fontWeight: 500 }}>{r}</span>
+                        </div>
                       ))}
                     </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── End-User Experience ──────────────────────────── */}
-      <section className="section">
-        <div className="container">
-          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <span className="label">The End-User Experience</span>
-            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 900, color: 'var(--t1)', marginTop: '1rem', letterSpacing: '-0.02em' }}>
-              Enterprise Security in the Back.<br />
-              <span className="gradient-text">Intuitive Chat in the Front.</span>
-            </h2>
-          </motion.div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
-
-            {/* Left: copy */}
-            <motion.div initial={{ opacity: 0, x: -28 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}>
-              <h3 style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.85rem)', fontWeight: 800, color: 'var(--t1)', marginBottom: '1.25rem', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
-                An interface your team<br />already knows how to use.
-              </h3>
-              <p style={{ color: 'var(--t3)', lineHeight: 1.8, fontSize: '0.975rem', marginBottom: '2rem' }}>
-                You don&apos;t need to train your engineers to use complex databases. AIDATARIS provides a sleek, conversational interface. Employees simply type or speak their questions, and the AI retrieves the exact blueprints, safety manuals, and compliance codes they need — complete with source citations.
-              </p>
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.85rem', marginBottom: '2.25rem' }}>
-                {[
-                  { icon: '💬', text: 'Natural language chat interface' },
-                  { icon: '📎', text: 'Inline document previews & citations' },
-                  { icon: '🎙', text: 'Voice-to-text for field engineers' },
-                ].map((pt, i) => (
-                  <motion.li key={i}
-                    initial={{ opacity: 0, x: -16 }} whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }} transition={{ delay: 0.15 + i * 0.1, duration: 0.4 }}
-                    style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}
-                  >
-                    <span style={{
-                      width: 36, height: 36, borderRadius: 9, flexShrink: 0,
-                      background: 'rgba(6,182,212,0.1)', border: '1px solid rgba(6,182,212,0.2)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem',
-                    }}>{pt.icon}</span>
-                    <span style={{ color: 'var(--t2)', fontWeight: 600, fontSize: '0.925rem' }}>{pt.text}</span>
-                  </motion.li>
-                ))}
-              </ul>
-              <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 }}>
-                <div style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '0.6rem',
-                  padding: '0.65rem 1.1rem', borderRadius: 8,
-                  background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)',
-                }}>
-                  <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px #10B981' }} />
-                  <span className="mono" style={{ color: '#10B981', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em' }}>ZERO RETRAINING REQUIRED FOR END USERS</span>
-                </div>
               </motion.div>
-            </motion.div>
-
-            {/* Right: chat mockup */}
-            <motion.div initial={{ opacity: 0, x: 28 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}>
-              <ChatMockup />
-            </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── Benefit-Driven Features ──────────────────────── */}
-      <section className="section">
+      {/* ── WHY CHOOSE US ────────────────────────────────── */}
+      <section style={{ padding: '8rem 1.5rem', background: 'var(--bg2)' }}>
         <div className="container">
-          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <span className="label">Enterprise Value</span>
-            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 900, color: 'var(--t1)', marginTop: '1rem', letterSpacing: '-0.02em' }}>
-              Built for Organisations That<br />Cannot Afford to Compromise
-            </h2>
-          </motion.div>
+          <EditorialRule label="03 · Why AIDATARIS" />
 
-          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
-            {BENEFITS.map((b, i) => (
-              <motion.div key={i} variants={card} className="glass"
-                style={{ padding: '2.25rem', position: 'relative', overflow: 'hidden' }}
-                whileHover={{ scale: 1.02 }} transition={{ type: 'spring', stiffness: 280 }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${b.color}, transparent)` }} />
-                <motion.div whileHover={{ scale: 1.1, rotate: 5 }}
-                  style={{ width: 52, height: 52, borderRadius: 14, background: b.color + '18', border: `1px solid ${b.color}35`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', marginBottom: '1.25rem' }}>
-                  {b.icon}
-                </motion.div>
-                <h3 style={{ color: 'var(--t1)', fontWeight: 800, fontSize: '1.05rem', marginBottom: '0.75rem', lineHeight: 1.3 }}>{b.title}</h3>
-                <p style={{ color: 'var(--t3)', fontSize: '0.875rem', lineHeight: 1.75, marginBottom: '1.5rem' }}>{b.desc}</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginBottom: '1.25rem' }}>
-                  {b.tags.map(t => (
-                    <span key={t} className="mono" style={{ fontSize: '0.62rem', padding: '2px 8px', borderRadius: 4, background: b.color + '12', color: b.color, border: `1px solid ${b.color}25` }}>{t}</span>
-                  ))}
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+            style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', marginBottom: '4rem', maxWidth: 580, lineHeight: 1.15 }}>
+            Built Different.{' '}
+            <span style={{ background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)', backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', animation: 'gradient-shift 5s ease infinite' }}>For Good Reason.</span>
+          </motion.h2>
+
+          {/* Feature grid — clean bordered cells */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', border: '1px solid var(--bd)', borderRadius: 16, overflow: 'hidden' }}>
+            {DIFFERENTIATORS.map((d, i) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }} transition={{ delay: i * 0.07, duration: 0.5 }}
+                style={{
+                  padding: '2.25rem 2.5rem',
+                  borderRight: '1px solid var(--bd)',
+                  borderBottom: '1px solid var(--bd)',
+                  display: 'flex', gap: '1.25rem', alignItems: 'flex-start',
+                  background: 'var(--glass-bg)',
+                  transition: 'background 0.3s',
+                }}
+                whileHover={{ background: d.color + '08' }}>
+                <div style={{ width: 46, height: 46, borderRadius: 12, background: d.color + '12', border: `1px solid ${d.color}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', flexShrink: 0 }}>
+                  {d.icon}
                 </div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.4rem', borderTop: '1px solid var(--bd-s)', paddingTop: '1rem' }}>
-                  <span className="mono" style={{ color: b.color, fontWeight: 800, fontSize: '1.75rem' }}>{b.stat}</span>
-                  <span style={{ color: 'var(--t5)', fontSize: '0.75rem' }}>{b.statLabel}</span>
+                <div>
+                  <h3 style={{ color: 'var(--t1)', fontWeight: 700, fontSize: '1rem', marginBottom: '0.45rem' }}>{d.title}</h3>
+                  <p style={{ color: 'var(--t4)', fontSize: '0.85rem', lineHeight: 1.72 }}>{d.desc}</p>
                 </div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* ── Air-Gapped / Pilbara ─────────────────────────── */}
-      <section className="section" style={{ background: 'var(--bg2)', position: 'relative', overflow: 'hidden' }}>
-        <hr className="divider" style={{ marginBottom: '5rem' }} />
-        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
-          <div style={{ position: 'absolute', width: 600, height: 600, borderRadius: '50%', bottom: -200, right: -100, background: 'radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 65%)' }} />
-          <div className="hero-grid" />
-        </div>
-        <div className="container" style={{ position: 'relative' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '5rem', alignItems: 'center' }}>
+      {/* ── CASE STUDIES ─────────────────────────────────── */}
+      <section style={{ padding: '8rem 1.5rem' }}>
+        <div className="container">
+          <EditorialRule label="04 · Case Studies" />
 
-            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
-              <span className="label" style={{ color: '#F59E0B', border: '1px solid rgba(245,158,11,0.3)', background: 'rgba(245,158,11,0.06)' }}>
-                Sovereign Offline Mode
-              </span>
-              <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', fontWeight: 900, color: 'var(--t1)', margin: '1.25rem 0', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
-                Built for the Edge.<br />
-                <span style={{ color: '#F59E0B' }}>Built for the Pilbara.</span>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+            style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', marginBottom: '1rem', maxWidth: 560, lineHeight: 1.15 }}>
+            From Problem to{' '}
+            <span style={{ background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)', backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', animation: 'gradient-shift 5s ease infinite' }}>Measurable Result</span>
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2, duration: 0.5 }}
+            style={{ color: 'var(--t4)', fontSize: '0.95rem', lineHeight: 1.7, maxWidth: 500, marginBottom: '5rem' }}>
+            Real deployments. Real outcomes. All running on-premise inside client infrastructure.
+          </motion.p>
+
+          {CASE_STUDIES.map((cs, i) => (
+            <motion.div key={i}
+              initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }} transition={{ delay: i * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              style={{ padding: '5rem 0', borderTop: '1px solid var(--bd)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '5rem', alignItems: 'start' }}>
+
+                {/* Left — giant metrics */}
+                <div>
+                  <div className="mono" style={{ color: cs.color, fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.14em', marginBottom: '2.5rem' }}>
+                    {cs.label.toUpperCase()} · {cs.industry}
+                  </div>
+                  {cs.results.map((r, j) => (
+                    <motion.div key={j}
+                      initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }} transition={{ delay: 0.15 + j * 0.1, duration: 0.6 }}
+                      style={{ marginBottom: '2.25rem' }}>
+                      <div style={{ fontSize: 'clamp(2.8rem, 6vw, 5rem)', fontWeight: 900, color: cs.color, lineHeight: 1, letterSpacing: '-0.04em', fontFamily: 'Inter, sans-serif' }}>
+                        {r.metric}
+                      </div>
+                      <div style={{ color: 'var(--t4)', fontSize: '0.875rem', marginTop: '0.4rem', letterSpacing: '0.01em' }}>{r.label}</div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Right — details */}
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                    <div style={{ width: 46, height: 46, borderRadius: 12, background: cs.color + '18', border: `1px solid ${cs.color}35`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem' }}>{cs.icon}</div>
+                    <h3 style={{ fontSize: 'clamp(1.3rem, 2.2vw, 1.9rem)', fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.02em', lineHeight: 1.2 }}>{cs.title}</h3>
+                  </div>
+
+                  <div style={{ marginBottom: '1.35rem' }}>
+                    <div className="mono" style={{ color: '#F87171', fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem' }}>THE PROBLEM</div>
+                    <p style={{ color: 'var(--t3)', fontSize: '0.9rem', lineHeight: 1.78 }}>{cs.problem}</p>
+                  </div>
+                  <div style={{ marginBottom: '2rem' }}>
+                    <div className="mono" style={{ color: '#06B6D4', fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem' }}>OUR SOLUTION</div>
+                    <p style={{ color: 'var(--t3)', fontSize: '0.9rem', lineHeight: 1.78 }}>{cs.solution}</p>
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                    {cs.tags.map(t => (
+                      <span key={t} className="mono" style={{ fontSize: '0.6rem', padding: '3px 10px', borderRadius: 4, background: cs.color + '12', color: cs.color, border: `1px solid ${cs.color}28` }}>{t}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+          {/* Bottom border for last item */}
+          <div style={{ borderTop: '1px solid var(--bd)' }} />
+        </div>
+      </section>
+
+      {/* ── ABOUT ────────────────────────────────────────── */}
+      <section style={{ padding: '8rem 1.5rem', background: 'var(--bg2)' }}>
+        <div className="container">
+          <EditorialRule label="05 · About" />
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '5rem', alignItems: 'center' }}>
+            <motion.div initial={{ opacity: 0, x: -28 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
+              <h2 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3rem)', fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '1.75rem' }}>
+                A Perth Startup with<br />
+                <span style={{ background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)', backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', animation: 'gradient-shift 5s ease infinite' }}>Enterprise Engineering Depth.</span>
               </h2>
-              <p style={{ color: 'var(--t3)', lineHeight: 1.8, fontSize: '0.975rem', marginBottom: '2rem' }}>
-                Our Sovereign Offline Mode guarantees full intelligence capabilities at remote sites with zero internet connectivity. Field engineers can query safety specifications and engineering blueprints hands-free using local Voice-to-Text transcription — keeping operations running when the network goes down.
+              <p style={{ color: 'var(--t3)', lineHeight: 1.85, fontSize: '0.95rem', marginBottom: '1.1rem' }}>
+                AIDATARIS was founded with a single belief: Australian businesses deserve access to powerful, secure AI — without handing their data to overseas cloud providers.
               </p>
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '2.25rem' }}>
-                {[
-                  'Full RAG capability with zero network dependency',
-                  'Pre-loaded knowledge base operates indefinitely offline',
-                  'Voice-to-Text transcription runs entirely on-device',
-                  'Safety spec and blueprint queries in seconds, anywhere',
-                  'Automated DMIRS and WA Mines Safety Act cross-reference',
-                ].map((pt, i) => (
-                  <li key={i} style={{ display: 'flex', gap: '0.6rem', color: 'var(--t3)', fontSize: '0.875rem', alignItems: 'flex-start' }}>
-                    <span style={{ color: '#F59E0B', flexShrink: 0, marginTop: 2 }}>▸</span> {pt}
-                  </li>
+              <p style={{ color: 'var(--t3)', lineHeight: 1.85, fontSize: '0.95rem', marginBottom: '1.1rem' }}>
+                We're a team of engineers with research and industry experience spanning the German Aerospace Center (DLR) and Australian enterprise. We've worked on real ML systems in demanding environments — and we bring that rigour to every client engagement.
+              </p>
+              <p style={{ color: 'var(--t3)', lineHeight: 1.85, fontSize: '0.95rem', marginBottom: '2.25rem' }}>
+                Based in Perth, WA. Focused on building AI that's fast to deploy, secure by design, and built to grow with your business.
+              </p>
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                {['Qdrant', 'Neo4j', 'Ollama', 'Python', 'FastAPI', 'PyTorch'].map(t => (
+                  <span key={t} className="mono" style={{ fontSize: '0.68rem', padding: '3px 10px', borderRadius: 20, border: '1px solid rgba(6,182,212,0.2)', color: '#06B6D4', background: 'rgba(6,182,212,0.05)' }}>{t}</span>
                 ))}
-              </ul>
-              <Link to="/solutions" className="btn-primary" style={{ background: '#F59E0B' }}>
-                See Mining & Energy Solution →
-              </Link>
+              </div>
             </motion.div>
 
-            {/* Right: rugged terminal */}
-            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
-              <div className="terminal">
-                <div className="terminal-bar">
-                  <span className="terminal-dot" style={{ background: '#FF5F57' }} />
-                  <span className="terminal-dot" style={{ background: '#FFBD2E' }} />
-                  <span className="terminal-dot" style={{ background: '#28CA41' }} />
-                  <span className="mono" style={{ color: '#6B7280', fontSize: '0.7rem', marginLeft: 8 }}>sovereign-offline  /  pilbara-site-07</span>
-                  <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 5 }}>
-                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#F59E0B', boxShadow: '0 0 8px #F59E0B', animation: 'pulse-ring 2s ease infinite' }} />
-                    <span className="mono" style={{ fontSize: '0.62rem', color: '#F59E0B', fontWeight: 700 }}>OFFLINE MODE</span>
-                  </span>
+            <motion.div initial={{ opacity: 0, x: 28 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+              className="glass" style={{ padding: '2.5rem', border: '1px solid rgba(6,182,212,0.18)', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #06B6D4, #8B5CF6)' }} />
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.5rem' }}>
+                <div style={{ width: 80, height: 80, borderRadius: 18, overflow: 'hidden', flexShrink: 0, boxShadow: '0 0 24px rgba(6,182,212,0.25)' }}>
+                  <img src="/photo.png" alt="Vivek Rabadiya" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
-                <div style={{ padding: '1.25rem 1.5rem' }}>
-                  {[
-                    { label: 'NETWORK',   val: 'DISCONNECTED', col: '#F87171' },
-                    { label: 'AI STATUS', val: 'OPERATIONAL',  col: '#10B981' },
-                    { label: 'MODEL',     val: 'LOCAL · LLAMA-3.1', col: '#38BDF8' },
-                    { label: 'EGRESS',    val: '0 BYTES',      col: '#10B981' },
-                    { label: 'SITE',      val: 'PILBARA-07 · WA', col: '#F59E0B' },
-                  ].map((row, i) => (
-                    <div key={i} className="mono" style={{ display: 'flex', justifyContent: 'space-between', padding: '0.45rem 0', borderBottom: i < 4 ? '1px solid rgba(6,182,212,0.06)' : 'none', fontSize: '0.72rem' }}>
-                      <span style={{ color: '#4B5563' }}>{row.label}</span>
-                      <span style={{ color: row.col, fontWeight: 700 }}>{row.val}</span>
-                    </div>
-                  ))}
-                  <div style={{ marginTop: '1.25rem', padding: '0.75rem 1rem', background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.2)', borderRadius: 8 }}>
-                    <div className="mono" style={{ fontSize: '0.68rem', color: '#9CA3AF', marginBottom: '0.3rem' }}>› query</div>
-                    <div className="mono" style={{ fontSize: '0.72rem', color: '#E5E7EB' }}>"What are the confined space entry requirements under WA Mines Safety Regulations 1995?"</div>
-                    <div style={{ marginTop: '0.6rem', display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }}>
-                        <span className="mono" style={{ fontSize: '0.62rem', color: '#10B981' }}>● GENERATING FROM LOCAL KNOWLEDGE BASE</span>
-                      </motion.span>
-                    </div>
+                <div>
+                  <h3 style={{ color: 'var(--t1)', fontWeight: 900, fontSize: '1.25rem', letterSpacing: '-0.02em' }}>Vivek Rabadiya</h3>
+                  <div className="mono" style={{ color: '#06B6D4', fontSize: '0.63rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.85rem' }}>FOUNDER & CEO</div>
+                  <p style={{ color: 'var(--t4)', fontSize: '0.85rem', lineHeight: 1.75, marginBottom: '1.35rem' }}>
+                    AI engineer and data architect with hands-on experience at the{' '}
+                    <span style={{ color: '#06B6D4', fontWeight: 600 }}>German Aerospace Center (DLR)</span> and deep roots in Perth's tech community through{' '}
+                    <span style={{ color: '#8B5CF6', fontWeight: 600 }}>EIT Perth</span>.
+                  </p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+                    {[
+                      { icon: '🚀', text: 'German Aerospace Center (DLR)' },
+                      { icon: '🎓', text: 'EIT Perth' },
+                      { icon: '📍', text: 'Perth, Western Australia' },
+                    ].map((c, i) => (
+                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', color: 'var(--t4)', fontSize: '0.82rem' }}>
+                        <span>{c.icon}</span> {c.text}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -870,61 +746,47 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Industry Strip ───────────────────────────────── */}
-      <section className="section">
-        <div className="container">
-          <motion.div style={{ textAlign: 'center', marginBottom: '3.5rem' }}
-            initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <span className="label">Industry Solutions</span>
-            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', fontWeight: 900, color: 'var(--t1)', marginTop: '1rem', letterSpacing: '-0.02em' }}>
-              Built for WA&apos;s Most Demanding Sectors
-            </h2>
-          </motion.div>
+      {/* ── FINAL CTA ─────────────────────────────────────── */}
+      <section style={{ padding: '12rem 1.5rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.05, 0.12, 0.05] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ position: 'absolute', width: 900, height: 900, borderRadius: '50%', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', background: 'radial-gradient(circle, #06B6D4 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.03, 0.07, 0.03] }} transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          style={{ position: 'absolute', width: 500, height: 500, borderRadius: '50%', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', background: 'radial-gradient(circle, #8B5CF6 0%, transparent 65%)', pointerEvents: 'none' }} />
 
-          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-            {[
-              { icon: '⛏', col: '#F59E0B', name: 'Mining & Energy',  tags: ['Offline Mode', 'Air-Gap', 'Safety Docs'],           desc: 'Remote Pilbara sites, offshore platforms, zero connectivity dependency.' },
-              { icon: '🏛', col: '#06B6D4', name: 'WA Government',    tags: ['Data Residency', 'ASD Essential 8', 'Classified'],   desc: 'Data sovereignty, AI Assurance Framework, full auditability.' },
-              { icon: '⚖', col: '#8B5CF6', name: 'Legal & Health',   tags: ['PII Shield', 'Client Walls', 'Medical Records'],     desc: 'High-confidentiality document intelligence, Privacy Act 1988 compliant.' },
-            ].map((ind, i) => (
-              <motion.div key={i} variants={card} className="glass" style={{ padding: '2rem' }}
-                whileHover={{ y: -6, borderColor: ind.col + '60' }} transition={{ type: 'spring', stiffness: 300 }}>
-                <motion.div whileHover={{ scale: 1.1, rotate: -5 }}
-                  style={{ width: 52, height: 52, borderRadius: 14, background: ind.col + '18', border: `1px solid ${ind.col}33`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', marginBottom: '1.25rem' }}>
-                  {ind.icon}
-                </motion.div>
-                <h3 style={{ color: ind.col, fontWeight: 700, fontSize: '1rem', marginBottom: '0.5rem' }}>{ind.name}</h3>
-                <p style={{ color: 'var(--t3)', fontSize: '0.875rem', lineHeight: 1.65, marginBottom: '1rem' }}>{ind.desc}</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
-                  {ind.tags.map(t => <span key={t} className="mono" style={{ fontSize: '0.65rem', padding: '2px 8px', borderRadius: 4, background: ind.col + '12', color: ind.col, border: `1px solid ${ind.col}25` }}>{t}</span>)}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-          <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
-            <Link to="/solutions" className="btn-ghost">Explore all solutions →</Link>
+        <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          style={{ position: 'relative', maxWidth: 820, margin: '0 auto' }}>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', justifyContent: 'center', marginBottom: '3rem' }}>
+            <div style={{ flex: 1, maxWidth: 100, height: 1, background: 'var(--divider-c)' }} />
+            <span className="label">Ready to Get Started?</span>
+            <div style={{ flex: 1, maxWidth: 100, height: 1, background: 'var(--divider-c)' }} />
           </div>
-        </div>
-      </section>
 
-      {/* ── Final CTA ────────────────────────────────────── */}
-      <section style={{ padding: '7rem 1.5rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-        <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.05, 0.09, 0.05] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ position: 'absolute', width: 700, height: 700, borderRadius: '50%', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', background: 'radial-gradient(circle, rgba(245,158,11,1) 0%, transparent 65%)', pointerEvents: 'none' }} />
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
-          style={{ position: 'relative', maxWidth: 640, margin: '0 auto' }}>
-          <span className="label">Deploy Today</span>
-          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: 'var(--t1)', margin: '1.25rem 0', letterSpacing: '-0.03em' }}>
-            Your Infrastructure.<br />
-            <span style={{ color: '#F59E0B' }}>Your Intelligence. Your Control.</span>
+          <h2 style={{ fontSize: 'clamp(2.8rem, 7.5vw, 6rem)', fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.04em', lineHeight: 1.03, marginBottom: '1.75rem' }}>
+            Ready to deploy AI<br />
+            <span style={{ background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)', backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', animation: 'gradient-shift 5s ease infinite' }}>
+              that you own?
+            </span>
           </h2>
-          <p style={{ color: 'var(--t3)', lineHeight: 1.8, maxWidth: 500, margin: '0 auto 2.5rem' }}>
-            Join Australian enterprises that trust AIDATARIS with their most sensitive data — completely on-premises, zero egress, complete governance.
+
+          <p style={{ color: 'var(--t3)', fontSize: '1.1rem', lineHeight: 1.8, maxWidth: 520, margin: '0 auto 3rem' }}>
+            Book a free 30-minute consultation. We'll listen to your challenges, tell you honestly what AI can and can't do for your situation, and give you a clear path forward.
           </p>
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/company" className="btn-primary">Book On-Premises Demo →</Link>
-            <Link to="/security" className="btn-ghost">View Security Architecture</Link>
+
+          <Link to="/contact" className="btn-primary" style={{ fontSize: '1rem', padding: '1rem 2.5rem' }}>
+            Book Free Consultation →
+          </Link>
+
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '2.5rem', marginTop: '3.5rem', flexWrap: 'wrap' }}>
+            {[
+              { icon: '📍', text: 'Perth, Western Australia' },
+              { icon: '✉',  text: 'support@aidataris.com.au' },
+              { icon: '⏱',  text: 'Response within 1 business day' },
+            ].map((item, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--t5)', fontSize: '0.85rem' }}>
+                <span>{item.icon}</span> {item.text}
+              </div>
+            ))}
           </div>
         </motion.div>
       </section>
