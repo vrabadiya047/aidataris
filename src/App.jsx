@@ -14,6 +14,7 @@ import AdminConsole from './pages/AdminConsole'
 import Company from './pages/Company'
 import Careers from './pages/Careers'
 import Contact from './pages/Contact'
+import BookConsultation from './pages/BookConsultation'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -51,6 +52,7 @@ function AppLayout() {
           <Route path="/company"    element={<AnimatedPage><Company /></AnimatedPage>} />
           <Route path="/careers"    element={<AnimatedPage><Careers /></AnimatedPage>} />
           <Route path="/contact"    element={<AnimatedPage><Contact /></AnimatedPage>} />
+          <Route path="/book"       element={<AnimatedPage><BookConsultation /></AnimatedPage>} />
         </Routes>
       </AnimatePresence>
       <Footer />

@@ -37,8 +37,6 @@ function Field({ label, children }) {
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } }
 const fade = { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.45 } } }
 
-const FORMSPREE = 'https://formspree.io/f/mojrazpn'
-
 export default function Contact() {
   const [inquiry, setInquiry] = useState('demo')
   const [form, setForm] = useState({ name: '', email: '', org: '', sector: '', msg: '' })
@@ -52,14 +50,15 @@ export default function Contact() {
     setLoading(true)
     setError('')
     try {
-      const res = await fetch(FORMSPREE, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ ...form, inquiryType: INQUIRY_TYPES.find(t => t.id === inquiry)?.label }),
+      const res = await fetch('/api/contact', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ ...form, inquiryType: INQUIRY_TYPES.find(t => t.id === inquiry)?.label }),
       })
-      if (res.ok) { setDone(true) } else { setError('Something went wrong. Please try again or email us directly.') }
+      const j = await res.json()
+      if (res.ok) { setDone(true) } else { setError(j.error || 'Something went wrong. Please email support@aidataris.com.au directly.') }
     } catch {
-      setError('Network error. Please check your connection and try again.')
+      setError('Network error. Please email support@aidataris.com.au directly.')
     } finally {
       setLoading(false)
     }

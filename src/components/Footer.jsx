@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Logo from './Logo'
 
-const FORMSPREE = 'https://formspree.io/f/mojrazpn'
-
 const inputStyle = {
   width: '100%', background: 'rgba(255,255,255,0.05)',
   border: '1px solid rgba(6,182,212,0.15)', borderRadius: 8,
@@ -25,10 +23,10 @@ export default function Footer() {
     e.preventDefault()
     setLoading(true)
     try {
-      const res = await fetch(FORMSPREE, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ ...form, formSource: 'Footer Lead Capture' }),
+      const res = await fetch('/api/subscribe', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(form),
       })
       if (res.ok) setDone(true)
     } finally {

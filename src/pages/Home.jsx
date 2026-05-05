@@ -479,7 +479,7 @@ export default function Home() {
 
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65, duration: 0.5 }}
               style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '3rem' }}>
-              <Link to="/contact" className="btn-primary" style={{ fontSize: '1rem', padding: '0.9rem 2.1rem' }}>Book Free Consultation →</Link>
+              <Link to="/book" className="btn-primary" style={{ fontSize: '1rem', padding: '0.9rem 2.1rem' }}>Book Free Consultation →</Link>
               <Link to="/contact" className="btn-ghost"   style={{ fontSize: '1rem', padding: '0.9rem 2.1rem' }}>Request Demo</Link>
             </motion.div>
 
@@ -570,7 +570,7 @@ export default function Home() {
                 The result: your organisation can finally use AI to surface insights from decades of internal data, automate manual analysis tasks, and meet compliance requirements — without compromising on security.
               </p>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                <Link to="/contact" className="btn-primary">Book Free Consultation →</Link>
+                <Link to="/book" className="btn-primary">Book Free Consultation →</Link>
                 <Link to="/platform" className="btn-ghost">How It Works</Link>
               </div>
             </motion.div>
@@ -1084,7 +1084,7 @@ export default function Home() {
           </p>
 
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '3.5rem' }}>
-            <Link to="/contact" className="btn-primary" style={{ fontSize: '1rem', padding: '1rem 2.5rem' }}>
+            <Link to="/book" className="btn-primary" style={{ fontSize: '1rem', padding: '1rem 2.5rem' }}>
               Book Free Consultation →
             </Link>
             <Link to="/contact" className="btn-ghost" style={{ fontSize: '1rem', padding: '1rem 2.5rem' }}>

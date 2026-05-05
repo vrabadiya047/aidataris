@@ -144,7 +144,7 @@ export default function Navbar() {
               </AnimatePresence>
             </motion.button>
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
-              <Link to="/contact" className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.82rem' }}>
+              <Link to="/book" className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.82rem' }}>
                 Book Consultation
               </Link>
             </motion.div>
@@ -202,7 +202,7 @@ export default function Navbar() {
                 ))}
                 <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
                   style={{ marginTop: '0.75rem' }}>
-                  <Link to="/contact" className="btn-primary" style={{ textAlign: 'center', justifyContent: 'center' }}>
+                  <Link to="/book" className="btn-primary" style={{ textAlign: 'center', justifyContent: 'center' }}>
                     Book Free Consultation →
                   </Link>
                 </motion.div>

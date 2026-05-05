@@ -1,5 +1,35 @@
-# Logs
-logs
+# ── Dependencies ─────────────────────────────────────────
+node_modules/
+
+# ── Build output ──────────────────────────────────────────
+dist/
+dist-ssr/
+
+# ── Vite cache ────────────────────────────────────────────
+.vite/
+
+# ── Test coverage ─────────────────────────────────────────
+coverage/
+
+# ── Environment variables ─────────────────────────────────
+# Never commit real credentials — keep .env.example instead
+.env
+.env.*
+!.env.example
+
+# ── Google service account key ────────────────────────────
+# This file grants write access to your Google Calendar
+service-account.json
+
+# ── Other credential / certificate files ─────────────────
+*.pem
+*.key
+*.p12
+*.pfx
+*.cert
+
+# ── Logs ─────────────────────────────────────────────────
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,18 +37,28 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# ── OS files ─────────────────────────────────────────────
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
 
-# Editor directories and files
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ── Editor files ──────────────────────────────────────────
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.local
+.eslintcache
