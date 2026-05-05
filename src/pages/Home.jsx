@@ -391,19 +391,19 @@ const USE_CASES = [
 const PROCESS_STEPS = [
   {
     num: '01', icon: '🔍', color: '#06B6D4', title: 'Discovery',
-    desc: 'We start with your problems, not our solutions. A 30-minute call to understand your data environment, pain points, and compliance requirements. No sales pitch.',
+    desc: 'We start with your business problems, not our solutions. A 30-minute call covers your data environment, security requirements, and AI goals. No sales pitch — just clarity.',
   },
   {
-    num: '02', icon: '🏗', color: '#8B5CF6', title: 'Deployment',
-    desc: 'We install everything inside your infrastructure. Hardware assessment, software configuration, and security hardening — typically complete in 2–4 weeks.',
+    num: '02', icon: '🗺', color: '#8B5CF6', title: 'System Design',
+    desc: 'We map your data sources, define the AI architecture, and produce a detailed deployment plan tailored to your infrastructure. You see exactly what will be built — before we begin.',
   },
   {
-    num: '03', icon: '🔗', color: '#F59E0B', title: 'Integration',
-    desc: 'We connect to your existing data sources, document stores, and workflows. We adapt to your systems — no rip-and-replace, no disruption to operations.',
+    num: '03', icon: '🏗', color: '#F59E0B', title: 'Deployment',
+    desc: 'We install, configure, and security-harden the complete AI stack inside your infrastructure. Connected to your existing document sources, with zero disruption. Live within 2–4 weeks.',
   },
   {
     num: '04', icon: '🛡', color: '#10B981', title: 'Ongoing Support',
-    desc: 'Continuous monitoring, model updates, and feature additions. Your AI system improves over time as we learn your organisation\'s needs.',
+    desc: 'Continuous monitoring, model updates, and capability additions. Your system improves over time as we measure outcomes, learn your organisation\'s needs, and deliver ongoing value.',
   },
 ]
 
@@ -438,9 +438,10 @@ const PRICING = [
       'Air-gap deployment option',
       'Dedicated support',
     ],
-    cta: 'Request Proposal',
+    cta: 'Get Custom AI Deployment Plan',
     ctaLink: '/contact',
     highlight: true,
+    microcopy: "We'll analyse your requirements and propose a tailored solution.",
   },
   {
     tier: 'Ongoing Support',
@@ -676,16 +677,20 @@ export default function Home() {
             </h1>
 
             <motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.52, duration: 0.65 }}
-              style={{ color: 'var(--t3)', fontSize: 'clamp(1rem, 1.8vw, 1.18rem)', lineHeight: 1.8, maxWidth: 600, marginBottom: '2.75rem' }}>
-              Deploy AI without sending your data to the cloud.{' '}
-              <em style={{ color: '#06B6D4', fontStyle: 'normal', fontWeight: 600 }}>AIDATARIS delivers on-premise, air-gapped intelligence</em>{' '}
-              for high-security industries — mining, government, legal, and defence.
+              style={{ color: 'var(--t3)', fontSize: 'clamp(1rem, 1.8vw, 1.18rem)', lineHeight: 1.8, maxWidth: 580, marginBottom: '0.85rem' }}>
+              Deploy AI inside your organisation —{' '}
+              <em style={{ color: '#06B6D4', fontStyle: 'normal', fontWeight: 600 }}>no cloud, no data leakage, full control.</em>
             </motion.p>
 
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65, duration: 0.5 }}
+            <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.55 }}
+              style={{ color: 'var(--t5)', fontSize: '0.95rem', lineHeight: 1.72, maxWidth: 520, marginBottom: '2.75rem' }}>
+              We design and deploy secure AI systems tailored to your organisation — from scoping to go-live, fully on your infrastructure.
+            </motion.p>
+
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.68, duration: 0.5 }}
               style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '3rem' }}>
-              <Link to="/book" className="btn-primary" style={{ fontSize: '1rem', padding: '0.9rem 2.1rem' }}>Book Free Consultation →</Link>
-              <Link to="/contact" className="btn-ghost"   style={{ fontSize: '1rem', padding: '0.9rem 2.1rem' }}>Request Demo</Link>
+              <Link to="/contact" className="btn-primary" style={{ fontSize: '1rem', padding: '0.9rem 2.1rem' }}>Request Secure AI Demo →</Link>
+              <Link to="/book" className="btn-ghost"   style={{ fontSize: '1rem', padding: '0.9rem 2.1rem' }}>Book Free Consultation</Link>
             </motion.div>
 
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
@@ -782,7 +787,7 @@ export default function Home() {
                 The result: your organisation can finally use AI to surface insights from decades of internal data, automate manual analysis tasks, and meet compliance requirements — without compromising on security.
               </p>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                <Link to="/book" className="btn-primary">Book Free Consultation →</Link>
+                <Link to="/contact" className="btn-primary">Request Secure AI Demo →</Link>
                 <Link to="/platform" className="btn-ghost">How It Works</Link>
               </div>
             </motion.div>
@@ -1054,8 +1059,8 @@ export default function Home() {
             <span style={GRAD}>No Surprises.</span>
           </motion.h2>
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.15 }}
-            style={{ color: 'var(--t4)', fontSize: '0.95rem', lineHeight: 1.75, maxWidth: 480, marginBottom: '4rem' }}>
-            Enterprise clients want clarity before they commit. Here is exactly how we work, from first call to ongoing support.
+            style={{ color: 'var(--t4)', fontSize: '0.95rem', lineHeight: 1.75, maxWidth: 520, marginBottom: '4rem' }}>
+            We work in four structured stages — from a 30-minute discovery call to a live, production-grade AI system inside your infrastructure. Every step is defined before we begin, and every commitment we make is in writing.
           </motion.p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1px', background: 'var(--bd)', border: '1px solid var(--bd)', borderRadius: 16, overflow: 'hidden' }}>
@@ -1077,6 +1082,16 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4, duration: 0.5 }}
+            style={{ marginTop: '3.5rem', textAlign: 'center' }}>
+            <Link to="/contact" className="btn-primary" style={{ fontSize: '0.95rem', padding: '0.85rem 2rem', marginRight: '1rem' }}>
+              Start with a Discovery Call →
+            </Link>
+            <p style={{ color: 'var(--t5)', fontSize: '0.78rem', marginTop: '0.85rem' }}>
+              Free 30-minute call. We'll confirm fit before you invest any time or budget.
+            </p>
+          </motion.div>
         </div>
       </section>
 
@@ -1131,6 +1146,11 @@ export default function Home() {
                 <Link to={plan.ctaLink} className={plan.highlight ? 'btn-primary' : 'btn-ghost'} style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                   {plan.cta} →
                 </Link>
+                {plan.microcopy && (
+                  <p style={{ textAlign: 'center', color: 'var(--t5)', fontSize: '0.72rem', marginTop: '0.85rem', lineHeight: 1.55 }}>
+                    {plan.microcopy}
+                  </p>
+                )}
               </motion.div>
             ))}
           </div>
@@ -1256,17 +1276,17 @@ export default function Home() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '5rem', alignItems: 'center' }}>
             <motion.div initial={{ opacity: 0, x: -28 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
               <h2 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3rem)', fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '1.75rem' }}>
-                Built in Perth, Australia.<br />
-                <span style={GRAD}>Focused on High-Security Industries.</span>
+                Sovereign AI Expertise,<br />
+                <span style={GRAD}>Built for High-Security Environments.</span>
               </h2>
               <p style={{ color: 'var(--t3)', lineHeight: 1.85, fontSize: '0.95rem', marginBottom: '1.1rem' }}>
-                AIDATARIS was founded with a single belief: Australian organisations deserve access to powerful AI — without handing sensitive data to overseas cloud providers.
+                AIDATARIS was built for one specific challenge: deploying enterprise AI in environments where data sovereignty is non-negotiable. Mining operations, government agencies, and critical infrastructure organisations cannot afford the compliance risks that come with cloud AI — and they shouldn't have to.
               </p>
               <p style={{ color: 'var(--t3)', lineHeight: 1.85, fontSize: '0.95rem', marginBottom: '1.1rem' }}>
-                We're engineers with experience at the German Aerospace Center (DLR) and CTI Consulting, with deep roots in Perth's industry community. We've built real systems in demanding environments — and we bring that rigour to every deployment.
+                Our team brings experience from the German Aerospace Center (DLR) and CTI Consulting — environments where security, auditability, and zero-failure tolerances are standard. We apply that same engineering discipline to every commercial deployment.
               </p>
               <p style={{ color: 'var(--t3)', lineHeight: 1.85, fontSize: '0.95rem', marginBottom: '2.25rem' }}>
-                We don't sell software products. We solve expensive, high-risk problems for serious organisations — then stand behind the result.
+                We don't sell software licences. We solve high-stakes, high-cost problems for organisations that cannot afford to get this wrong — then stand behind the result with ongoing support.
               </p>
               <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                 {['Ollama', 'Qdrant', 'Neo4j', 'FastAPI', 'Python', 'PyTorch'].map(t => (
@@ -1286,14 +1306,15 @@ export default function Home() {
                   <h3 style={{ color: 'var(--t1)', fontWeight: 900, fontSize: '1.25rem', letterSpacing: '-0.02em' }}>Vivek Rabadiya</h3>
                   <div className="mono" style={{ color: '#06B6D4', fontSize: '0.63rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.85rem' }}>FOUNDER & CEO</div>
                   <p style={{ color: 'var(--t4)', fontSize: '0.85rem', lineHeight: 1.75, marginBottom: '1.35rem' }}>
-                    AI engineer and data architect with hands-on experience at the{' '}
-                    <span style={{ color: '#06B6D4', fontWeight: 600 }}>German Aerospace Center (DLR)</span>,{' '}
-                    <span style={{ color: '#F59E0B', fontWeight: 600 }}>CTI Consulting</span>, and deep roots in Perth's tech community through{' '}
-                    <span style={{ color: '#8B5CF6', fontWeight: 600 }}>EIT Perth</span>.
+                    Specialist in sovereign AI systems, secure data architecture, and enterprise AI deployment. Vivek brings hands-on engineering experience from the{' '}
+                    <span style={{ color: '#06B6D4', fontWeight: 600 }}>German Aerospace Center (DLR)</span>{' '}
+                    and{' '}
+                    <span style={{ color: '#F59E0B', fontWeight: 600 }}>CTI Consulting</span>{' '}
+                    — applying that same mission-critical rigour to protect Australian organisations from the risks of cloud AI.
                   </p>
-                  <p style={{ color: 'var(--t4)', fontSize: '0.82rem', lineHeight: 1.72, marginBottom: '1.25rem' }}>
-                    "I built AIDATARIS because I watched Australian organisations struggle to adopt AI while being told they had to send their most sensitive data to overseas cloud servers. That doesn't have to be true."
-                  </p>
+                  <blockquote style={{ borderLeft: '2px solid rgba(6,182,212,0.4)', paddingLeft: '1rem', margin: '0 0 1.25rem', color: 'var(--t3)', fontSize: '0.85rem', lineHeight: 1.75, fontStyle: 'italic' }}>
+                    "Australian organisations are being told that accessing modern AI requires sending sensitive data to overseas servers. That's a choice we should refuse to accept. Sovereign AI — powerful, compliant, fully in your control — is not a future aspiration. It's deployable today."
+                  </blockquote>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
                     {[
                       { icon: '🚀', text: 'German Aerospace Center (DLR)' },
@@ -1339,20 +1360,23 @@ export default function Home() {
           </div>
 
           <h2 style={{ fontSize: 'clamp(2.8rem, 7.5vw, 6rem)', fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.04em', lineHeight: 1.03, marginBottom: '1.75rem' }}>
-            Stop Sending Your Data<br />
-            <span style={GRAD}>to the Cloud.</span>
+            Your Data Should Never<br />
+            <span style={GRAD}>Leave Your Building.</span>
           </h2>
 
-          <p style={{ color: 'var(--t3)', fontSize: '1.1rem', lineHeight: 1.8, maxWidth: 520, margin: '0 auto 3rem' }}>
-            Book a free 30-minute consultation. We'll listen to your challenges, tell you honestly what AI can do for your situation, and give you a clear path forward — no sales pitch, no obligation.
+          <p style={{ color: 'var(--t3)', fontSize: '1.1rem', lineHeight: 1.8, maxWidth: 560, margin: '0 auto 1.5rem' }}>
+            Book a free 30-minute consultation. We'll assess your data environment, security requirements, and AI readiness — then tell you honestly what deployment would look like for your organisation.
+          </p>
+          <p style={{ color: 'var(--t5)', fontSize: '0.88rem', lineHeight: 1.7, maxWidth: 440, margin: '0 auto 3rem', fontStyle: 'italic' }}>
+            We'll analyse your requirements and propose a tailored solution — no commitment, no obligation.
           </p>
 
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '3.5rem' }}>
-            <Link to="/book" className="btn-primary" style={{ fontSize: '1rem', padding: '1rem 2.5rem' }}>
-              Book Free Consultation →
+            <Link to="/contact" className="btn-primary" style={{ fontSize: '1rem', padding: '1rem 2.5rem' }}>
+              Request Secure AI Demo →
             </Link>
-            <Link to="/contact" className="btn-ghost" style={{ fontSize: '1rem', padding: '1rem 2.5rem' }}>
-              Contact Us
+            <Link to="/book" className="btn-ghost" style={{ fontSize: '1rem', padding: '1rem 2.5rem' }}>
+              Get Custom Deployment Plan
             </Link>
           </div>
 
