@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { HelmetProvider } from 'react-helmet-async'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import { ThemeProvider } from './ThemeContext'
 import './index.css'
 import Navbar from './components/Navbar'
@@ -68,6 +69,7 @@ export default function App() {
           <AppLayout />
         </BrowserRouter>
       </ThemeProvider>
+      <SpeedInsights />
     </HelmetProvider>
   )
 }
