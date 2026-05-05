@@ -256,9 +256,9 @@ export function computeSlots(busyBlocks, date, durationMins, dayStart = 9, dayEn
     if (slotEnd <= limit) {
       const overlaps = busyBlocks.some(b => cur < b.end && slotEnd > b.start)
       if (!overlaps) {
-        const h = cur.getUTCHours() + 8
+        const h = (cur.getUTCHours() + 8) % 24
         const m = cur.getUTCMinutes()
-        slots.push(`${String(h).padStart(2, '0').slice(-2)}:${String(m).padStart(2, '0')}`)
+        slots.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`)
       }
     }
     cur.setMinutes(cur.getMinutes() + slotMin)

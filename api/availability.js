@@ -1,4 +1,3 @@
-import { google } from 'googleapis'
 import { computeSlots, getKeyFilePath } from '../src/email.js'
 
 const TZ = '+08:00'
@@ -8,38 +7,9 @@ const DAY_END = 17
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY
 const GOOGLE_CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID
 
-async function getCalendar() {
-  const keyFile = getKeyFilePath()
-  if (!keyFile) return null
-
-  const auth = new google.auth.GoogleAuth({
-    keyFile,
-    scopes: ['https://www.googleapis.com/auth/calendar'],
-  })
-  return google.calendar({ version: 'v3', auth })
-}
-
 async function getBusyBlocks(date) {
   const dayMin = new Date(`${date}T${String(DAY_START).padStart(2, '0')}:00:00${TZ}`)
   const dayMax = new Date(`${date}T${String(DAY_END).padStart(2, '0')}:00:00${TZ}`)
-
-  const cal = await getCalendar()
-
-  if (cal && GOOGLE_CALENDAR_ID) {
-    const resp = await cal.events.list({
-      calendarId: GOOGLE_CALENDAR_ID,
-      timeMin: dayMin.toISOString(),
-      timeMax: dayMax.toISOString(),
-      singleEvents: true,
-      orderBy: 'startTime',
-    })
-    return (resp.data.items || [])
-      .filter(e => e.status !== 'cancelled' && (e.start.dateTime || e.start.date))
-      .map(e => ({
-        start: new Date(e.start.dateTime || e.start.date),
-        end: new Date(e.end.dateTime || e.end.date),
-      }))
-  }
 
   if (GOOGLE_API_KEY && GOOGLE_CALENDAR_ID) {
     const res = await fetch(
@@ -63,7 +33,6 @@ async function getBusyBlocks(date) {
 
   return []
 }
-
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')

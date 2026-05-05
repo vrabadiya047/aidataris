@@ -34,14 +34,18 @@ async function getBusyBlocks(date) {
 }
 
 async function createBooking(body) {
-  const cal = await getCalendar()
-  if (!cal) throw new Error('Google Calendar not configured. Add GOOGLE_SERVICE_ACCOUNT_KEY or GOOGLE_API_KEY to Vercel environment variables.')
-  if (!GOOGLE_CALENDAR_ID) throw new Error('GOOGLE_CALENDAR_ID not set in Vercel environment variables')
-
   const { name, email, org, sector, meetingType, notes } = body
-  const date     = body.date     || body.preferredDate
-  const time     = body.time     || body.preferredTime
-  const duration = body.duration  || body.sessionDuration || 60
+  const date     = body.date || body.preferredDate
+  const time     = body.time || body.preferredTime
+  const duration = body.duration || body.sessionDuration || 60
+
+  const cal = await getCalendar()
+
+  if (!cal || !GOOGLE_CALENDAR_ID) {
+    // No calendar configured — skip event creation but return ok so emails still fire
+    console.warn('⚠  Google Calendar not configured — booking emails will still be sent.')
+    return null
+  }
 
   const [h, m]  = time.split(':').map(Number)
   const startDT = new Date(`${date}T${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00${TZ}`)
@@ -116,7 +120,7 @@ export default async function handler(req, res) {
     const event = await createBooking(body)
     sendBookingEmails(body, event).catch(err => console.error('[booking-email]', err.message))
     res.writeHead(200, { 'Content-Type': 'application/json' })
-    res.end(JSON.stringify({ ok: true, eventId: event.id, eventLink: event.htmlLink }))
+    res.end(JSON.stringify({ ok: true, eventId: event?.id ?? null, eventLink: event?.htmlLink ?? null }))
   } catch (err) {
     console.error('[book]', err.message)
     res.writeHead(500, { 'Content-Type': 'application/json' })
