@@ -3,6 +3,8 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 
+const GRAD = { background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)', backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', animation: 'gradient-shift 5s ease infinite' }
+
 const SOLUTIONS = [
   {
     id: 'mining', icon: '⛏', color: '#F59E0B',
@@ -85,6 +87,52 @@ export default function Solutions() {
           <p style={{ color: 'var(--t3)', fontSize: '1.05rem', lineHeight: 1.75 }}>
             AIDATARIS operates where cloud AI cannot — remote mine sites, secure government data centres, and confidential legal chambers.
           </p>
+        </div>
+      </section>
+
+      {/* Solution */}
+      <section style={{ padding: '6rem 1.5rem', background: 'var(--bg2)' }}>
+        <div className="container">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '5rem', alignItems: 'center' }}>
+            <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}>
+              <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', lineHeight: 1.15, marginBottom: '1.5rem' }}>
+                AI That Runs Entirely{' '}
+                <span style={GRAD}>Inside Your Infrastructure.</span>
+              </h2>
+              <p style={{ color: 'var(--t3)', fontSize: '1rem', lineHeight: 1.85, marginBottom: '1.25rem' }}>
+                AIDATARIS installs a complete intelligence system on your own hardware. It ingests your internal files, structures your knowledge, and answers questions — all without a single byte leaving your network.
+              </p>
+              <p style={{ color: 'var(--t3)', fontSize: '1rem', lineHeight: 1.85, marginBottom: '2rem' }}>
+                Your organisation can finally use AI to surface insights from decades of internal data, automate manual analysis, and meet compliance requirements — without compromising on security.
+              </p>
+              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                <Link to="/contact" className="btn-primary">Request Secure AI Demo →</Link>
+                <Link to="/platform" className="btn-ghost">See How It Works</Link>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+              style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {[
+                { icon: '📄', color: '#06B6D4', title: 'Ingest Any Format', desc: 'PDFs, Word docs, images, scanned records — indexed locally, never uploaded.' },
+                { icon: '🛡', color: '#F87171', title: 'Auto PII Redaction', desc: '12+ sensitive data categories detected and redacted before storage.' },
+                { icon: '🧠', color: '#8B5CF6', title: 'Natural Language Queries', desc: 'Staff ask questions in plain English. Cited answers in seconds, on your hardware.' },
+              ].map((b, i) => (
+                <motion.div key={i}
+                  initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }}
+                  className="glass" style={{ padding: '1.5rem 2rem', display: 'flex', gap: '1.25rem', alignItems: 'flex-start', border: `1px solid ${b.color}22` }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 11, background: b.color + '15', border: `1px solid ${b.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', flexShrink: 0 }}>
+                    {b.icon}
+                  </div>
+                  <div>
+                    <h3 style={{ color: 'var(--t1)', fontWeight: 700, fontSize: '0.95rem', marginBottom: '0.35rem' }}>{b.title}</h3>
+                    <p style={{ color: 'var(--t4)', fontSize: '0.85rem', lineHeight: 1.7 }}>{b.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
         </div>
       </section>
 

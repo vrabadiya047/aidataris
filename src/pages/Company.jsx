@@ -124,6 +124,85 @@ export default function Company() {
         </div>
       </section>
 
+      {/* Founder */}
+      <section className="section">
+        <div className="container">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '4rem' }}>
+            <div style={{ flex: 1, height: 1, background: 'var(--divider-c)' }} />
+            <span className="label">Founder</span>
+            <div style={{ flex: 1, height: 1, background: 'var(--divider-c)' }} />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '5rem', alignItems: 'center' }}>
+            <motion.div initial={{ opacity: 0, x: -28 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
+              <h2 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3rem)', fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '1.75rem' }}>
+                Sovereign AI Expertise,<br />
+                <span className="gradient-text">Built for High-Security Environments.</span>
+              </h2>
+              <p style={{ color: 'var(--t5)', lineHeight: 1.85, fontSize: '0.95rem', marginBottom: '1.1rem' }}>
+                AIDATARIS was built for one specific challenge: deploying enterprise AI in environments where data sovereignty is non-negotiable. Mining operations, government agencies, and critical infrastructure organisations cannot afford the compliance risks that come with cloud AI — and they shouldn't have to.
+              </p>
+              <p style={{ color: 'var(--t5)', lineHeight: 1.85, fontSize: '0.95rem', marginBottom: '1.1rem' }}>
+                Our team brings experience from the German Aerospace Center (DLR) and CTI Consulting — environments where security, auditability, and zero-failure tolerances are standard. We apply that same engineering discipline to every commercial deployment.
+              </p>
+              <p style={{ color: 'var(--t5)', lineHeight: 1.85, fontSize: '0.95rem', marginBottom: '2.25rem' }}>
+                We don't sell software licences. We solve high-stakes, high-cost problems for organisations that cannot afford to get this wrong — then stand behind the result with ongoing support.
+              </p>
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                {['Ollama', 'Qdrant', 'Neo4j', 'FastAPI', 'Python', 'PyTorch'].map(t => (
+                  <span key={t} className="mono" style={{ fontSize: '0.68rem', padding: '3px 10px', borderRadius: 20, border: '1px solid rgba(6,182,212,0.2)', color: '#06B6D4', background: 'rgba(6,182,212,0.05)' }}>{t}</span>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 28 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+              className="glass" style={{ padding: '2.5rem', border: '1px solid rgba(6,182,212,0.18)', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #06B6D4, #8B5CF6)' }} />
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.5rem' }}>
+                <div style={{ width: 80, height: 80, borderRadius: 18, overflow: 'hidden', flexShrink: 0, boxShadow: '0 0 24px rgba(6,182,212,0.25)' }}>
+                  <img src="/photo.png" alt="Vivek Rabadiya" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+                <div>
+                  <h3 style={{ color: 'var(--t1)', fontWeight: 900, fontSize: '1.25rem', letterSpacing: '-0.02em' }}>Vivek Rabadiya</h3>
+                  <div className="mono" style={{ color: '#06B6D4', fontSize: '0.63rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.85rem' }}>FOUNDER & CEO</div>
+                  <p style={{ color: 'var(--t4)', fontSize: '0.85rem', lineHeight: 1.75, marginBottom: '1.35rem' }}>
+                    Specialist in sovereign AI systems, secure data architecture, and enterprise AI deployment. Vivek brings hands-on engineering experience from the{' '}
+                    <span style={{ color: '#06B6D4', fontWeight: 600 }}>German Aerospace Center (DLR)</span>{' '}
+                    and{' '}
+                    <span style={{ color: '#F59E0B', fontWeight: 600 }}>CTI Consulting</span>{' '}
+                    — applying that same mission-critical rigour to protect Australian organisations from the risks of cloud AI.
+                  </p>
+                  <blockquote style={{ borderLeft: '2px solid rgba(6,182,212,0.4)', paddingLeft: '1rem', margin: '0 0 1.25rem', color: 'var(--t3)', fontSize: '0.85rem', lineHeight: 1.75, fontStyle: 'italic' }}>
+                    "Australian organisations are being told that accessing modern AI requires sending sensitive data to overseas servers. That's a choice we should refuse to accept. Sovereign AI — powerful, compliant, fully in your control — is not a future aspiration. It's deployable today."
+                  </blockquote>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+                    {[
+                      { icon: '🚀', text: 'German Aerospace Center (DLR)' },
+                      { icon: '💼', text: 'CTI Consulting' },
+                      { icon: '🎓', text: 'EIT Perth' },
+                      { icon: '📍', text: 'Perth, Western Australia' },
+                    ].map((c, i) => (
+                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', color: 'var(--t4)', fontSize: '0.82rem' }}>
+                        <span>{c.icon}</span> {c.text}
+                      </div>
+                    ))}
+                    <a href="https://www.linkedin.com/in/vivekrabadiya" target="_blank" rel="noopener noreferrer"
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem', color: '#0A66C2', fontSize: '0.82rem', fontWeight: 600, textDecoration: 'none', transition: 'opacity 0.2s' }}
+                      onMouseEnter={e => e.currentTarget.style.opacity = '0.75'}
+                      onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="#0A66C2" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                      </svg>
+                      linkedin.com/in/vivekrabadiya
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Demo Request Form */}
       <section id="demo" className="section">
         <div style={{ maxWidth: 720, margin: '0 auto' }}>

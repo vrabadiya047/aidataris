@@ -318,47 +318,39 @@ const PROBLEMS = [
   },
 ]
 
+
 const BENEFITS = [
-  {
-    icon: '🔐', color: '#06B6D4',
-    title: 'No Data Leaves Your Organisation',
-    desc: 'Every document, query, and answer stays on your hardware. Nothing touches the internet. Complete data sovereignty from day one.',
-  },
-  {
-    icon: '⚡', color: '#10B981',
-    title: 'Instant Insights from Internal Data',
-    desc: 'Ask questions across thousands of documents in seconds. Surface knowledge that would take your team weeks to find manually.',
-  },
-  {
-    icon: '✅', color: '#8B5CF6',
-    title: 'Built-in Compliance & Audit Trail',
-    desc: 'Every query logged with source citations. Automated audit trails meet government, legal, and enterprise compliance requirements.',
-  },
+  { icon: '🔐', color: '#06B6D4', title: 'No Data Leaves Your Organisation', desc: 'Every document, query, and answer stays on your hardware. Nothing touches the internet. Complete data sovereignty from day one.' },
+  { icon: '⚡', color: '#F59E0B', title: 'Instant Insights from Internal Data', desc: 'Ask questions across thousands of documents in seconds. Surface knowledge that would take your team weeks to find manually.' },
+  { icon: '✅', color: '#10B981', title: 'Built-in Compliance & Audit Trail', desc: 'Every query logged with source citations. Automated audit trails meet government, legal, and enterprise compliance requirements.' },
 ]
 
 const SERVICES = [
   {
-    icon: '🔒', color: '#06B6D4', title: 'On-Premise AI Deployment',
-    tagline: 'Your infrastructure. Your control.',
+    icon: '🔒', color: '#06B6D4', highlight: true,
+    title: 'On-Premise AI Deployment',
+    tagline: 'Your Infrastructure. Your Control.',
     desc: 'We install a complete AI system inside your network. No cloud. No data egress. Operational in weeks, not months. Air-gap compatible for the most sensitive environments.',
     benefits: ['Zero cloud dependencies', 'Air-gap compatible', 'Full data sovereignty'],
-    highlight: true,
   },
   {
-    icon: '🧠', color: '#8B5CF6', title: 'Intelligent Document Search',
-    tagline: 'Find answers buried in your files',
+    icon: '🧠', color: '#8B5CF6', highlight: false,
+    title: 'Intelligent Document Search',
+    tagline: 'Find Answers Buried in Your Files',
     desc: 'Connect to your internal document library. Ask questions in plain English. Get precise answers with source citations across thousands of files instantly — without a Google account.',
     benefits: ['Natural language queries', 'Source-cited responses', 'Cross-document reasoning'],
   },
   {
-    icon: '🤖', color: '#F59E0B', title: 'AI Process Automation',
-    tagline: 'Reduce manual workload',
+    icon: '🤖', color: '#F59E0B', highlight: false,
+    title: 'AI Process Automation',
+    tagline: 'Reduce Manual Workload',
     desc: 'Automate repetitive analysis, report generation, and compliance checking. AI agents handle the routine work so your team can focus on decisions that matter.',
     benefits: ['Automated reporting', 'Compliance checking', 'Workflow integration'],
   },
   {
-    icon: '📊', color: '#10B981', title: 'Data Engineering & Pipelines',
-    tagline: 'Turn raw data into business intelligence',
+    icon: '📊', color: '#10B981', highlight: false,
+    title: 'Data Engineering & Pipelines',
+    tagline: 'Turn Raw Data Into Business Intelligence',
     desc: 'We design and build data pipelines that clean, structure, and connect your data sources — giving AI a reliable foundation to work from and giving you real-time visibility.',
     benefits: ['Eliminate data silos', 'Real-time dashboards', 'Scalable infrastructure'],
   },
@@ -384,132 +376,74 @@ const USE_CASES = [
     title: 'Contract Review & Risk Analysis',
     problem: 'Legal teams review hundreds of contracts manually, missing risks buried in dense clauses. Due diligence takes weeks. Client data is subject to professional obligations — it cannot be processed by external cloud providers.',
     solution: 'On-premise AI reviews contracts, flags risk clauses, cross-references precedents, and summarises key obligations. Client data never leaves your network, meeting all professional and regulatory obligations.',
-    results: ['Contract review time reduced by 70%', 'Risk clauses flagged automatically', 'Client data stays on your servers — always'],
+    results: ['Contract review time reduced by 70%', 'Risk clauses flagged automatically', "Client data stays on your servers — always"],
   },
 ]
 
 const PROCESS_STEPS = [
+  { num: '01', icon: '🔍', color: '#06B6D4', title: 'Discovery',       desc: 'We start with your business problems, not our solutions. A 30-minute call covers your data environment, security requirements, and AI goals. No sales pitch — just clarity.' },
+  { num: '02', icon: '🗺', color: '#8B5CF6', title: 'System Design',   desc: 'We map your data sources, define the AI architecture, and produce a detailed deployment plan tailored to your infrastructure. You see exactly what will be built — before we begin.' },
+  { num: '03', icon: '🏗', color: '#F59E0B', title: 'Deployment',      desc: 'We install, configure, and security-harden the complete AI stack inside your infrastructure. Connected to your existing document sources, with zero disruption. Live within 2–4 weeks.' },
+  { num: '04', icon: '🛡', color: '#10B981', title: 'Ongoing Support', desc: "Continuous monitoring, model updates, and capability additions. Your system improves over time as we measure outcomes, learn your organisation's needs, and deliver ongoing value." },
+]
+
+const CAPABILITIES = [
   {
-    num: '01', icon: '🔍', color: '#06B6D4', title: 'Discovery',
-    desc: 'We start with your business problems, not our solutions. A 30-minute call covers your data environment, security requirements, and AI goals. No sales pitch — just clarity.',
+    icon: '🛡', color: '#06B6D4',
+    title: 'Sovereign AI',
+    desc: 'AI that runs entirely inside your organisation. Your data never leaves your infrastructure — no cloud, no third-party access, guaranteed.',
+    outcome: 'Zero cloud exposure',
   },
   {
-    num: '02', icon: '🗺', color: '#8B5CF6', title: 'System Design',
-    desc: 'We map your data sources, define the AI architecture, and produce a detailed deployment plan tailored to your infrastructure. You see exactly what will be built — before we begin.',
+    icon: '🔍', color: '#8B5CF6',
+    title: 'Secure Knowledge Retrieval',
+    desc: 'Surface insights across thousands of internal documents in seconds. Natural language queries with full source citations and audit trail.',
+    outcome: 'Faster, informed decisions',
   },
   {
-    num: '03', icon: '🏗', color: '#F59E0B', title: 'Deployment',
-    desc: 'We install, configure, and security-harden the complete AI stack inside your infrastructure. Connected to your existing document sources, with zero disruption. Live within 2–4 weeks.',
+    icon: '🤖', color: '#F59E0B',
+    title: 'Agentic Automation',
+    desc: 'Automate complex analysis workflows — compliance checking, report generation, and risk assessment — without manual effort.',
+    outcome: 'Eliminate manual workload',
   },
   {
-    num: '04', icon: '🛡', color: '#10B981', title: 'Ongoing Support',
-    desc: 'Continuous monitoring, model updates, and capability additions. Your system improves over time as we measure outcomes, learn your organisation\'s needs, and deliver ongoing value.',
+    icon: '✅', color: '#10B981',
+    title: 'Enterprise Compliance',
+    desc: 'Built-in audit trails, automatic PII redaction, and frameworks aligned to ISM, PSPF, and ASD Essential Eight from day one.',
+    outcome: 'Audit-ready from day one',
   },
 ]
 
-const PRICING = [
+const INDUSTRIES = [
   {
-    tier: 'Starter',
-    price: '$5,000–$10,000',
-    period: 'one-time setup',
-    color: '#06B6D4',
-    desc: 'Proof-of-concept deployment for a single use case. Ideal for organisations evaluating on-premise AI before a full rollout.',
-    items: [
-      'Single document corpus',
-      'Natural language search',
-      'Basic admin console',
-      'PII detection included',
-      '30-day support period',
-    ],
-    cta: 'Book Discovery Call',
-    ctaLink: '/contact',
+    icon: '⛏', color: '#F59E0B',
+    label: 'Mining & Energy',
+    summary: 'Enterprise AI at remote sites — fully offline, zero cloud dependency. Safety compliance and equipment intelligence for the Pilbara and beyond.',
+    points: ['Air-gap compatible', 'Safety compliance automation', 'Equipment & maintenance intelligence'],
+    link: '/solutions?tab=mining',
   },
   {
-    tier: 'Enterprise',
-    price: 'Custom',
-    period: 'scoped to your needs',
-    color: '#8B5CF6',
-    desc: 'Full deployment across your organisation. Multi-dataset, multi-user, fully integrated with existing systems and compliance frameworks.',
-    items: [
-      'Unlimited document corpus',
-      'Multi-user access control',
-      'Full audit trail & compliance',
-      'Custom integrations',
-      'Air-gap deployment option',
-      'Dedicated support',
-    ],
-    cta: 'Get Custom AI Deployment Plan',
-    ctaLink: '/contact',
-    highlight: true,
-    microcopy: "We'll analyse your requirements and propose a tailored solution.",
+    icon: '🏛', color: '#06B6D4',
+    label: 'WA Government',
+    summary: 'Sovereign AI aligned with WA Government data residency requirements and the ASD Essential Eight assurance framework.',
+    points: ['100% data residency', 'ASD Essential Eight aligned', 'Policy & legislation intelligence'],
+    link: '/solutions?tab=government',
   },
   {
-    tier: 'Ongoing Support',
-    price: 'Monthly',
-    period: 'retainer',
-    color: '#10B981',
-    desc: 'Continued model updates, monitoring, and feature additions after initial deployment. Keep your system current and performant.',
-    items: [
-      'Model updates & improvements',
-      'System health monitoring',
-      'Priority response SLA',
-      'Feature additions',
-      'Quarterly review calls',
-    ],
-    cta: 'Learn More',
-    ctaLink: '/contact',
+    icon: '⚖', color: '#8B5CF6',
+    label: 'Legal & Health',
+    summary: 'Confidential document intelligence with automatic PII protection. Client data never leaves your network — ever.',
+    points: ['Privacy Act 1988 compliant', 'Client confidentiality walls', 'Medical record & contract analysis'],
+    link: '/solutions?tab=legal',
   },
 ]
 
-const DIFFERENTIATORS = [
-  { icon: '🛡', color: '#06B6D4', title: '100% On-Premise',        desc: 'Your data never leaves your building. We deploy AI inside your infrastructure — no cloud, no third parties, no compromise.' },
-  { icon: '🌏', color: '#8B5CF6', title: 'Built for Australia',     desc: 'Perth-based team. We understand Australian compliance requirements, WA industries, and local business conditions.' },
-  { icon: '📡', color: '#F59E0B', title: 'Air-Gap Ready',           desc: 'Fully operational with no internet access. Mining sites, classified facilities, remote operations — all supported.' },
-  { icon: '⚡', color: '#10B981', title: 'Fast Deployment',         desc: 'Working prototype in weeks, not quarters. We move fast without cutting corners on security or reliability.' },
-  { icon: '🏛', color: '#F87171', title: 'Enterprise-Grade',        desc: 'Built to meet government, legal, and financial compliance from day one. Not bolted on as an afterthought.' },
-  { icon: '🎯', color: '#A78BFA', title: 'Designed for High-Risk Environments', desc: 'Purpose-built for classified facilities, remote mine sites, and critical infrastructure. Where failure is not an option — and our architecture reflects that.' },
-]
 
-const CASE_STUDIES = [
-  {
-    label: 'Case Study 01', color: '#F59E0B', icon: '☀',
-    title: 'AI-Powered Solar Maintenance Analysis',
-    industry: 'Solar Energy · Regional Western Australia',
-    problem: 'A WA solar operator managing 12,000+ panels across remote regional sites had no automated way to identify underperforming cells. Manual drone inspections cost $80,000/year and still missed 30% of degraded cells — which became critical failures causing unplanned grid curtailment events worth $40K+ each.',
-    solution: 'We built an on-premise computer vision pipeline that ingests drone imagery and thermal scan data, flags degraded cells automatically, and generates prioritised work orders — fully local, zero cloud. Deployed in 3 weeks on existing site hardware.',
-    results: [
-      { metric: '$34K',  label: 'Saved year-one — 43% reduction in inspection costs' },
-      { metric: '17%',   label: 'Increase in annual energy yield from earlier fault detection' },
-      { metric: '3 wks', label: 'From engagement to first production insight' },
-    ],
-    tags: ['Computer Vision', 'On-Premise', 'Thermal Imaging', 'ROI: 4 months'],
-  },
-  {
-    label: 'Case Study 02', color: '#06B6D4', icon: '🏗',
-    title: 'Predictive Maintenance for Civil Infrastructure',
-    industry: 'Civil Infrastructure · Perth Metro',
-    problem: 'A Perth infrastructure contractor was losing $200,000+/year to unplanned equipment failures across 60+ machines. Maintenance was purely reactive — engineers responded after breakdowns, not before. Downtime averaged 18 hours per incident.',
-    solution: 'We designed and deployed a real-time ML system on the client\'s on-premise server — ingesting live sensor data, learning normal operating envelopes, and alerting engineers 4–7 days before failure thresholds were breached. $22K deployment. No cloud required.',
-    results: [
-      { metric: '8× ROI', label: '$180K annual savings on a $22K deployment' },
-      { metric: '61%',    label: 'Reduction in unplanned downtime within 6 months' },
-      { metric: '4–7d',   label: 'Advance warning — prevented 3 critical failures in month one' },
-    ],
-    tags: ['Machine Learning', 'IoT Sensors', 'Real-Time', 'On-Premise'],
-  },
-  {
-    label: 'Case Study 03', color: '#8B5CF6', icon: '⛏',
-    title: 'Mining Safety Knowledge Base — Pilbara Site',
-    industry: 'Mining & Resources · Pilbara, Western Australia',
-    problem: 'An 800-person Pilbara mining operation had 14,000+ safety documents, MSDS sheets, and maintenance records across disconnected shared drives. Safety officers spent 3–4 hours per day manually retrieving compliance documents. Remote sites had no reliable internet — cloud AI was not viable.',
-    solution: 'We deployed an air-gapped AIDATARIS instance on the site\'s existing on-premise server — no new hardware, no internet required. The system indexed all 14,000+ documents in 6 hours and was live the same day. Staff now query in plain English from underground and remote stations.',
-    results: [
-      { metric: '94%',    label: 'Reduction in compliance document retrieval time' },
-      { metric: '6 hrs',  label: 'From installation to first live query — same-day go-live' },
-      { metric: '$270K',  label: 'Estimated annual value of recovered staff time' },
-    ],
-    tags: ['Air-Gapped', 'Safety Compliance', 'Document AI', 'Same-Day Deployment'],
-  },
+const WHY_US = [
+  { icon: '🛡', color: '#06B6D4', title: '100% On-Premise',    desc: 'Your data never leaves your building. We deploy AI inside your infrastructure — no cloud, no third parties, no compromise.' },
+  { icon: '📡', color: '#F59E0B', title: 'Air-Gap Ready',       desc: 'Fully operational with zero internet. Mining sites, classified facilities, and remote operations — all supported.' },
+  { icon: '🌏', color: '#8B5CF6', title: 'Built for Australia', desc: 'Perth-based team. We understand Australian compliance, WA industries, and the demands of high-security enterprise environments.' },
+  { icon: '⚡', color: '#10B981', title: 'Live in Weeks',       desc: 'Working deployment in 2–4 weeks, not quarters. We move fast without cutting corners on security or reliability.' },
 ]
 
 /* ── Dashboard UI Mockup ─────────────────────────────── */
@@ -856,12 +790,7 @@ export default function Home() {
                   {line.text}
                 </motion.span>
               ))}
-              <motion.span
-                initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.39, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                style={{ display: 'block', ...GRAD }}>
-                No Cloud. No Data Leakage.
-              </motion.span>
+              
             </h1>
 
             <motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.52, duration: 0.65 }}
@@ -983,7 +912,7 @@ export default function Home() {
               </p>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <Link to="/contact" className="btn-primary">Request Secure AI Demo →</Link>
-                <Link to="/platform" className="btn-ghost">How It Works</Link>
+                <Link to="/solutions" className="btn-ghost">How It Works</Link>
               </div>
             </motion.div>
 
@@ -1030,16 +959,9 @@ export default function Home() {
                 viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.55, delay: i * 0.07 }}
                 whileHover={{ x: 6 }}
                 style={{ display: 'grid', gridTemplateColumns: '5.5rem 1fr', gap: '2.5rem', padding: '2.75rem 0', borderBottom: '1px solid var(--bd)', alignItems: 'start' }}>
-
-                <div style={{
-                  fontSize: 'clamp(3rem, 5vw, 4.5rem)', fontWeight: 900, lineHeight: 1,
-                  color: 'transparent', WebkitTextStroke: `1px ${svc.color}40`,
-                  letterSpacing: '-0.04em', paddingTop: '0.3rem',
-                  userSelect: 'none',
-                }}>
+                <div style={{ fontSize: 'clamp(3rem, 5vw, 4.5rem)', fontWeight: 900, lineHeight: 1, color: 'transparent', WebkitTextStroke: `1px ${svc.color}40`, letterSpacing: '-0.04em', paddingTop: '0.3rem', userSelect: 'none' }}>
                   {String(i + 1).padStart(2, '0')}
                 </div>
-
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '2rem', alignItems: 'start' }}>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.8rem' }}>
@@ -1095,12 +1017,7 @@ export default function Home() {
               <motion.div key={i}
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }}
-                style={{
-                  padding: '2.25rem 1.75rem',
-                  borderRight: i < arr.length - 1 ? '1px solid var(--bd)' : 'none',
-                  background: 'var(--glass-bg)',
-                  transition: 'background 0.3s',
-                }}
+                style={{ padding: '2.25rem 1.75rem', borderRight: i < arr.length - 1 ? '1px solid var(--bd)' : 'none', background: 'var(--glass-bg)', transition: 'background 0.3s' }}
                 whileHover={{ background: step.color + '06' }}>
                 <div className="mono" style={{ color: step.color, fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em', marginBottom: '1rem' }}>{step.num}</div>
                 <div style={{ width: 44, height: 44, borderRadius: 11, background: step.color + '15', border: `1px solid ${step.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', marginBottom: '1rem' }}>
@@ -1157,7 +1074,7 @@ export default function Home() {
               </ul>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <Link to="/book" className="btn-primary">Book a Live Demo →</Link>
-                <Link to="/platform" className="btn-ghost">See Architecture</Link>
+                <Link to="/technology" className="btn-ghost">See Architecture</Link>
               </div>
             </motion.div>
 
@@ -1259,7 +1176,7 @@ export default function Home() {
       </section>
 
       {/* ── HOW WE WORK ──────────────────────────────────── */}
-      <section style={{ padding: '8rem 1.5rem' }}>
+      <section style={{ padding: '8rem 1.5rem', background: 'var(--bg2)' }}>
         <div className="container">
           <EditorialRule label="03 · Our Process" />
 
@@ -1305,79 +1222,93 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── PRICING ──────────────────────────────────────── */}
-      <section style={{ padding: '8rem 1.5rem', background: 'var(--bg2)' }}>
+      {/* ── CAPABILITIES ─────────────────────────────────── */}
+      <section style={{ padding: '8rem 1.5rem' }}>
         <div className="container">
-          <EditorialRule label="04 · Investment" />
+          <EditorialRule label="Key Capabilities" />
 
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
-            style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', marginBottom: '0.75rem', maxWidth: 600, lineHeight: 1.15 }}>
-            Transparent Pricing.{' '}
-            <span style={GRAD}>Scoped to Your Needs.</span>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', marginBottom: '0.75rem', maxWidth: 620, lineHeight: 1.15 }}>
+            Everything You Need.{' '}
+            <span style={GRAD}>Nothing You Don't.</span>
           </motion.h2>
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.15 }}
             style={{ color: 'var(--t4)', fontSize: '0.95rem', lineHeight: 1.75, maxWidth: 500, marginBottom: '4rem' }}>
-            We don't do hidden fees or surprise invoices. Every engagement starts with a discovery call so we scope accurately before you commit.
+            Four core capabilities, all running entirely on your infrastructure.
           </motion.p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-            {PRICING.map((plan, i) => (
+            {CAPABILITIES.map((c, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }} transition={{ delay: i * 0.1, duration: 0.6 }}
-                className={plan.highlight ? 'glass-premium' : 'glass'}
-                style={{
-                  padding: '2.5rem',
-                  border: plan.highlight ? 'none' : `1px solid ${plan.color}22`,
-                  position: 'relative', overflow: 'hidden',
-                  ...(plan.highlight ? {} : {}),
-                }}>
-                {plan.highlight && (
-                  <div style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
-                    <span className="mono" style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.1em', padding: '3px 8px', borderRadius: 4, background: plan.color + '20', color: plan.color, border: `1px solid ${plan.color}40` }}>MOST POPULAR</span>
-                  </div>
-                )}
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: plan.highlight ? `linear-gradient(90deg, ${plan.color}, #06B6D4)` : plan.color + '60', borderRadius: '16px 16px 0 0' }} />
-
-                <div className="mono" style={{ color: plan.color, fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.12em', marginBottom: '0.5rem' }}>{plan.tier.toUpperCase()}</div>
-                <div style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '0.25rem' }}>{plan.price}</div>
-                <div style={{ color: 'var(--t5)', fontSize: '0.78rem', marginBottom: '1.25rem' }}>{plan.period}</div>
-                <p style={{ color: 'var(--t3)', fontSize: '0.85rem', lineHeight: 1.7, marginBottom: '1.75rem', minHeight: '3.5rem' }}>{plan.desc}</p>
-
-                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.6rem', marginBottom: '2rem' }}>
-                  {plan.items.map((item, j) => (
-                    <li key={j} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'var(--t3)', fontSize: '0.85rem' }}>
-                      <span style={{ width: 16, height: 16, borderRadius: '50%', background: plan.color + '20', border: `1px solid ${plan.color}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: plan.color, fontSize: '0.55rem', fontWeight: 700 }}>✓</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-
-                <Link to={plan.ctaLink} className={plan.highlight ? 'btn-primary' : 'btn-ghost'} style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                  {plan.cta} →
-                </Link>
-                {plan.microcopy && (
-                  <p style={{ textAlign: 'center', color: 'var(--t5)', fontSize: '0.72rem', marginTop: '0.85rem', lineHeight: 1.55 }}>
-                    {plan.microcopy}
-                  </p>
-                )}
+                viewport={{ once: true, margin: '-40px' }} transition={{ delay: i * 0.1, duration: 0.55 }}
+                className="glass" style={{ padding: '2rem', border: `1px solid ${c.color}22`, position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${c.color}90, transparent)` }} />
+                <div style={{ width: 48, height: 48, borderRadius: 12, background: c.color + '15', border: `1px solid ${c.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem', marginBottom: '1.25rem' }}>
+                  {c.icon}
+                </div>
+                <h3 style={{ color: 'var(--t1)', fontWeight: 800, fontSize: '1.05rem', marginBottom: '0.6rem', letterSpacing: '-0.01em' }}>{c.title}</h3>
+                <p style={{ color: 'var(--t4)', fontSize: '0.85rem', lineHeight: 1.72, marginBottom: '1.25rem' }}>{c.desc}</p>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '3px 10px', borderRadius: 20, background: c.color + '12', border: `1px solid ${c.color}28` }}>
+                  <span style={{ color: c.color, fontSize: '0.55rem' }}>●</span>
+                  <span className="mono" style={{ color: c.color, fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.06em' }}>{c.outcome.toUpperCase()}</span>
+                </div>
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
-            style={{ textAlign: 'center', color: 'var(--t5)', fontSize: '0.82rem', marginTop: '2rem' }}>
-            All pricing in AUD. GST applicable. Free 30-minute discovery call before any commitment.
+      {/* ── INDUSTRIES ───────────────────────────────────── */}
+      <section style={{ padding: '8rem 1.5rem', background: 'var(--bg2)' }}>
+        <div className="container">
+          <EditorialRule label="Industries We Serve" />
+
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', marginBottom: '0.75rem', maxWidth: 580, lineHeight: 1.15 }}>
+            Where Cloud AI{' '}
+            <span style={GRAD}>Is Not an Option.</span>
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.15 }}
+            style={{ color: 'var(--t4)', fontSize: '0.95rem', lineHeight: 1.75, maxWidth: 480, marginBottom: '4rem' }}>
+            We focus on industries where data sensitivity and compliance requirements make cloud AI impossible.
           </motion.p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+            {INDUSTRIES.map((ind, i) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }} transition={{ delay: i * 0.1, duration: 0.55 }}
+                className="glass" style={{ padding: '2.25rem', border: `1px solid ${ind.color}22`, position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: 3, background: ind.color }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1rem', paddingLeft: '0.75rem' }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 11, background: ind.color + '18', border: `1px solid ${ind.color}35`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem' }}>{ind.icon}</div>
+                  <h3 style={{ color: 'var(--t1)', fontWeight: 800, fontSize: '1.05rem', letterSpacing: '-0.01em' }}>{ind.label}</h3>
+                </div>
+                <p style={{ color: 'var(--t3)', fontSize: '0.875rem', lineHeight: 1.75, marginBottom: '1.25rem', paddingLeft: '0.75rem' }}>{ind.summary}</p>
+                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.75rem', paddingLeft: '0.75rem' }}>
+                  {ind.points.map((pt, j) => (
+                    <li key={j} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'var(--t4)', fontSize: '0.82rem' }}>
+                      <span style={{ width: 5, height: 5, borderRadius: '50%', background: ind.color, flexShrink: 0 }} />
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
+                <Link to={ind.link} className="btn-ghost" style={{ fontSize: '0.82rem', padding: '0.6rem 1.25rem', marginTop: 'auto', alignSelf: 'flex-start', marginLeft: '0.75rem' }}>
+                  Learn More →
+                </Link>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ── WHY AIDATARIS ────────────────────────────────── */}
       <section style={{ padding: '8rem 1.5rem' }}>
         <div className="container">
-          <EditorialRule label="05 · Why AIDATARIS" />
+          <EditorialRule label="Why AIDATARIS" />
 
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', marginBottom: '0.75rem', maxWidth: 580, lineHeight: 1.15 }}>
             Built for Serious Organisations,{' '}
             <span style={GRAD}>Not Side Projects.</span>
@@ -1387,183 +1318,22 @@ export default function Home() {
             We focus exclusively on high-security, high-stakes deployments. That narrow focus means we do this better than anyone else.
           </motion.p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', border: '1px solid var(--bd)', borderRadius: 16, overflow: 'hidden' }}>
-            {DIFFERENTIATORS.map((d, i) => (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+            {WHY_US.map((w, i) => (
               <motion.div key={i}
-                initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }} transition={{ delay: i * 0.07, duration: 0.5 }}
-                style={{
-                  padding: '2.25rem 2.5rem',
-                  borderRight: '1px solid var(--bd)',
-                  borderBottom: '1px solid var(--bd)',
-                  display: 'flex', gap: '1.25rem', alignItems: 'flex-start',
-                  background: 'var(--glass-bg)',
-                  transition: 'background 0.3s',
-                }}
-                whileHover={{ background: d.color + '08' }}>
-                <div style={{ width: 46, height: 46, borderRadius: 12, background: d.color + '12', border: `1px solid ${d.color}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', flexShrink: 0 }}>
-                  {d.icon}
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }} transition={{ delay: i * 0.08, duration: 0.5 }}
+                className="glass" style={{ padding: '2rem 2.25rem', border: `1px solid ${w.color}22`, display: 'flex', gap: '1.25rem', alignItems: 'flex-start' }}
+                whileHover={{ background: w.color + '06' }}>
+                <div style={{ width: 48, height: 48, borderRadius: 12, background: w.color + '15', border: `1px solid ${w.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', flexShrink: 0 }}>
+                  {w.icon}
                 </div>
                 <div>
-                  <h3 style={{ color: 'var(--t1)', fontWeight: 700, fontSize: '1rem', marginBottom: '0.45rem' }}>{d.title}</h3>
-                  <p style={{ color: 'var(--t4)', fontSize: '0.85rem', lineHeight: 1.72 }}>{d.desc}</p>
+                  <h3 style={{ color: 'var(--t1)', fontWeight: 700, fontSize: '1rem', marginBottom: '0.45rem' }}>{w.title}</h3>
+                  <p style={{ color: 'var(--t4)', fontSize: '0.85rem', lineHeight: 1.72 }}>{w.desc}</p>
                 </div>
               </motion.div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── CASE STUDIES ─────────────────────────────────── */}
-      <section style={{ padding: '8rem 1.5rem', background: 'var(--bg2)' }}>
-        <div className="container">
-          <EditorialRule label="06 · Case Studies" />
-
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
-            style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', marginBottom: '1rem', maxWidth: 560, lineHeight: 1.15 }}>
-            From Problem to{' '}
-            <span style={GRAD}>Measurable Result.</span>
-          </motion.h2>
-          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2, duration: 0.5 }}
-            style={{ color: 'var(--t4)', fontSize: '0.95rem', lineHeight: 1.7, maxWidth: 500, marginBottom: '5rem' }}>
-            Real deployments. Real outcomes. All running on-premise inside client infrastructure.
-          </motion.p>
-
-          {CASE_STUDIES.map((cs, i) => (
-            <motion.div key={i}
-              initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-80px' }} transition={{ delay: i * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              style={{ padding: '5rem 0', borderTop: '1px solid var(--bd)' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '5rem', alignItems: 'start' }}>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2.25rem', flexWrap: 'wrap' }}>
-                    <div className="mono" style={{ color: cs.color, fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.14em' }}>
-                      {cs.label.toUpperCase()}
-                    </div>
-                    <div style={{ height: 1, flex: 1, background: cs.color + '25', minWidth: 20 }} />
-                    <span className="mono" style={{ color: 'var(--t5)', fontSize: '0.58rem', letterSpacing: '0.06em' }}>{cs.industry}</span>
-                  </div>
-                  {cs.results.map((r, j) => (
-                    <motion.div key={j}
-                      initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }} transition={{ delay: 0.15 + j * 0.1, duration: 0.6 }}
-                      style={{
-                        marginBottom: '1rem',
-                        padding: j === 0 ? '1.25rem 1.5rem' : '0.85rem 1.25rem',
-                        borderRadius: j === 0 ? 12 : 8,
-                        background: j === 0 ? cs.color + '08' : 'transparent',
-                        border: j === 0 ? `1px solid ${cs.color}25` : `1px solid ${cs.color}12`,
-                        borderLeft: `3px solid ${cs.color}${j === 0 ? 'CC' : '50'}`,
-                        boxShadow: j === 0 ? `0 8px 32px ${cs.color}0A` : 'none',
-                      }}>
-                      <div style={{ fontSize: j === 0 ? 'clamp(2.2rem, 4.5vw, 3.8rem)' : 'clamp(1.6rem, 3vw, 2.4rem)', fontWeight: 900, color: cs.color, lineHeight: 1, letterSpacing: '-0.04em', marginBottom: '0.3rem' }}>
-                        {r.metric}
-                      </div>
-                      <div style={{ color: j === 0 ? 'var(--t3)' : 'var(--t4)', fontSize: j === 0 ? '0.85rem' : '0.8rem', lineHeight: 1.55 }}>{r.label}</div>
-                    </motion.div>
-                  ))}
-                  <div className="mono" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.5rem', color: '#10B981', fontSize: '0.58rem', fontWeight: 700, padding: '3px 10px', borderRadius: 10, background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
-                    ✓ VERIFIED DEPLOYMENT RESULTS
-                  </div>
-                </div>
-
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-                    <div style={{ width: 46, height: 46, borderRadius: 12, background: cs.color + '18', border: `1px solid ${cs.color}35`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem' }}>{cs.icon}</div>
-                    <h3 style={{ fontSize: 'clamp(1.3rem, 2.2vw, 1.9rem)', fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.02em', lineHeight: 1.2 }}>{cs.title}</h3>
-                  </div>
-                  <div style={{ marginBottom: '1.35rem' }}>
-                    <div className="mono" style={{ color: '#F87171', fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem' }}>THE PROBLEM</div>
-                    <p style={{ color: 'var(--t3)', fontSize: '0.9rem', lineHeight: 1.78 }}>{cs.problem}</p>
-                  </div>
-                  <div style={{ marginBottom: '2rem' }}>
-                    <div className="mono" style={{ color: '#06B6D4', fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem' }}>OUR SOLUTION</div>
-                    <p style={{ color: 'var(--t3)', fontSize: '0.9rem', lineHeight: 1.78 }}>{cs.solution}</p>
-                  </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-                    {cs.tags.map(t => (
-                      <span key={t} className="mono" style={{ fontSize: '0.6rem', padding: '3px 10px', borderRadius: 4, background: cs.color + '12', color: cs.color, border: `1px solid ${cs.color}28` }}>{t}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-          <div style={{ borderTop: '1px solid var(--bd)' }} />
-        </div>
-      </section>
-
-      {/* ── FOUNDER ──────────────────────────────────────── */}
-      <section style={{ padding: '8rem 1.5rem' }}>
-        <div className="container">
-          <EditorialRule label="07 · Who We Are" />
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '5rem', alignItems: 'center' }}>
-            <motion.div initial={{ opacity: 0, x: -28 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
-              <h2 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3rem)', fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '1.75rem' }}>
-                Sovereign AI Expertise,<br />
-                <span style={GRAD}>Built for High-Security Environments.</span>
-              </h2>
-              <p style={{ color: 'var(--t3)', lineHeight: 1.85, fontSize: '0.95rem', marginBottom: '1.1rem' }}>
-                AIDATARIS was built for one specific challenge: deploying enterprise AI in environments where data sovereignty is non-negotiable. Mining operations, government agencies, and critical infrastructure organisations cannot afford the compliance risks that come with cloud AI — and they shouldn't have to.
-              </p>
-              <p style={{ color: 'var(--t3)', lineHeight: 1.85, fontSize: '0.95rem', marginBottom: '1.1rem' }}>
-                Our team brings experience from the German Aerospace Center (DLR) and CTI Consulting — environments where security, auditability, and zero-failure tolerances are standard. We apply that same engineering discipline to every commercial deployment.
-              </p>
-              <p style={{ color: 'var(--t3)', lineHeight: 1.85, fontSize: '0.95rem', marginBottom: '2.25rem' }}>
-                We don't sell software licences. We solve high-stakes, high-cost problems for organisations that cannot afford to get this wrong — then stand behind the result with ongoing support.
-              </p>
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                {['Ollama', 'Qdrant', 'Neo4j', 'FastAPI', 'Python', 'PyTorch'].map(t => (
-                  <span key={t} className="mono" style={{ fontSize: '0.68rem', padding: '3px 10px', borderRadius: 20, border: '1px solid rgba(6,182,212,0.2)', color: '#06B6D4', background: 'rgba(6,182,212,0.05)' }}>{t}</span>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, x: 28 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-              className="glass" style={{ padding: '2.5rem', border: '1px solid rgba(6,182,212,0.18)', position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #06B6D4, #8B5CF6)' }} />
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.5rem' }}>
-                <div style={{ width: 80, height: 80, borderRadius: 18, overflow: 'hidden', flexShrink: 0, boxShadow: '0 0 24px rgba(6,182,212,0.25)' }}>
-                  <img src="/photo.png" alt="Vivek Rabadiya" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
-                <div>
-                  <h3 style={{ color: 'var(--t1)', fontWeight: 900, fontSize: '1.25rem', letterSpacing: '-0.02em' }}>Vivek Rabadiya</h3>
-                  <div className="mono" style={{ color: '#06B6D4', fontSize: '0.63rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.85rem' }}>FOUNDER & CEO</div>
-                  <p style={{ color: 'var(--t4)', fontSize: '0.85rem', lineHeight: 1.75, marginBottom: '1.35rem' }}>
-                    Specialist in sovereign AI systems, secure data architecture, and enterprise AI deployment. Vivek brings hands-on engineering experience from the{' '}
-                    <span style={{ color: '#06B6D4', fontWeight: 600 }}>German Aerospace Center (DLR)</span>{' '}
-                    and{' '}
-                    <span style={{ color: '#F59E0B', fontWeight: 600 }}>CTI Consulting</span>{' '}
-                    — applying that same mission-critical rigour to protect Australian organisations from the risks of cloud AI.
-                  </p>
-                  <blockquote style={{ borderLeft: '2px solid rgba(6,182,212,0.4)', paddingLeft: '1rem', margin: '0 0 1.25rem', color: 'var(--t3)', fontSize: '0.85rem', lineHeight: 1.75, fontStyle: 'italic' }}>
-                    "Australian organisations are being told that accessing modern AI requires sending sensitive data to overseas servers. That's a choice we should refuse to accept. Sovereign AI — powerful, compliant, fully in your control — is not a future aspiration. It's deployable today."
-                  </blockquote>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
-                    {[
-                      { icon: '🚀', text: 'German Aerospace Center (DLR)' },
-                      { icon: '💼', text: 'CTI Consulting' },
-                      { icon: '🎓', text: 'EIT Perth' },
-                      { icon: '📍', text: 'Perth, Western Australia' },
-                    ].map((c, i) => (
-                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', color: 'var(--t4)', fontSize: '0.82rem' }}>
-                        <span>{c.icon}</span> {c.text}
-                      </div>
-                    ))}
-                    <a href="https://www.linkedin.com/in/vivekrabadiya" target="_blank" rel="noopener noreferrer"
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem', color: '#0A66C2', fontSize: '0.82rem', fontWeight: 600, textDecoration: 'none', transition: 'opacity 0.2s' }}
-                      onMouseEnter={e => e.currentTarget.style.opacity = '0.75'}
-                      onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="#0A66C2" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                      </svg>
-                      linkedin.com/in/vivekrabadiya
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
           </div>
         </div>
       </section>

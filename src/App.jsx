@@ -11,6 +11,7 @@ import Technology from './pages/Technology'
 import Security from './pages/Security'
 import Solutions from './pages/Solutions'
 import AdminConsole from './pages/AdminConsole'
+import CaseStudies from './pages/CaseStudies'
 import Company from './pages/Company'
 import Careers from './pages/Careers'
 import Contact from './pages/Contact'
@@ -45,8 +46,9 @@ function AppLayout() {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/"           element={<AnimatedPage><Home /></AnimatedPage>} />
-          <Route path="/technology" element={<AnimatedPage><Technology /></AnimatedPage>} />
-          <Route path="/security"   element={<AnimatedPage><Security /></AnimatedPage>} />
+          <Route path="/technology"   element={<AnimatedPage><Technology /></AnimatedPage>} />
+          <Route path="/case-studies" element={<AnimatedPage><CaseStudies /></AnimatedPage>} />
+          <Route path="/security"     element={<AnimatedPage><Security /></AnimatedPage>} />
           <Route path="/solutions"  element={<AnimatedPage><Solutions /></AnimatedPage>} />
           <Route path="/admin"      element={<AnimatedPage><AdminConsole /></AnimatedPage>} />
           <Route path="/company"    element={<AnimatedPage><Company /></AnimatedPage>} />

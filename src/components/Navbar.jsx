@@ -7,8 +7,9 @@ import { useTheme } from '../ThemeContext'
 const LINKS = [
   { to: '/',           label: 'Home' },
   { to: '/solutions',  label: 'Solutions' },
-  { to: '/technology', label: 'Technology' },
-  { to: '/security',   label: 'Security' },
+  { to: '/technology',   label: 'Technology' },
+  { to: '/case-studies', label: 'Case Studies' },
+  { to: '/security',     label: 'Security' },
   { to: '/company',    label: 'Company' },
   { to: '/contact',    label: 'Contact' },
 ]
