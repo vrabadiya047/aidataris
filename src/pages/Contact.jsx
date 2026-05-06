@@ -85,7 +85,7 @@ export default function Contact() {
         <div style={{ position: 'relative', maxWidth: 640, margin: '0 auto' }}>
           <span className="label">Get in Touch</span>
           <h1 style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.5rem)', fontWeight: 900, color: 'var(--t1)', margin: '1.25rem 0', letterSpacing: '-0.03em' }}>
-            Talk to a Sovereign AI<br /><span className="gradient-text">Expert Today.</span>
+            Talk to a Sovereign AI<br /><span className="gradient-text">Expert Today</span>
           </h1>
           <p style={{ color: 'var(--t4)', fontSize: '1.05rem', lineHeight: 1.75, maxWidth: 520, margin: '0 auto' }}>
             No sales scripts. No generic demos. Tell us what you&apos;re trying to solve and we&apos;ll tailor every conversation to your sector and security requirements.

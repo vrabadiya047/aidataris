@@ -710,6 +710,99 @@ function DashboardMockup() {
   )
 }
 
+/* ── Architecture Diagram ────────────────────────────── */
+function ArchitectureDiagram() {
+  const SOURCES = [
+    { icon: '📄', l: 'PDFs & Word Docs',  c: '#06B6D4' },
+    { icon: '🖼', l: 'Images & Scans',    c: '#8B5CF6' },
+    { icon: '📊', l: 'Reports & Data',    c: '#F59E0B' },
+    { icon: '🗄', l: 'Databases & APIs',  c: '#10B981' },
+  ]
+  const OUTPUTS = [
+    { icon: '🔍', l: 'Semantic Search',    c: '#06B6D4' },
+    { icon: '📋', l: 'Audit Trail',        c: '#8B5CF6' },
+    { icon: '📊', l: 'Analytics',          c: '#F59E0B' },
+    { icon: '✅', l: 'Compliance Reports', c: '#10B981' },
+  ]
+  const ENGINE = [
+    { icon: '🛡', l: 'PII Shield',       c: '#F87171' },
+    { icon: '🧠', l: 'AI Query Engine',  c: '#8B5CF6' },
+    { icon: '🕸', l: 'Knowledge Graph',  c: '#06B6D4' },
+  ]
+
+  const node = c => ({
+    padding: '0.5rem 0.7rem', borderRadius: 8,
+    background: c + '0D', border: `1px solid ${c}20`,
+    display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--t3)',
+  })
+
+  const Arrow = () => (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <svg width="30" height="50" viewBox="0 0 30 50" fill="none">
+        <path d="M4 25 H22" stroke="rgba(6,182,212,0.38)" strokeWidth="1.8" strokeLinecap="round"/>
+        <path d="M14 17 L22 25 L14 33" stroke="rgba(6,182,212,0.38)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+        <line x1="4" y1="10" x2="4" y2="40" stroke="rgba(6,182,212,0.07)" strokeWidth="1" strokeDasharray="2,4"/>
+      </svg>
+    </div>
+  )
+
+  return (
+    <div style={{ background: '#050810', border: '1px solid rgba(6,182,212,0.1)', borderRadius: 14, padding: '1.75rem 1.5rem', overflowX: 'auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 40px 1fr 40px 1fr', alignItems: 'center', minWidth: 520 }}>
+
+        <div>
+          <div className="mono" style={{ color: 'rgba(100,116,139,0.7)', fontSize: '0.5rem', fontWeight: 700, letterSpacing: '0.12em', textAlign: 'center', marginBottom: '0.65rem' }}>DATA SOURCES</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+            {SOURCES.map((s, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -14 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
+                style={node(s.c)}>
+                <span style={{ fontSize: '0.82rem', flexShrink: 0 }}>{s.icon}</span>
+                <span style={{ fontSize: '0.72rem' }}>{s.l}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        <Arrow />
+
+        <motion.div initial={{ opacity: 0, scale: 0.94 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5 }}
+          style={{
+            background: 'linear-gradient(160deg, rgba(6,182,212,0.06), rgba(139,92,246,0.06))',
+            border: '1px solid rgba(6,182,212,0.2)', borderRadius: 12, padding: '1.1rem 0.9rem',
+            boxShadow: '0 0 36px rgba(6,182,212,0.06)',
+          }}>
+          <div className="mono" style={{ color: '#06B6D4', fontSize: '0.5rem', fontWeight: 700, letterSpacing: '0.12em', textAlign: 'center', marginBottom: '0.7rem' }}>AIDATARIS ENGINE</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.42rem' }}>
+            {ENGINE.map((e, i) => (
+              <div key={i} style={{ padding: '0.42rem 0.6rem', borderRadius: 7, background: e.c + '10', border: `1px solid ${e.c}22`, display: 'flex', alignItems: 'center', gap: '0.38rem' }}>
+                <span style={{ fontSize: '0.8rem', flexShrink: 0 }}>{e.icon}</span>
+                <span style={{ color: e.c, fontSize: '0.7rem', fontWeight: 600 }}>{e.l}</span>
+              </div>
+            ))}
+          </div>
+          <div className="mono" style={{ color: 'rgba(45,55,72,0.9)', fontSize: '0.44rem', textAlign: 'center', marginTop: '0.6rem', letterSpacing: '0.07em' }}>100% ON-PREMISE · AIR-GAP READY</div>
+        </motion.div>
+
+        <Arrow />
+
+        <div>
+          <div className="mono" style={{ color: 'rgba(100,116,139,0.7)', fontSize: '0.5rem', fontWeight: 700, letterSpacing: '0.12em', textAlign: 'center', marginBottom: '0.65rem' }}>SECURE OUTPUTS</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+            {OUTPUTS.map((o, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: 14 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
+                style={node(o.c)}>
+                <span style={{ fontSize: '0.82rem', flexShrink: 0 }}>{o.icon}</span>
+                <span style={{ fontSize: '0.72rem' }}>{o.l}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  )
+}
+
 /* ── GradText shorthand ──────────────────────────────── */
 const GRAD = { background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)', backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', animation: 'gradient-shift 5s ease infinite' }
 
@@ -789,7 +882,7 @@ export default function Home() {
             </motion.div>
 
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
-              style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '5rem' }}>
+              style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '1.5rem' }}>
               {['On-Premise AI', 'Air-Gap Ready', 'Zero Data Egress', 'Mining', 'Government', 'Legal', 'Perth Based'].map((p, i) => (
                 <motion.span key={p} initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.9 + i * 0.06 }}
                   className="mono" style={{ fontSize: '0.68rem', padding: '3px 10px', borderRadius: 20, border: '1px solid rgba(6,182,212,0.2)', color: 'var(--t4)', background: 'rgba(6,182,212,0.05)' }}>
@@ -798,28 +891,35 @@ export default function Home() {
               ))}
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 36 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', alignItems: 'center' }}>
-              <PIIScanner />
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'var(--bd)', borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(6,182,212,0.1)' }}>
-                {[
-                  { label: 'Industries Served',   val: 8,   suffix: '+' },
-                  { label: 'Local Processing',     val: 100, suffix: '%' },
-                  { label: 'Cloud Dependencies',   val: 0,   suffix: '' },
-                  { label: 'PII Types Protected',  val: 12,  suffix: '+' },
-                ].map((s, i) => (
-                  <div key={i} style={{ background: 'var(--stat-cell)', padding: '2rem', textAlign: 'center' }}>
-                    <div className="mono" style={{ fontSize: '2.2rem', fontWeight: 800, color: '#06B6D4', letterSpacing: '-0.03em' }}>
-                      <Counter target={s.val} suffix={s.suffix} />
-                    </div>
-                    <div style={{ color: 'var(--t4)', fontSize: '0.75rem', marginTop: 6 }}>{s.label}</div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
           </div>
         </motion.div>
+      </section>
+
+      {/* ── PII DEMO + STATS STRIP ───────────────────────── */}
+      <section style={{ padding: '5rem 1.5rem', borderTop: '1px solid var(--bd)' }}>
+        <div className="container">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
+            <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.65 }}>
+              <PIIScanner />
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.65 }}
+              style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'var(--bd)', borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(6,182,212,0.1)' }}>
+              {[
+                { label: 'Industries Served',   val: 8,   suffix: '+' },
+                { label: 'Local Processing',     val: 100, suffix: '%' },
+                { label: 'Cloud Dependencies',   val: 0,   suffix: '' },
+                { label: 'PII Types Protected',  val: 12,  suffix: '+' },
+              ].map((s, i) => (
+                <div key={i} style={{ background: 'var(--stat-cell)', padding: '2.5rem 2rem', textAlign: 'center' }}>
+                  <div className="mono" style={{ fontSize: '2.5rem', fontWeight: 800, color: '#06B6D4', letterSpacing: '-0.03em' }}>
+                    <Counter target={s.val} suffix={s.suffix} />
+                  </div>
+                  <div style={{ color: 'var(--t4)', fontSize: '0.78rem', marginTop: 8 }}>{s.label}</div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
       </section>
 
       {/* ── PROBLEM SECTION ──────────────────────────────── */}
@@ -1076,6 +1176,21 @@ export default function Home() {
               </div>
             </motion.div>
           </div>
+
+          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            style={{ marginTop: '4rem' }}>
+            <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
+              <span className="label">System Architecture</span>
+              <h3 style={{ fontSize: 'clamp(1.2rem, 2vw, 1.7rem)', fontWeight: 800, color: 'var(--t1)', marginTop: '0.75rem', letterSpacing: '-0.02em' }}>
+                Data In. Intelligence Out.{' '}
+                <span style={{ background: 'linear-gradient(135deg, #06B6D4, #38BDF8, #8B5CF6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Zero Egress.</span>
+              </h3>
+              <p style={{ color: 'var(--t5)', fontSize: '0.85rem', marginTop: '0.5rem', lineHeight: 1.7 }}>
+                Every byte flows through AIDATARIS and stays on your infrastructure. Nothing leaves your network.
+              </p>
+            </div>
+            <ArchitectureDiagram />
+          </motion.div>
         </div>
       </section>
 
