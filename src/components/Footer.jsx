@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import Logo from './Logo'
 
 const inputStyle = {
   width: '100%', background: 'rgba(255,255,255,0.05)',
@@ -128,7 +127,7 @@ export default function Footer() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '2.5rem', marginBottom: '3rem' }}>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: '1rem' }}>
-                <Logo size={28} />
+                <img src="/logo.png" alt="AIDATARIS" width={28} height={28} style={{ objectFit: 'contain', display: 'block' }} />
                 <span style={{ color: '#F1F5F9', fontWeight: 800, fontSize: '0.95rem', letterSpacing: '0.08em' }}>AIDATARIS</span>
               </div>
               <p style={{ color: '#475569', fontSize: '0.85rem', lineHeight: 1.7 }}>

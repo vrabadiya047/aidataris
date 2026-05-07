@@ -1,10 +1,7 @@
-import { useTheme } from '../ThemeContext'
-
 export default function Logo({ size = 36 }) {
-  const { theme } = useTheme()
   return (
     <img
-      src={theme === 'dark' ? '/logo2.png' : '/logo.png'}
+      src="/logo2.png"
       alt="AIDATARIS"
       width={size}
       height={size}
