@@ -41,7 +41,7 @@ function SecureNetworkAnimation() {
           x,
           y: -Math.random() * H,
           speed: 14 + Math.random() * 18,
-          baseOpacity: 0.045 + Math.random() * 0.075,
+          baseOpacity: 0.35 + Math.random() * 0.35,
           strings: Array.from({ length: rows }, () => POOL[Math.floor(Math.random() * POOL.length)]),
           swapTimer: 0,
           swapEvery: 1.8 + Math.random() * 2.8,
@@ -90,7 +90,7 @@ function SecureNetworkAnimation() {
 
           const fadeTop = Math.min(1, py / 100)
           const fadeBot = Math.min(1, (H - py) / 140)
-          const headBoost = Math.max(0, 1 - Math.abs(py - col.y - LINE_H * 2) / (LINE_H * 3)) * 0.08
+          const headBoost = Math.max(0, 1 - Math.abs(py - col.y - LINE_H * 2) / (LINE_H * 3)) * 0.5
           const alpha = col.baseOpacity * fadeTop * fadeBot + headBoost
           if (alpha < 0.006) continue
 
