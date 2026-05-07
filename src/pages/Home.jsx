@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 
-/* ── Secure Network Animation ────────────────────────── */
+/* ── Data Stream Animation ───────────────────────────── */
 function SecureNetworkAnimation() {
   const canvasRef = useRef(null)
   const frameRef  = useRef(null)
@@ -13,150 +13,92 @@ function SecureNetworkAnimation() {
     if (!canvas) return
     const ctx = canvas.getContext('2d')
 
-    let nodes = [], edges = [], packets = [], lastPacket = 0
+    const FS = 11
+    const LINE_H = 22
+    const POOL = [
+      '3A F2 01 BC', '7C 09 EA 55', 'AES-256-GCM', 'SHA-256-CHAIN',
+      'B1 2D 90 44', 'F9 C3 17 80', '0x4F2A9C1E',  '0x8C3D2A1F',
+      'policy_v14.pdf',    'site_report.pdf',  'contract_nda.docx',
+      'maintenance_log',   'compliance_q3.pdf','ism_ref_047.pdf',
+      'risk_matrix.xlsx',  'safety_audit.pdf', 'whs_act_s47.pdf',
+      'TFN ██████',        'ABN ██████',        'PII:REDACTED',
+      'PSPF_2024',         'ISM-0271',          'ASD-E8-L3',
+      'AUTH: PASS',        'EGRESS: 0 BYTES',   'ENCRYPTED',
+      'VERIFIED ✓',        'AIR-GAP: ACTIVE',   'LOCAL ONLY',
+      'D3 88 F1 02',       '4B 7E A2 C9',       'C7 5E 3B A0',
+    ]
 
-    function hex(n) { return Math.round(n).toString(16).padStart(2, '0') }
+    let cols = []
 
-    function init() {
-      nodes = []; edges = []; packets = []
+    function buildCols() {
+      cols = []
       const W = canvas.width, H = canvas.height
-      const cx = W * 0.64, cy = H * 0.46
-
-      // Central AI core
-      nodes.push({ x: cx, y: cy, r: 10, color: '#8B5CF6', type: 'core', pulse: 0 })
-
-      // Satellite nodes — Fibonacci spiral for organic spread
-      const PHI = 2.39996
-      for (let i = 0; i < 30; i++) {
-        const angle  = i * PHI
-        const radius = 52 + Math.sqrt(i + 1) * 36
-        const x = cx + Math.cos(angle) * radius
-        const y = cy + Math.sin(angle) * radius * 0.68   // flatten vertically
-        if (x < 12 || x > W - 12 || y < 32 || y > H - 32) continue
-        nodes.push({
-          x, y,
-          r: 1.8 + Math.random() * 3.2,
-          color: i % 6 === 0 ? '#F59E0B' : i % 9 === 0 ? '#10B981' : '#06B6D4',
-          type: i % 8 === 0 ? 'secure' : 'node',
-          pulse: 0,
+      const count = Math.max(6, Math.floor(W / 90))
+      for (let i = 0; i < count; i++) {
+        const x = (i + 0.5) * (W / count) + (Math.random() - 0.5) * 24
+        const rows = Math.ceil(H / LINE_H) + 6
+        cols.push({
+          x,
+          y: -Math.random() * H,
+          speed: 14 + Math.random() * 18,
+          baseOpacity: 0.045 + Math.random() * 0.075,
+          strings: Array.from({ length: rows }, () => POOL[Math.floor(Math.random() * POOL.length)]),
+          swapTimer: 0,
+          swapEvery: 1.8 + Math.random() * 2.8,
         })
       }
-
-      // Build edges — always connect core if close enough; others probabilistic
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const d = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y)
-          const threshold = (i === 0 || j === 0) ? 250 : 105
-          if (d < threshold) edges.push({ i, j })
-        }
-      }
     }
 
-    const ro = new ResizeObserver(() => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; init() })
-    canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight
-    init()
+    const ro = new ResizeObserver(() => {
+      canvas.width  = canvas.offsetWidth
+      canvas.height = canvas.offsetHeight
+      buildCols()
+    })
+    canvas.width  = canvas.offsetWidth
+    canvas.height = canvas.offsetHeight
+    buildCols()
     ro.observe(canvas)
 
-    function spawnPacket(t) {
-      if (t - lastPacket < 260 || nodes.length < 3) return
-      lastPacket = t
-      const srcIdx = 1 + Math.floor(Math.random() * (nodes.length - 1))
-      const dstIdx = Math.random() < 0.74 ? 0 : 1 + Math.floor(Math.random() * (nodes.length - 1))
-      if (srcIdx === dstIdx) return
-      packets.push({
-        sx: nodes[srcIdx].x, sy: nodes[srcIdx].y,
-        tx: nodes[dstIdx].x, ty: nodes[dstIdx].y,
-        dst: dstIdx, t: 0,
-        speed: 0.0038 + Math.random() * 0.007,
-        color: dstIdx === 0 ? '#8B5CF6' : '#06B6D4',
-      })
-    }
+    let last = 0
+    function draw(now) {
+      const dt = Math.min((now - last) / 1000, 0.05)
+      last = now
+      const H = canvas.height
 
-    function draw(time) {
-      const W = canvas.width, H = canvas.height
-      ctx.clearRect(0, 0, W, H)
+      ctx.clearRect(0, 0, canvas.width, H)
+      ctx.font      = `${FS}px 'JetBrains Mono','Courier New',monospace`
+      ctx.textAlign = 'left'
 
-      // Subtle perimeter shield ring around core
-      const core = nodes[0]
-      if (core) {
-        const shieldR = Math.min(W, H) * 0.38
-        const sg = ctx.createRadialGradient(core.x, core.y, shieldR * 0.85, core.x, core.y, shieldR)
-        sg.addColorStop(0, 'rgba(139,92,246,0)')
-        sg.addColorStop(0.7, 'rgba(139,92,246,0.03)')
-        sg.addColorStop(1, 'rgba(139,92,246,0.09)')
-        ctx.beginPath(); ctx.arc(core.x, core.y, shieldR, 0, Math.PI * 2)
-        ctx.fillStyle = sg; ctx.fill()
-        ctx.beginPath(); ctx.arc(core.x, core.y, shieldR, 0, Math.PI * 2)
-        ctx.strokeStyle = 'rgba(139,92,246,0.12)'; ctx.lineWidth = 1; ctx.stroke()
-      }
-
-      // Edges
-      for (const e of edges) {
-        const a = nodes[e.i], b = nodes[e.j]
-        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y)
-        const isCoreEdge = e.i === 0 || e.j === 0
-        ctx.strokeStyle = isCoreEdge ? 'rgba(139,92,246,0.16)' : 'rgba(6,182,212,0.08)'
-        ctx.lineWidth   = isCoreEdge ? 0.9 : 0.55
-        ctx.stroke()
-      }
-
-      // Nodes
-      for (const n of nodes) {
-        const glowR = n.r * (n.type === 'core' ? 4.5 : 3)
-        const gr = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowR)
-        gr.addColorStop(0, n.color + hex((n.type === 'core' ? 0.45 : 0.2) * 255))
-        gr.addColorStop(1, n.color + '00')
-        ctx.beginPath(); ctx.arc(n.x, n.y, glowR, 0, Math.PI * 2)
-        ctx.fillStyle = gr; ctx.fill()
-
-        ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2)
-        ctx.fillStyle = n.color + (n.type === 'core' ? 'EE' : 'C8')
-        ctx.fill()
-
-        // Pulse ripple on arrival
-        if (n.pulse > 0) {
-          ctx.beginPath(); ctx.arc(n.x, n.y, n.r + (1 - n.pulse) * 32, 0, Math.PI * 2)
-          ctx.strokeStyle = n.color + hex(n.pulse * 0.65 * 255)
-          ctx.lineWidth = 1.5; ctx.stroke()
-          n.pulse = Math.max(0, n.pulse - 0.02)
+      for (const col of cols) {
+        col.y += col.speed * dt
+        col.swapTimer += dt
+        if (col.swapTimer >= col.swapEvery) {
+          col.swapTimer = 0
+          const idx = Math.floor(Math.random() * col.strings.length)
+          col.strings[idx] = POOL[Math.floor(Math.random() * POOL.length)]
+          col.swapEvery = 1.8 + Math.random() * 2.8
+        }
+        if (col.y > H + LINE_H * 4) {
+          col.y = -LINE_H * (col.strings.length - 2)
+          col.speed = 14 + Math.random() * 18
+          col.baseOpacity = 0.045 + Math.random() * 0.075
         }
 
-        // AI core — two spinning orbital arcs
-        if (n.type === 'core') {
-          const s = time * 0.00055
-          ctx.beginPath(); ctx.arc(n.x, n.y, n.r + 10, s, s + Math.PI * 1.35)
-          ctx.strokeStyle = '#8B5CF6A0'; ctx.lineWidth = 1.8; ctx.stroke()
+        for (let j = 0; j < col.strings.length; j++) {
+          const py = col.y + j * LINE_H
+          if (py < -LINE_H || py > H + LINE_H) continue
 
-          ctx.beginPath(); ctx.arc(n.x, n.y, n.r + 18, -s * 0.65, -s * 0.65 + Math.PI * 0.8)
-          ctx.strokeStyle = '#06B6D460'; ctx.lineWidth = 1.1; ctx.stroke()
+          const fadeTop = Math.min(1, py / 100)
+          const fadeBot = Math.min(1, (H - py) / 140)
+          const headBoost = Math.max(0, 1 - Math.abs(py - col.y - LINE_H * 2) / (LINE_H * 3)) * 0.08
+          const alpha = col.baseOpacity * fadeTop * fadeBot + headBoost
+          if (alpha < 0.006) continue
 
-          ctx.beginPath(); ctx.arc(n.x, n.y, n.r + 26, s * 0.4 + 1, s * 0.4 + 1 + Math.PI * 0.5)
-          ctx.strokeStyle = '#F59E0B35'; ctx.lineWidth = 0.8; ctx.stroke()
+          ctx.fillStyle = `rgba(6,182,212,${alpha.toFixed(3)})`
+          ctx.fillText(col.strings[j], col.x, py)
         }
       }
 
-      // Data packets with glowing trails
-      packets = packets.filter(p => {
-        p.t += p.speed
-        if (p.t >= 1) {
-          if (nodes[p.dst]) nodes[p.dst].pulse = 1
-          return false
-        }
-        const steps = 8
-        for (let k = steps; k >= 0; k--) {
-          const tt = Math.max(0, p.t - k * 0.014)
-          const x  = p.sx + (p.tx - p.sx) * tt
-          const y  = p.sy + (p.ty - p.sy) * tt
-          const a  = ((steps - k) / steps) * 0.92
-          const r  = Math.max(0.4, 2.5 - k * 0.22)
-          ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2)
-          ctx.fillStyle = p.color + hex(a * 255)
-          ctx.fill()
-        }
-        return true
-      })
-
-      spawnPacket(time)
       frameRef.current = requestAnimationFrame(draw)
     }
 

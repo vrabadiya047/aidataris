@@ -665,7 +665,7 @@ export default function BookConsultation() {
                         <div className="mono" style={{ color: '#8B5CF6', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.12em', marginBottom: '1rem' }}>WHAT TO EXPECT</div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                           {[
-                            { step: '01', text: 'Pick a date and time — you\'ll see only slots when Vivek is free.' },
+                            { step: '01', text: 'Pick a date and time — you\'ll see only slots when Expert is free.' },
                             { step: '02', text: 'A Google Calendar invite is sent automatically to your email.' },
                             { step: '03', text: 'We prepare based on your sector, use case, and agenda.' },
                             { step: '04', text: 'Session runs with a senior AIDATARIS engineer, not a sales rep.' },
