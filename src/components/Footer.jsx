@@ -54,7 +54,8 @@ export default function Footer() {
               </p>
               <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>
                 {[
-                  { icon: '📍', text: 'Perth, Western Australia' },
+                  { icon: '📍', text: '25 Guthrie St, Osborne Park WA 6017' },
+                  { icon: '📞', text: '+61 406 377 710' },
                   { icon: '✉',  text: 'support@aidataris.com.au' },
                 ].map((item, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>

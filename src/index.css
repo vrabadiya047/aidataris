@@ -1,53 +1,7 @@
 @import "tailwindcss";
 
-/* ─── Light theme (default) ──────────────────────────── */
+/* ─── Theme ──────────────────────────────────────────── */
 :root {
-  --bg:          #F8FAFC;
-  --bg2:         #EEF2F7;
-  --surface:     #FFFFFF;
-  --glass-bg:    rgba(255, 255, 255, 0.82);
-  --glass-bd:    rgba(15, 23, 42, 0.09);
-  --glass-bd-h:  rgba(6, 182, 212, 0.55);
-  --glass-sh:    0 4px 24px rgba(15,23,42,0.07), 0 1px 4px rgba(15,23,42,0.04);
-  --glass-sh-h:  0 8px 32px rgba(15,23,42,0.1), 0 0 20px rgba(6,182,212,0.1);
-  --t1:          #0F172A;
-  --t2:          #1E293B;
-  --t3:          #334155;
-  --t4:          #475569;
-  --t5:          #64748B;
-  --t6:          #94A3B8;
-  --bd:          rgba(15, 23, 42, 0.08);
-  --bd-s:        rgba(15, 23, 42, 0.06);
-  --divider-c:   rgba(6, 182, 212, 0.18);
-  --label-bg:    rgba(6, 182, 212, 0.08);
-  --label-bd:    rgba(6, 182, 212, 0.28);
-  --term-bg:     #111827;
-  --term-bar:    #1F2937;
-  --term-text:   #6B7280;
-  --grid-c:      rgba(15, 23, 42, 0.04);
-  --grid-hero:   rgba(15, 23, 42, 0.035);
-  --orb-opacity: 0.07;
-  --nav-bg:      rgba(248, 250, 252, 0.88);
-  --nav-bg2:     rgba(248, 250, 252, 0.97);
-  --nav-bd:      rgba(15, 23, 42, 0.09);
-  --nav-link:    #475569;
-  --nav-link-h:  #0F172A;
-  --nav-active:     #06B6D4;
-  --nav-active-bg:  rgba(6,182,212,0.08);
-  --nav-active-bd:  rgba(6,182,212,0.2);
-  --ticker-bg:   #0F172A;
-  --ticker-text: #38BDF8;
-  --section-alt: #EEF2F7;
-  --stat-cell:   rgba(248, 250, 252, 0.98);
-  --stat-bd:     rgba(6, 182, 212, 0.12);
-  --footer-bg:   #EEF2F7;
-  --scrollbar:   #CBD5E1;
-  --input-bg:    rgba(248, 250, 252, 0.9);
-  --input-bd:    rgba(15, 23, 42, 0.12);
-}
-
-/* ─── Dark theme ─────────────────────────────────────── */
-[data-theme="dark"] {
   --bg:          #02060E;
   --bg2:         #020913;
   --surface:     #070F1D;
@@ -91,6 +45,11 @@
   --input-bg:    rgba(6, 14, 40, 0.6);
   --input-bd:    rgba(6, 182, 212, 0.15);
 }
+
+button, a, .label, nav {
+  user-select: none;
+}
+
 
 /* ─── Reset ─────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -342,15 +301,6 @@ body {
 .theme-toggle:hover {
   background: rgba(255,255,255,0.22);
   border-color: rgba(255,255,255,0.4);
-}
-[data-theme="light"] .theme-toggle {
-  background: var(--glass-bg);
-  border-color: var(--glass-bd);
-  color: var(--t3);
-}
-[data-theme="light"] .theme-toggle:hover {
-  border-color: rgba(6,182,212,0.5); color: #06B6D4;
-  box-shadow: 0 0 14px rgba(6,182,212,0.2);
 }
 .theme-toggle svg { animation: theme-in 0.3s ease; }
 

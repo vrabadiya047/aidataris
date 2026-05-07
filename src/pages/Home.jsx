@@ -163,7 +163,7 @@ function PIIScanner() {
           </span>
         </span>
       </div>
-      <div style={{ padding: '1.25rem 1.5rem', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ padding: '1.25rem 1.5rem', position: 'relative', overflow: 'hidden', minHeight: 280 }}>
         <AnimatePresence>
           {phase === 'scan' && (
             <motion.div initial={{ top: 0 }} animate={{ top: '100%' }} exit={{ opacity: 0 }} transition={{ duration: 2, ease: 'linear' }}
@@ -188,14 +188,12 @@ function PIIScanner() {
           })}
           <motion.span animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1, repeat: Infinity, ease: 'steps(1)' }} className="mono" style={{ color: '#06B6D4' }}>▋</motion.span>
         </pre>
-        {phase === 'done' && (
-          <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
-            style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid rgba(6,182,212,0.1)', display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-            {SEGMENTS.filter(s => s.pii).map(s => (
-              <span key={s.type} className="mono" style={{ fontSize: '0.6rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4, background: s.col + '15', color: s.col, border: `1px solid ${s.col}35` }}>{s.type} ✓</span>
-            ))}
-          </motion.div>
-        )}
+        <motion.div animate={{ opacity: phase === 'done' ? 1 : 0 }} transition={{ duration: 0.4 }}
+          style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid rgba(6,182,212,0.1)', display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+          {SEGMENTS.filter(s => s.pii).map(s => (
+            <span key={s.type} className="mono" style={{ fontSize: '0.6rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4, background: s.col + '15', color: s.col, border: `1px solid ${s.col}35` }}>{s.type} ✓</span>
+          ))}
+        </motion.div>
       </div>
     </motion.div>
   )
@@ -767,7 +765,7 @@ export default function Home() {
       </section>
 
       {/* ── PII DEMO + STATS STRIP ───────────────────────── */}
-      <section style={{ padding: '5rem 1.5rem', borderTop: '1px solid var(--bd)' }}>
+      <section style={{ padding: '3rem 1.5rem', borderTop: '1px solid var(--bd)' }}>
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
             <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.65 }}>
@@ -794,7 +792,7 @@ export default function Home() {
       </section>
 
       {/* ── PROBLEM SECTION ──────────────────────────────── */}
-      <section style={{ padding: '8rem 1.5rem', background: 'var(--bg2)' }}>
+      <section style={{ padding: '4rem 1.5rem', background: 'var(--bg2)' }}>
         <div className="container">
           <EditorialRule label="The Problem" />
 
@@ -836,7 +834,7 @@ export default function Home() {
       </section>
 
       {/* ── SOLUTION + BENEFITS ───────────────────────────── */}
-      <section style={{ padding: '8rem 1.5rem' }}>
+      <section style={{ padding: '4rem 1.5rem' }}>
         <div className="container">
           <EditorialRule label="The Solution" />
 
@@ -880,9 +878,9 @@ export default function Home() {
       </section>
 
       {/* ── SERVICES ─────────────────────────────────────── */}
-      <section style={{ padding: '8rem 1.5rem', background: 'var(--bg2)' }}>
+      <section style={{ padding: '4rem 1.5rem', background: 'var(--bg2)' }}>
         <div className="container">
-          <EditorialRule label="01 · What We Build" />
+          <EditorialRule label="What We Build" />
 
           <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
             style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', marginBottom: '0.75rem', maxWidth: 620, lineHeight: 1.15 }}>
@@ -934,7 +932,7 @@ export default function Home() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────── */}
-      <section style={{ padding: '8rem 1.5rem' }}>
+      <section style={{ padding: '4rem 1.5rem' }}>
         <div className="container">
           <EditorialRule label="How It Works" />
 
@@ -987,7 +985,7 @@ export default function Home() {
       </section>
 
       {/* ── PLATFORM DASHBOARD PREVIEW ───────────────────── */}
-      <section style={{ padding: '8rem 1.5rem', background: 'var(--bg2)' }}>
+      <section style={{ padding: '4rem 1.5rem', background: 'var(--bg2)' }}>
         <div className="container">
           <EditorialRule label="Platform Preview" />
 
@@ -1054,9 +1052,9 @@ export default function Home() {
       </section>
 
       {/* ── USE CASES ────────────────────────────────────── */}
-      <section style={{ padding: '8rem 1.5rem' }}>
+      <section style={{ padding: '4rem 1.5rem' }}>
         <div className="container">
-          <EditorialRule label="02 · Industries We Serve" />
+          <EditorialRule label="Industries We Serve" />
 
           <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
             style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', marginBottom: '0.75rem', maxWidth: 600, lineHeight: 1.15 }}>
@@ -1118,9 +1116,9 @@ export default function Home() {
       </section>
 
       {/* ── HOW WE WORK ──────────────────────────────────── */}
-      <section style={{ padding: '8rem 1.5rem', background: 'var(--bg2)' }}>
+      <section style={{ padding: '4rem 1.5rem', background: 'var(--bg2)' }}>
         <div className="container">
-          <EditorialRule label="03 · Our Process" />
+          <EditorialRule label="Our Process" />
 
           <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
             style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--t1)', marginBottom: '0.75rem', maxWidth: 580, lineHeight: 1.15 }}>
@@ -1165,7 +1163,7 @@ export default function Home() {
       </section>
 
       {/* ── CAPABILITIES ─────────────────────────────────── */}
-      <section style={{ padding: '8rem 1.5rem' }}>
+      <section style={{ padding: '4rem 1.5rem' }}>
         <div className="container">
           <EditorialRule label="Key Capabilities" />
 
@@ -1202,7 +1200,7 @@ export default function Home() {
       </section>
 
       {/* ── INDUSTRIES ───────────────────────────────────── */}
-      <section style={{ padding: '8rem 1.5rem', background: 'var(--bg2)' }}>
+      <section style={{ padding: '4rem 1.5rem', background: 'var(--bg2)' }}>
         <div className="container">
           <EditorialRule label="Industries We Serve" />
 
@@ -1246,7 +1244,7 @@ export default function Home() {
       </section>
 
       {/* ── WHY AIDATARIS ────────────────────────────────── */}
-      <section style={{ padding: '8rem 1.5rem' }}>
+      <section style={{ padding: '4rem 1.5rem' }}>
         <div className="container">
           <EditorialRule label="Why AIDATARIS" />
 
@@ -1281,7 +1279,7 @@ export default function Home() {
       </section>
 
       {/* ── FINAL CTA ─────────────────────────────────────── */}
-      <section style={{ padding: '12rem 1.5rem', textAlign: 'center', position: 'relative', overflow: 'hidden', background: 'var(--bg2)' }}>
+      <section style={{ padding: '6rem 1.5rem', textAlign: 'center', position: 'relative', overflow: 'hidden', background: 'var(--bg2)' }}>
         <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.05, 0.12, 0.05] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
           style={{ position: 'absolute', width: 900, height: 900, borderRadius: '50%', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', background: 'radial-gradient(circle, #06B6D4 0%, transparent 65%)', pointerEvents: 'none' }} />
         <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.03, 0.07, 0.03] }} transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
